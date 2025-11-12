@@ -17,96 +17,31 @@ SLICUTLET: C11 translation of SLICOT (Systems and Control library) from Fortran7
 
 ## Build Commands
 
-### Using Makefile (Recommended)
+All build and test operations use the provided Makefile:
 
-**Common workflow:**
 ```bash
 make help           # Show all available targets
 make dev            # Build, install, test (full cycle)
 make install        # Build and install
 make test           # Run all tests
 make test-mb01      # Run MB01 family tests
+make test-one TEST=test_name  # Run specific test
 make clean          # Clean build artifacts
-```
-
-**Development:**
-```bash
-make lint           # Check code quality
-make format         # Format Python code
 make rebuild        # Clean and rebuild from scratch
 ```
 
-**Specific test:**
+**Code quality:**
 ```bash
-make test-one TEST=test_mb01ld
+make lint           # Check with ruff
+make format         # Format with ruff
+make lint-fix       # Auto-fix issues
 ```
 
 **Benefits:**
 - Handles environment variables automatically (DYLD_LIBRARY_PATH, PYTHONPATH)
 - Cleans editable install artifacts that cause build issues
-- Shorter commands vs manual uv/meson invocations
-- Family-specific test targets (test-mb01, test-ma01, etc.)
-
-### Using uv (Manual)
-
-**Install dependencies:**
-```bash
-uv sync
-```
-
-**Build and run tests:**
-```bash
-# Build once (rebuilds when source changes)
-uv run meson setup build -Dpython=true && uv run meson compile -C build && uv run meson install -C build --destdir="$(pwd)/build-install"
-
-# If editable install exists, remove it first (avoids cp313 FileNotFoundError)
-uv pip uninstall slicutlet
-
-# Run tests (direct venv, uses build-install)
-export DYLD_LIBRARY_PATH=build-install/usr/local/lib
-export PYTHONPATH=build-install/usr/local/lib/python3.13/site-packages
-.venv/bin/python -m pytest python/tests/ -v
-
-# Specific tests
-.venv/bin/python -m pytest python/tests/test_mb01xx.py -v
-```
-
-**Code quality:**
-```bash
-uv run ruff check python/                  # Check
-uv run ruff check --fix python/            # Fix auto-fixable issues
-uv run ruff format python/                 # Format
-```
-
-**Add dependencies:**
-```bash
-uv add package-name         # Runtime
-uv add --dev package-name   # Dev only (ruff, pytest, etc)
-```
-
-### Manual Build with Meson
-
-**Setup and build:**
-```bash
-meson setup build -Dpython=true
-meson compile -C build
-meson install -C build --destdir="$(pwd)/build-install"
-```
-
-**Options:**
-- `-Dpython=true/false` - Build Python extension module (default: false)
-- `-Dilp64=true/false` - Use ILP64 BLAS/LAPACK interface (default: false)
-
-**C smoke test:**
-```bash
-meson test -C build
-```
-
-**Python tests (manual build):**
-```bash
-export PYTHONPATH=build-install/usr/local/lib/python3.13/site-packages
-pytest python/tests/
-```
+- Family-specific test targets (test-mb01, test-ma01, test-ab, test-mc)
+- Shorter commands, fewer errors
 
 ## Code Structure
 
@@ -175,18 +110,18 @@ git worktree list
 - Translate to C: `src/XX/xxnncc.c` (lowercase)
 - Add to `meson.build` lib_srcs
 - Update `python/slicutletmodule.c` exports
-- Run: `.venv/bin/python -m pytest python/tests/test_xxnnxx.py`
+- Run: `make test-one TEST=test_xxnnxx`
 - Commit: `GREEN: Implement xxnncc`
 
 **REFACTOR:** Clean up
-- Run: `uv run ruff check --fix python/ && uv run ruff format python/`
+- Run: `make lint-fix && make format`
 - Code quality + numerical correctness
 - Comment complex logic
 - Commit: `REFACTOR: Clean up xxnncc`
 
 **VERIFY:** Final validation
-- Ruff: `uv run ruff check python/`
-- Tests: `.venv/bin/python -m pytest python/tests/`
+- Ruff: `make lint`
+- Tests: `make test`
 - Confirm no regressions
 
 ### Pre-Merge Rebase (🚨 CRITICAL)
@@ -208,9 +143,9 @@ cd /Users/josephj/Workspace/SLICUTLET
 
 Sequential merge + validate after each:
 ```bash
-git merge wt1-routine-name && uv run ruff check python/ && .venv/bin/python -m pytest python/tests/
-git merge wt2-routine-name && uv run ruff check python/ && .venv/bin/python -m pytest python/tests/
-git merge wt3-routine-name && uv run ruff check python/ && .venv/bin/python -m pytest python/tests/
+git merge wt1-routine-name && make lint && make test
+git merge wt2-routine-name && make lint && make test
+git merge wt3-routine-name && make lint && make test
 ```
 
 Cleanup:
@@ -220,9 +155,9 @@ git worktree remove ../SLICUTLET-wt{1,2,3}
 
 ### Quality Checklist
 
-- [ ] Ruff clean: `uv run ruff check python/`
-- [ ] Tests pass: `.venv/bin/python -m pytest python/tests/`
-- [ ] Builds: `uv run meson compile -C build`
+- [ ] Ruff clean: `make lint`
+- [ ] Tests pass: `make test`
+- [ ] Builds: `make install`
 - [ ] Min 3 tests per routine
 - [ ] Test data from SLICOT reference docs
 - [ ] Edge cases (N=0, singular matrices)

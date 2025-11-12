@@ -31,6 +31,13 @@ uv run pytest -v python/tests/test_mb01xx.py                                    
 uv run pytest -v python/tests/test_ma01xx.py::TestMA01AD::test_positive_real_positive_imag  # Specific test
 ```
 
+**Code quality:**
+```bash
+uv run ruff check python/                  # Check
+uv run ruff check --fix python/            # Fix auto-fixable issues
+uv run ruff format python/                 # Format
+```
+
 **Add dependencies:**
 ```bash
 uv add package-name         # Runtime
@@ -132,12 +139,14 @@ git worktree list
 - Commit: `GREEN: Implement xxnncc`
 
 **REFACTOR:** Clean up
+- Run: `uv run ruff check --fix python/ && uv run ruff format python/`
 - Code quality + numerical correctness
 - Comment complex logic
 - Commit: `REFACTOR: Clean up xxnncc`
 
 **VERIFY:** Final validation
-- Full suite: `uv run pytest python/tests/`
+- Ruff: `uv run ruff check python/`
+- Tests: `uv run pytest python/tests/`
 - Confirm no regressions
 
 ### Pre-Merge Rebase (🚨 CRITICAL)
@@ -157,11 +166,11 @@ cd /Users/josephj/Workspace/SLICUTLET
 
 ### Merge Worktrees
 
-Sequential merge + test after each:
+Sequential merge + validate after each:
 ```bash
-git merge wt1-routine-name && uv run pytest python/tests/
-git merge wt2-routine-name && uv run pytest python/tests/
-git merge wt3-routine-name && uv run pytest python/tests/
+git merge wt1-routine-name && uv run ruff check python/ && uv run pytest python/tests/
+git merge wt2-routine-name && uv run ruff check python/ && uv run pytest python/tests/
+git merge wt3-routine-name && uv run ruff check python/ && uv run pytest python/tests/
 ```
 
 Cleanup:
@@ -171,6 +180,7 @@ git worktree remove ../SLICUTLET-wt{1,2,3}
 
 ### Quality Checklist
 
+- [ ] Ruff clean: `uv run ruff check python/`
 - [ ] Tests pass: `uv run pytest python/tests/`
 - [ ] Builds: `meson compile -C build`
 - [ ] Min 3 tests per routine

@@ -17,7 +17,37 @@ SLICUTLET: C11 translation of SLICOT (Systems and Control library) from Fortran7
 
 ## Build Commands
 
-### Using uv (Recommended)
+### Using Makefile (Recommended)
+
+**Common workflow:**
+```bash
+make help           # Show all available targets
+make dev            # Build, install, test (full cycle)
+make install        # Build and install
+make test           # Run all tests
+make test-mb01      # Run MB01 family tests
+make clean          # Clean build artifacts
+```
+
+**Development:**
+```bash
+make lint           # Check code quality
+make format         # Format Python code
+make rebuild        # Clean and rebuild from scratch
+```
+
+**Specific test:**
+```bash
+make test-one TEST=test_mb01ld
+```
+
+**Benefits:**
+- Handles environment variables automatically (DYLD_LIBRARY_PATH, PYTHONPATH)
+- Cleans editable install artifacts that cause build issues
+- Shorter commands vs manual uv/meson invocations
+- Family-specific test targets (test-mb01, test-ma01, etc.)
+
+### Using uv (Manual)
 
 **Install dependencies:**
 ```bash

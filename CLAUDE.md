@@ -29,11 +29,16 @@ uv sync
 # Build once (rebuilds when source changes)
 uv run meson setup build -Dpython=true && uv run meson compile -C build && uv run meson install -C build --destdir="$(pwd)/build-install"
 
-# Run tests
-PYTHONPATH=build-install/usr/local/lib/python3.13/site-packages DYLD_LIBRARY_PATH=build-install/usr/local/lib uv run pytest python/tests/
+# If editable install exists, remove it first (avoids cp313 FileNotFoundError)
+uv pip uninstall slicutlet
+
+# Run tests (direct venv, uses build-install)
+export DYLD_LIBRARY_PATH=build-install/usr/local/lib
+export PYTHONPATH=build-install/usr/local/lib/python3.13/site-packages
+.venv/bin/python -m pytest python/tests/ -v
 
 # Specific tests
-PYTHONPATH=build-install/usr/local/lib/python3.13/site-packages DYLD_LIBRARY_PATH=build-install/usr/local/lib uv run pytest -v python/tests/test_mb01xx.py
+.venv/bin/python -m pytest python/tests/test_mb01xx.py -v
 ```
 
 **Code quality:**
@@ -140,7 +145,7 @@ git worktree list
 - Translate to C: `src/XX/xxnncc.c` (lowercase)
 - Add to `meson.build` lib_srcs
 - Update `python/slicutletmodule.c` exports
-- Run: `uv run pytest python/tests/test_xxnnxx.py`
+- Run: `.venv/bin/python -m pytest python/tests/test_xxnnxx.py`
 - Commit: `GREEN: Implement xxnncc`
 
 **REFACTOR:** Clean up
@@ -151,7 +156,7 @@ git worktree list
 
 **VERIFY:** Final validation
 - Ruff: `uv run ruff check python/`
-- Tests: `uv run pytest python/tests/`
+- Tests: `.venv/bin/python -m pytest python/tests/`
 - Confirm no regressions
 
 ### Pre-Merge Rebase (🚨 CRITICAL)
@@ -173,9 +178,9 @@ cd /Users/josephj/Workspace/SLICUTLET
 
 Sequential merge + validate after each:
 ```bash
-git merge wt1-routine-name && uv run ruff check python/ && uv run pytest python/tests/
-git merge wt2-routine-name && uv run ruff check python/ && uv run pytest python/tests/
-git merge wt3-routine-name && uv run ruff check python/ && uv run pytest python/tests/
+git merge wt1-routine-name && uv run ruff check python/ && .venv/bin/python -m pytest python/tests/
+git merge wt2-routine-name && uv run ruff check python/ && .venv/bin/python -m pytest python/tests/
+git merge wt3-routine-name && uv run ruff check python/ && .venv/bin/python -m pytest python/tests/
 ```
 
 Cleanup:
@@ -186,8 +191,8 @@ git worktree remove ../SLICUTLET-wt{1,2,3}
 ### Quality Checklist
 
 - [ ] Ruff clean: `uv run ruff check python/`
-- [ ] Tests pass: `uv run pytest python/tests/`
-- [ ] Builds: `meson compile -C build`
+- [ ] Tests pass: `.venv/bin/python -m pytest python/tests/`
+- [ ] Builds: `uv run meson compile -C build`
 - [ ] Min 3 tests per routine
 - [ ] Test data from SLICOT reference docs
 - [ ] Edge cases (N=0, singular matrices)

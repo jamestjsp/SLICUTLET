@@ -1,20 +1,19 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+SLICUTLET-specific guidance for Claude Code. See `~/.claude/CLAUDE.md` for general workflow.
 
 ## Project Overview
 
-SLICUTLET: C11 translation of SLICOT (Systems and Control library) from Fortran77. Provides easier integration with modern languages by eliminating Fortran ABI binding difficulties.
+SLICUTLET: C11 translation of SLICOT (Systems and Control library) from Fortran77.
 
 **Constraints:**
-- Requires C11-compliant compiler (MSVC not supported - lacks proper `complex.h` support)
-- Complex type `c128` must match Fortran COMPLEX*16 layout (two f64s)
-- Depends on BLAS/LAPACK with auto-detected symbol mangling (lowercase+underscore, lowercase, or uppercase)
+- Requires C11-compliant compiler (MSVC not supported - lacks `complex.h`)
+- `c128` must match Fortran COMPLEX*16 layout (two f64s)
+- BLAS/LAPACK with auto-detected symbol mangling
 
-**Reference Code:**
-- Original Fortran77 source: `SLICOT-Reference/src/` (git submodule)
-- Clone with submodule: `git clone --recurse-submodules <repo>`
-- Update submodule: `git submodule update --init --recursive`
+**Reference:**
+- Fortran77 source: `SLICOT-Reference/src/` (git submodule)
+- Update: `git submodule update --init --recursive`
 
 ## Build Commands
 
@@ -84,48 +83,158 @@ pytest python/tests/
 
 ## Translation Workflow
 
-**Finding source files:**
+### Dependency Analysis
+
+Run before planning:
 ```bash
-# Original Fortran in SLICOT-Reference/src/
-ls SLICOT-Reference/src/AB*.f    # AB family
-ls SLICOT-Reference/src/MA*.f    # MA family
+uv run tools/extract_dependencies.py SLICOT-Reference/src/ AB01ND    # Specific
+uv run tools/extract_dependencies.py SLICOT-Reference/src/           # Full
+uv run tools/extract_dependencies.py SLICOT-Reference/src/ | grep "Level 0"  # Leaves
 ```
 
-**Translation steps:**
-1. Read Fortran source from `SLICOT-Reference/src/XXNNCC.f`
-2. Translate to C in `src/XX/xxnncc.c` (lowercase naming)
-3. Add to `meson.build` lib_srcs list
-4. Write Python test in `python/tests/test_xxnnxx.py`
-5. Update Python module exports if needed
+**Output:**
+- Dependency levels (0=leaves, N=higher)
+- LAPACK/BLAS requirements
+- Reverse dependencies
 
-**Example mapping:**
-- `SLICOT-Reference/src/AB01ND.f` → `src/AB/ab01nd.c`
-- `SLICOT-Reference/src/MA02BD.f` → `src/MA/ma02bd.c`
+**Planning:** Bottom-to-top (Level 0 → Level N)
+
+### Parallel Translation with Worktrees
+
+**Create worktrees:**
+```bash
+git worktree add ../SLICUTLET-wt1 wt1-routine-name
+git worktree add ../SLICUTLET-wt2 wt2-routine-name
+git worktree add ../SLICUTLET-wt3 wt3-routine-name
+git worktree list
+```
+
+**Launch parallel subagents (Task tool):**
+- Work in separate worktrees
+- Follow RED→GREEN→REFACTOR→VERIFY cycle
+- Tests FIRST, verify failure before implementing
+- Report line numbers
+
+### TDD Cycle (RED → GREEN → REFACTOR → VERIFY)
+
+**RED:** Write test first
+- Extract from `SLICOT-Reference/examples/` or docs
+- Write in `python/tests/test_xxnnxx.py`
+- Verify FAILS
+- Commit: `RED: Add tests for xxnncc`
+
+**GREEN:** Implement to pass
+- Read Fortran: `SLICOT-Reference/src/XXNNCC.f`
+- Translate to C: `src/XX/xxnncc.c` (lowercase)
+- Add to `meson.build` lib_srcs
+- Update `python/slicutletmodule.c` exports
+- Run: `uv run pytest python/tests/test_xxnnxx.py`
+- Commit: `GREEN: Implement xxnncc`
+
+**REFACTOR:** Clean up
+- Code quality + numerical correctness
+- Comment complex logic
+- Commit: `REFACTOR: Clean up xxnncc`
+
+**VERIFY:** Final validation
+- Full suite: `uv run pytest python/tests/`
+- Confirm no regressions
+
+### Pre-Merge Rebase (🚨 CRITICAL)
+
+Before merging, rebase ALL worktrees:
+```bash
+cd ../SLICUTLET-wt1
+git fetch /Users/josephj/Workspace/SLICUTLET main:main
+git rebase main
+# Repeat for wt2, wt3...
+cd /Users/josephj/Workspace/SLICUTLET
+```
+
+**Why critical:** Auto-drops duplicate dependencies if merged to main meanwhile. Prevents conflicts.
+
+**Or use:** `./tools/rebase_worktrees.sh wt1-branch wt2-branch wt3-branch`
+
+### Merge Worktrees
+
+Sequential merge + test after each:
+```bash
+git merge wt1-routine-name && uv run pytest python/tests/
+git merge wt2-routine-name && uv run pytest python/tests/
+git merge wt3-routine-name && uv run pytest python/tests/
+```
+
+Cleanup:
+```bash
+git worktree remove ../SLICUTLET-wt{1,2,3}
+```
+
+### Quality Checklist
+
+- [ ] Tests pass: `uv run pytest python/tests/`
+- [ ] Builds: `meson compile -C build`
+- [ ] Min 3 tests per routine
+- [ ] Test data from SLICOT reference docs
+- [ ] Edge cases (N=0, singular matrices)
+- [ ] TDD commits (RED→GREEN→REFACTOR)
+- [ ] Worktrees rebased before merge
+- [ ] Python exports updated
+
+### Rebase Automation Script
+
+`tools/rebase_worktrees.sh` (usage: `./tools/rebase_worktrees.sh wt1-branch wt2-branch ...`)
+
+```bash
+#!/bin/bash
+MAIN_DIR="/Users/josephj/Workspace/SLICUTLET"
+BASE_DIR="/Users/josephj/Workspace"
+
+for branch in "$@"; do
+    wt_num=$(echo "$branch" | grep -o 'wt[0-9]')
+    wt_dir="$BASE_DIR/SLICUTLET-$wt_num"
+    [ -d "$wt_dir" ] || { echo "Skip: $wt_dir"; continue; }
+
+    cd "$wt_dir" || exit 1
+    git fetch "$MAIN_DIR" main:main && git rebase main || {
+        git rebase --abort
+        echo "ERROR: Rebase failed for $branch"
+        exit 1
+    }
+done
+
+cd "$MAIN_DIR"
+echo "Ready to merge: $*"
+```
+
+### Common Pitfalls
+
+| Issue | Fix |
+|-------|-----|
+| Duplicate deps | Rebase worktrees before merge |
+| Same insertion point | Manual merge or placeholder comments |
+| Stale worktrees | Always rebase before merge |
+| Test conflicts | Separate files per family |
+| Missing exports | Update `slicutletmodule.c` + `__init__.py` |
+| Build errors | Add to `meson.build` lib_srcs |
+
+**File mapping:** `SLICOT-Reference/src/AB01ND.f` → `src/AB/ab01nd.c`
 
 ## Translation Conventions
 
-**C to Fortran type mapping:**
-- `i32` → INTEGER (or `i64` with -Dilp64)
-- `f64` → DOUBLE PRECISION
-- `c128` → COMPLEX*16 (verified at compile-time)
+**Types:** `i32`→INTEGER, `f64`→DOUBLE PRECISION, `c128`→COMPLEX*16
 
-**Array indexing:**
-- C uses 0-based indexing; translations maintain Fortran logic with index adjustments
-- Leading dimension parameters (lda, ldb, ldz) preserved for BLAS/LAPACK compatibility
+**Arrays:** 0-based C indexing with Fortran logic adjustments. Preserve lda/ldb/ldz for BLAS/LAPACK.
 
-**BLAS/LAPACK calls:**
-- Build system auto-detects symbol mangling via compile-time probes
-- Macros in `slc_blaslapack.h` adapt to detected convention
+**BLAS/LAPACK:** Auto-detected symbol mangling via `slc_blaslapack.h` macros.
 
 ## Test Strategy
 
-**Python tests validate:**
-- Numerical correctness against known results
-- Edge cases (zero matrices, singular cases)
-- Error handling (via pytest.raises)
-- Uses `numpy.testing.assert_allclose` with tight tolerances (rtol=1e-14)
+**Validation:**
+- Numerical correctness vs known results
+- Edge cases (N=0, singular matrices)
+- `numpy.testing.assert_allclose` (rtol=1e-14)
 
-**Test structure:**
-- One file per function family (test_ma01xx.py, test_mb01xx.py, etc.)
-- Classes group related tests (TestMA01AD, TestMA01BD, etc.)
-- Descriptive method names indicating test scenario
+**Structure:**
+- File per family: `test_ma01xx.py`, `test_mb01xx.py`
+- Classes: `TestMA01AD`, `TestMA01BD`
+- Descriptive method names

@@ -21,10 +21,10 @@ def test_ab05nd_basic_negative_feedback():
     D2 = np.asfortranarray([[0.5]])
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p1, n), dtype=np.float64, order='F')
-    D = np.zeros((p1, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p1, n), dtype=np.float64, order="F")
+    D = np.zeros((p1, m1), dtype=np.float64, order="F")
     iwork = np.zeros(p1, dtype=np.int32)
     # Workspace calculation for over=0: max(1, p1*p1, m1*m1, n1*p1)
     ldwork = max(1, p1 * p1, m1 * m1, n1 * p1)
@@ -33,9 +33,7 @@ def test_ab05nd_basic_negative_feedback():
     over = 0  # No overlap
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05nd(
-        over, n1, m1, p1, n2, alpha,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, iwork, dwork
+        over, n1, m1, p1, n2, alpha, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, iwork, dwork
     )
 
     assert info == 0, f"ab05nd failed with info={info}"
@@ -91,10 +89,10 @@ def test_ab05nd_positive_feedback():
     D2 = np.asfortranarray([[0.0]])
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p1, n), dtype=np.float64, order='F')
-    D = np.zeros((p1, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p1, n), dtype=np.float64, order="F")
+    D = np.zeros((p1, m1), dtype=np.float64, order="F")
     iwork = np.zeros(p1, dtype=np.int32)
     ldwork = max(1, p1 * p1, m1 * m1, n1 * p1)
     dwork = np.zeros(ldwork, dtype=np.float64)
@@ -102,9 +100,7 @@ def test_ab05nd_positive_feedback():
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05nd(
-        over, n1, m1, p1, n2, alpha,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, iwork, dwork
+        over, n1, m1, p1, n2, alpha, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, iwork, dwork
     )
 
     assert info == 0
@@ -149,10 +145,10 @@ def test_ab05nd_nonzero_feedthrough():
     D2 = np.asfortranarray([[0.2, 0.0], [0.0, 0.2]])
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p1, n), dtype=np.float64, order='F')
-    D = np.zeros((p1, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p1, n), dtype=np.float64, order="F")
+    D = np.zeros((p1, m1), dtype=np.float64, order="F")
     iwork = np.zeros(p1, dtype=np.int32)
     ldwork = max(1, p1 * p1, m1 * m1, n1 * p1)
     dwork = np.zeros(ldwork, dtype=np.float64)
@@ -160,9 +156,7 @@ def test_ab05nd_nonzero_feedthrough():
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05nd(
-        over, n1, m1, p1, n2, alpha,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, iwork, dwork
+        over, n1, m1, p1, n2, alpha, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, iwork, dwork
     )
 
     assert info == 0
@@ -204,19 +198,17 @@ def test_ab05nd_with_overlap():
     n = n1 + n2
     # For over=1, need larger workspace: n1*p1 + max(p1*p1, m1*m1, n1*p1)
     ldwork = n1 * p1 + max(p1 * p1, m1 * m1, n1 * p1)
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p1, n), dtype=np.float64, order='F')
-    D = np.zeros((p1, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p1, n), dtype=np.float64, order="F")
+    D = np.zeros((p1, m1), dtype=np.float64, order="F")
     iwork = np.zeros(p1, dtype=np.int32)
     dwork = np.zeros(ldwork, dtype=np.float64)
 
     over = 1  # Overlap mode
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05nd(
-        over, n1, m1, p1, n2, alpha,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, iwork, dwork
+        over, n1, m1, p1, n2, alpha, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, iwork, dwork
     )
 
     assert info == 0
@@ -237,9 +229,9 @@ def test_ab05nd_zero_order_system1():
     alpha = -1.0
 
     # System 1: just feedthrough (no states)
-    A1 = np.zeros((0, 0), dtype=np.float64, order='F')
-    B1 = np.zeros((0, m1), dtype=np.float64, order='F')
-    C1 = np.zeros((p1, 0), dtype=np.float64, order='F')
+    A1 = np.zeros((0, 0), dtype=np.float64, order="F")
+    B1 = np.zeros((0, m1), dtype=np.float64, order="F")
+    C1 = np.zeros((p1, 0), dtype=np.float64, order="F")
     D1 = np.asfortranarray([[1.0, 0.0], [0.0, 1.0]])
 
     # System 2: simple controller
@@ -249,10 +241,10 @@ def test_ab05nd_zero_order_system1():
     D2 = np.asfortranarray([[0.1, 0.0], [0.0, 0.1]])
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p1, n), dtype=np.float64, order='F')
-    D = np.zeros((p1, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p1, n), dtype=np.float64, order="F")
+    D = np.zeros((p1, m1), dtype=np.float64, order="F")
     iwork = np.zeros(p1, dtype=np.int32)
     ldwork = max(1, p1 * p1, m1 * m1, n1 * p1)
     dwork = np.zeros(ldwork, dtype=np.float64)
@@ -260,9 +252,7 @@ def test_ab05nd_zero_order_system1():
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05nd(
-        over, n1, m1, p1, n2, alpha,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, iwork, dwork
+        over, n1, m1, p1, n2, alpha, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, iwork, dwork
     )
 
     assert info == 0
@@ -295,16 +285,16 @@ def test_ab05nd_zero_order_system2():
     D1 = np.asfortranarray([[0.2]])  # Changed from 0.5 to avoid singularity
 
     # System 2: just feedthrough
-    A2 = np.zeros((0, 0), dtype=np.float64, order='F')
-    B2 = np.zeros((0, p1), dtype=np.float64, order='F')
-    C2 = np.zeros((m1, 0), dtype=np.float64, order='F')
+    A2 = np.zeros((0, 0), dtype=np.float64, order="F")
+    B2 = np.zeros((0, p1), dtype=np.float64, order="F")
+    C2 = np.zeros((m1, 0), dtype=np.float64, order="F")
     D2 = np.asfortranarray([[2.0]])
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p1, n), dtype=np.float64, order='F')
-    D = np.zeros((p1, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p1, n), dtype=np.float64, order="F")
+    D = np.zeros((p1, m1), dtype=np.float64, order="F")
     iwork = np.zeros(p1, dtype=np.int32)
     ldwork = max(1, p1 * p1, m1 * m1, n1 * p1)
     dwork = np.zeros(ldwork, dtype=np.float64)
@@ -312,9 +302,7 @@ def test_ab05nd_zero_order_system2():
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05nd(
-        over, n1, m1, p1, n2, alpha,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, iwork, dwork
+        over, n1, m1, p1, n2, alpha, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, iwork, dwork
     )
 
     assert info == 0
@@ -361,10 +349,10 @@ def test_ab05nd_large_feedback_gain():
     D2 = np.asfortranarray([[0.0]])
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p1, n), dtype=np.float64, order='F')
-    D = np.zeros((p1, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p1, n), dtype=np.float64, order="F")
+    D = np.zeros((p1, m1), dtype=np.float64, order="F")
     iwork = np.zeros(p1, dtype=np.int32)
     ldwork = max(1, p1 * p1, m1 * m1, n1 * p1)
     dwork = np.zeros(ldwork, dtype=np.float64)
@@ -372,9 +360,7 @@ def test_ab05nd_large_feedback_gain():
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05nd(
-        over, n1, m1, p1, n2, alpha,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, iwork, dwork
+        over, n1, m1, p1, n2, alpha, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, iwork, dwork
     )
 
     assert info == 0
@@ -412,10 +398,10 @@ def test_ab05nd_identity_feedback():
     D2 = np.asfortranarray(np.zeros((2, 2)))
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p1, n), dtype=np.float64, order='F')
-    D = np.zeros((p1, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p1, n), dtype=np.float64, order="F")
+    D = np.zeros((p1, m1), dtype=np.float64, order="F")
     iwork = np.zeros(p1, dtype=np.int32)
     ldwork = max(1, p1 * p1, m1 * m1, n1 * p1)
     dwork = np.zeros(ldwork, dtype=np.float64)
@@ -423,9 +409,7 @@ def test_ab05nd_identity_feedback():
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05nd(
-        over, n1, m1, p1, n2, alpha,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, iwork, dwork
+        over, n1, m1, p1, n2, alpha, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, iwork, dwork
     )
 
     assert info == 0

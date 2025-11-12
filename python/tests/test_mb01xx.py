@@ -774,7 +774,7 @@ class TestMB01YD:
     def test_upper_rank_k(self):
         """Test upper symmetric rank-k update"""
         rng = np.random.default_rng(4567378901)
-        n, k, l = 5, 3, 0
+        n, k, ell = 5, 3, 0
         alpha, beta = 1.5, 0.5
 
         A = np.asfortranarray(rng.uniform(-4, 4, (n, k)))
@@ -782,14 +782,14 @@ class TestMB01YD:
         C = np.triu(C) + np.triu(C, 1).T
         C = np.asfortranarray(C)
 
-        C_out, info = mb01yd(0, 0, n, k, l, alpha, beta, A, C)
+        C_out, info = mb01yd(0, 0, n, k, ell, alpha, beta, A, C)
 
         assert info == 0
 
     def test_lower_rank_k_transpose(self):
         """Test lower symmetric rank-k update with transpose"""
         rng = np.random.default_rng(5678489012)
-        n, k, l = 4, 3, 0
+        n, k, ell = 4, 3, 0
         alpha, beta = 2.0, 1.0
 
         A = np.asfortranarray(rng.uniform(-3, 3, (k, n)))
@@ -797,7 +797,7 @@ class TestMB01YD:
         C = np.tril(C) + np.tril(C, -1).T
         C = np.asfortranarray(C)
 
-        C_out, info = mb01yd(1, 1, n, k, l, alpha, beta, A, C)
+        C_out, info = mb01yd(1, 1, n, k, ell, alpha, beta, A, C)
 
         assert info == 0
 
@@ -808,25 +808,25 @@ class TestMB01ZD:
     def test_left_upper_multiplication(self):
         """Test left multiplication with upper triangular"""
         rng = np.random.default_rng(6789590123)
-        m, n, l = 6, 6, 1
+        m, n, l_param = 6, 6, 1
         alpha = 0.5
 
         T = np.asfortranarray(rng.uniform(-2, 2, (m, m)))
         H = np.asfortranarray(rng.uniform(-2, 2, (m, n)))
 
-        H_out, info = mb01zd(0, 0, 0, 0, m, n, l, alpha, T, H)
+        H_out, info = mb01zd(0, 0, 0, 0, m, n, l_param, alpha, T, H)
 
         assert info == 0
 
     def test_right_lower_multiplication(self):
         """Test right multiplication with lower triangular"""
         rng = np.random.default_rng(7890601234)
-        m, n, l = 5, 5, 1
+        m, n, l_param = 5, 5, 1
         alpha = 3.0
 
         T = np.asfortranarray(rng.uniform(-4, 4, (n, n)))
         H = np.asfortranarray(rng.uniform(-4, 4, (m, n)))
 
-        H_out, info = mb01zd(1, 1, 0, 0, m, n, l, alpha, T, H)
+        H_out, info = mb01zd(1, 1, 0, 0, m, n, l_param, alpha, T, H)
 
         assert info == 0

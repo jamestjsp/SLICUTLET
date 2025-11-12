@@ -1,6 +1,7 @@
 """
 Tests for MA01XX family of functions
 """
+
 import numpy as np
 from numpy.testing import assert_allclose
 from slicutlet import ma01ad, ma01bd, ma01bz, ma01cd, ma01dd, ma01dz
@@ -110,7 +111,7 @@ class TestMA01BD:
         alpha, beta, scale = ma01bd(base, logbase, k, inca, a, s)
 
         # Expected: 2 * 3 * 4 = 24
-        result = alpha / beta * (base ** scale)
+        result = alpha / beta * (base**scale)
         assert_allclose(result, 24.0, rtol=1e-10)
 
     def test_mixed_signature(self):
@@ -125,7 +126,7 @@ class TestMA01BD:
         alpha, beta, scale = ma01bd(base, logbase, k, inca, a, s)
 
         # Expected: 8 / 2 * 6 / 3 = 8
-        result = alpha / beta * (base ** scale)
+        result = alpha / beta * (base**scale)
         assert_allclose(result, 8.0, rtol=1e-10)
 
     def test_large_numbers(self):
@@ -171,7 +172,7 @@ class TestMA01BD:
         alpha, beta, scale = ma01bd(base, logbase, k, inca, a, s)
 
         # Expected: 2 * 3 * 4 = 24
-        result = alpha / beta * (base ** scale)
+        result = alpha / beta * (base**scale)
         assert_allclose(result, 24.0, rtol=1e-10)
 
 
@@ -186,14 +187,14 @@ class TestMA01BZ:
         base = 2.0
         k = 3
         s = np.array([1, 1, 1], dtype=np.int32)
-        a = np.array([1+1j, 2+0j, 1-1j], dtype=np.complex128)
+        a = np.array([1 + 1j, 2 + 0j, 1 - 1j], dtype=np.complex128)
         inca = 1
 
         alpha, beta, scale = ma01bz(base, k, inca, a, s)
 
         # Expected: (1+1j) * (2+0j) * (1-1j) = (2+2j) * (1-1j) = 4+0j
-        result = alpha / beta * (base ** scale)
-        expected = (1+1j) * (2+0j) * (1-1j)
+        result = alpha / beta * (base**scale)
+        expected = (1 + 1j) * (2 + 0j) * (1 - 1j)
         assert_allclose(result, expected, rtol=1e-10)
 
     def test_with_division(self):
@@ -201,14 +202,14 @@ class TestMA01BZ:
         base = 2.0
         k = 2
         s = np.array([1, -1], dtype=np.int32)
-        a = np.array([4+4j, 1+1j], dtype=np.complex128)
+        a = np.array([4 + 4j, 1 + 1j], dtype=np.complex128)
         inca = 1
 
         alpha, beta, scale = ma01bz(base, k, inca, a, s)
 
         # Expected: (4+4j) / (1+1j) = 4
-        result = alpha / beta * (base ** scale)
-        expected = (4+4j) / (1+1j)
+        result = alpha / beta * (base**scale)
+        expected = (4 + 4j) / (1 + 1j)
         assert_allclose(result, expected, rtol=1e-10)
 
     def test_zero_in_numerator(self):
@@ -216,7 +217,7 @@ class TestMA01BZ:
         base = 2.0
         k = 2
         s = np.array([1, 1], dtype=np.int32)
-        a = np.array([0+0j, 2+3j], dtype=np.complex128)
+        a = np.array([0 + 0j, 2 + 3j], dtype=np.complex128)
         inca = 1
 
         alpha, beta, scale = ma01bz(base, k, inca, a, s)
@@ -229,7 +230,7 @@ class TestMA01BZ:
         base = 2.0
         k = 2
         s = np.array([1, -1], dtype=np.int32)
-        a = np.array([2+3j, 0+0j], dtype=np.complex128)
+        a = np.array([2 + 3j, 0 + 0j], dtype=np.complex128)
         inca = 1
 
         alpha, beta, scale = ma01bz(base, k, inca, a, s)
@@ -242,7 +243,7 @@ class TestMA01BZ:
         base = 2.0
         k = 3
         s = np.array([1, 1, 1], dtype=np.int32)
-        a = np.array([100+0j, 100+0j, 100+0j], dtype=np.complex128)
+        a = np.array([100 + 0j, 100 + 0j, 100 + 0j], dtype=np.complex128)
         inca = 1
 
         alpha, beta, scale = ma01bz(base, k, inca, a, s)
@@ -283,7 +284,7 @@ class TestMA01CD:
     def test_different_exponents_positive(self):
         """Test with different exponents, positive result"""
         a, ia = 1.0, 10  # 1 * 10^10
-        b, ib = 1.0, 5   # 1 * 10^5
+        b, ib = 1.0, 5  # 1 * 10^5
         result = ma01cd(a, ia, b, ib)
         assert result == 1  # Large positive + small positive = positive
 
@@ -358,7 +359,7 @@ class TestMA01DD:
 
         # Direct distance: |1 - 3| = 2
         # Reciprocal distance: |1/1 - 1/3| = 2/3
-        expected = min(2.0, 2.0/3.0)
+        expected = min(2.0, 2.0 / 3.0)
         assert_allclose(d, expected, rtol=1e-10)
 
     def test_complex_numbers(self):
@@ -518,12 +519,8 @@ class TestMA01DZ:
         eps = np.finfo(float).eps
         safemin = np.finfo(float).tiny
 
-        d1_fwd, d2_fwd, iwarn_fwd = ma01dz(
-            ar1, ai1, b1, ar2, ai2, b2, eps, safemin
-        )
-        d1_rev, d2_rev, iwarn_rev = ma01dz(
-            ar2, ai2, b2, ar1, ai1, b1, eps, safemin
-        )
+        d1_fwd, d2_fwd, iwarn_fwd = ma01dz(ar1, ai1, b1, ar2, ai2, b2, eps, safemin)
+        d1_rev, d2_rev, iwarn_rev = ma01dz(ar2, ai2, b2, ar1, ai1, b1, eps, safemin)
 
         assert iwarn_fwd == 0
         assert iwarn_rev == 0

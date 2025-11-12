@@ -29,18 +29,15 @@ class TestAB07NDBasic:
     def test_identity_d_matrix(self):
         """Test with D = identity matrix"""
         n, m = 2, 2
-        A = np.asfortranarray([[1.0, 2.0],
-                      [3.0, 4.0]])
-        B = np.asfortranarray([[1.0, 0.0],
-                      [0.0, 1.0]])
-        C = np.asfortranarray([[1.0, 1.0],
-                      [1.0, 2.0]])
+        A = np.asfortranarray([[1.0, 2.0], [3.0, 4.0]])
+        B = np.asfortranarray([[1.0, 0.0], [0.0, 1.0]])
+        C = np.asfortranarray([[1.0, 1.0], [1.0, 2.0]])
         D = np.asfortranarray(np.eye(m))
 
         # Save originals for comparison
-        A_orig = A.copy(order='F')
-        B_orig = B.copy(order='F')
-        C_orig = C.copy(order='F')
+        A_orig = A.copy(order="F")
+        B_orig = B.copy(order="F")
+        C_orig = C.copy(order="F")
 
         iwork = np.zeros(2 * max(2, m), dtype=np.int32)
         dwork = np.zeros(max(4 * m, n * m, 256), dtype=np.float64)
@@ -63,14 +60,10 @@ class TestAB07NDBasic:
     def test_simple_invertible_d(self):
         """Test with simple invertible D matrix"""
         n, m = 2, 2
-        A = np.asfortranarray([[1.0, 0.0],
-                      [0.0, 1.0]])
-        B = np.asfortranarray([[1.0, 0.0],
-                      [0.0, 1.0]])
-        C = np.asfortranarray([[2.0, 0.0],
-                      [0.0, 2.0]])
-        D = np.asfortranarray([[2.0, 0.0],
-                      [0.0, 2.0]])
+        A = np.asfortranarray([[1.0, 0.0], [0.0, 1.0]])
+        B = np.asfortranarray([[1.0, 0.0], [0.0, 1.0]])
+        C = np.asfortranarray([[2.0, 0.0], [0.0, 2.0]])
+        D = np.asfortranarray([[2.0, 0.0], [0.0, 2.0]])
 
         iwork = np.zeros(2 * max(2, m), dtype=np.int32)
         dwork = np.zeros(max(4 * m, n * m, 256), dtype=np.float64)
@@ -129,8 +122,7 @@ class TestAB07NDNumerical:
         B = np.asfortranarray(np.eye(n, m))
         C = np.asfortranarray(np.eye(m, n))
         # Very ill-conditioned
-        D = np.asfortranarray([[1.0, 1.0],
-                      [1.0, 1.0 + 1e-10]])
+        D = np.asfortranarray([[1.0, 1.0], [1.0, 1.0 + 1e-10]])
 
         iwork = np.zeros(2 * max(2, m), dtype=np.int32)
         dwork = np.zeros(max(4 * m, n * m, 256), dtype=np.float64)
@@ -150,9 +142,9 @@ class TestAB07NDNumerical:
         D = np.asfortranarray(np.eye(m) + 0.1 * rng.random((m, m)))  # make sure invertible
 
         # Save originals for comparison
-        D_orig = D.copy(order='F')
-        B_orig = B.copy(order='F')
-        C_orig = C.copy(order='F')
+        D_orig = D.copy(order="F")
+        B_orig = B.copy(order="F")
+        C_orig = C.copy(order="F")
 
         iwork = np.zeros(2 * max(2, m), dtype=np.int32)
         dwork = np.zeros(max(4 * m, n * m, 256), dtype=np.float64)

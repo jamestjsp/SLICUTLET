@@ -20,19 +20,17 @@ def test_ab05md_basic_cascade_lower():
     D2 = np.asfortranarray([[0.0]])
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p2, n), dtype=np.float64, order='F')
-    D = np.zeros((p2, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p2, n), dtype=np.float64, order="F")
+    D = np.zeros((p2, m1), dtype=np.float64, order="F")
     dwork = np.zeros(max(1, p1 * max(n1, m1, n2, p2)), dtype=np.float64)
 
     uplo = 0  # Lower block diagonal
     over = 0  # No overlap
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05md(
-        uplo, over, n1, m1, p1, n2, p2,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, dwork
+        uplo, over, n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, dwork
     )
 
     assert info == 0, f"ab05md failed with info={info}"
@@ -82,19 +80,17 @@ def test_ab05md_slicot_example():
     D2 = np.asfortranarray([[1.0, 1.0], [0.0, 1.0]])
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p2, n), dtype=np.float64, order='F')
-    D = np.zeros((p2, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p2, n), dtype=np.float64, order="F")
+    D = np.zeros((p2, m1), dtype=np.float64, order="F")
     dwork = np.zeros(max(1, p1 * max(n1, m1, n2, p2)), dtype=np.float64)
 
     uplo = 0  # Lower
     over = 0  # No overlap
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05md(
-        uplo, over, n1, m1, p1, n2, p2,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, dwork
+        uplo, over, n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, dwork
     )
 
     assert info == 0
@@ -138,19 +134,17 @@ def test_ab05md_upper_block():
     D2 = np.asfortranarray(np.array([[1.0], [1.0]]))
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p2, n), dtype=np.float64, order='F')
-    D = np.zeros((p2, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p2, n), dtype=np.float64, order="F")
+    D = np.zeros((p2, m1), dtype=np.float64, order="F")
     dwork = np.zeros(max(1, p1 * max(n1, m1, n2, p2)), dtype=np.float64)
 
     uplo = 1  # Upper block diagonal
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05md(
-        uplo, over, n1, m1, p1, n2, p2,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, dwork
+        uplo, over, n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, dwork
     )
 
     assert info == 0
@@ -182,19 +176,17 @@ def test_ab05md_with_overlap():
     D2 = np.asfortranarray(np.eye(2))
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p2, n), dtype=np.float64, order='F')
-    D = np.zeros((p2, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p2, n), dtype=np.float64, order="F")
+    D = np.zeros((p2, m1), dtype=np.float64, order="F")
     dwork = np.zeros(max(1, p1 * max(n1, m1, n2, p2)), dtype=np.float64)
 
     uplo = 0
     over = 1  # Overlap mode
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05md(
-        uplo, over, n1, m1, p1, n2, p2,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, dwork
+        uplo, over, n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, dwork
     )
 
     assert info == 0
@@ -225,19 +217,17 @@ def test_ab05md_identity_systems():
     D2 = np.asfortranarray(np.zeros((2, 2)))
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p2, n), dtype=np.float64, order='F')
-    D = np.zeros((p2, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p2, n), dtype=np.float64, order="F")
+    D = np.zeros((p2, m1), dtype=np.float64, order="F")
     dwork = np.zeros(max(1, p1 * max(n1, m1, n2, p2)), dtype=np.float64)
 
     uplo = 0
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05md(
-        uplo, over, n1, m1, p1, n2, p2,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, dwork
+        uplo, over, n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, dwork
     )
 
     assert info == 0
@@ -277,19 +267,17 @@ def test_ab05md_zero_dimensions():
     D2 = np.asfortranarray([[0.0]])
 
     n = n1 + n2
-    A = np.zeros((max(1, n), max(1, n)), dtype=np.float64, order='F')
-    B = np.zeros((max(1, n), m1), dtype=np.float64, order='F')
-    C = np.zeros((p2, max(1, n)), dtype=np.float64, order='F')
-    D = np.zeros((p2, m1), dtype=np.float64, order='F')
+    A = np.zeros((max(1, n), max(1, n)), dtype=np.float64, order="F")
+    B = np.zeros((max(1, n), m1), dtype=np.float64, order="F")
+    C = np.zeros((p2, max(1, n)), dtype=np.float64, order="F")
+    D = np.zeros((p2, m1), dtype=np.float64, order="F")
     dwork = np.zeros(max(1, p1 * max(n1, m1, n2, p2)), dtype=np.float64)
 
     uplo = 0
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05md(
-        uplo, over, n1, m1, p1, n2, p2,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, dwork
+        uplo, over, n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, dwork
     )
 
     assert info == 0
@@ -327,19 +315,17 @@ def test_ab05md_cascade_property():
     D2 = np.asfortranarray([[0.0]])
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p2, n), dtype=np.float64, order='F')
-    D = np.zeros((p2, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p2, n), dtype=np.float64, order="F")
+    D = np.zeros((p2, m1), dtype=np.float64, order="F")
     dwork = np.zeros(max(1, p1 * max(n1, m1, n2, p2)), dtype=np.float64)
 
     uplo = 0
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05md(
-        uplo, over, n1, m1, p1, n2, p2,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, dwork
+        uplo, over, n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, dwork
     )
 
     assert info == 0
@@ -381,19 +367,17 @@ def test_ab05md_invalid_uplo():
     D2 = np.asfortranarray(np.zeros((1, 1)))
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p2, n), dtype=np.float64, order='F')
-    D = np.zeros((p2, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p2, n), dtype=np.float64, order="F")
+    D = np.zeros((p2, m1), dtype=np.float64, order="F")
     dwork = np.zeros(max(1, p1 * max(n1, m1, n2, p2)), dtype=np.float64)
 
     uplo = 5  # Invalid value
     over = 0
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05md(
-        uplo, over, n1, m1, p1, n2, p2,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, dwork
+        uplo, over, n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, dwork
     )
 
     assert info == -1
@@ -415,19 +399,17 @@ def test_ab05md_invalid_over():
     D2 = np.asfortranarray(np.zeros((1, 1)))
 
     n = n1 + n2
-    A = np.zeros((n, n), dtype=np.float64, order='F')
-    B = np.zeros((n, m1), dtype=np.float64, order='F')
-    C = np.zeros((p2, n), dtype=np.float64, order='F')
-    D = np.zeros((p2, m1), dtype=np.float64, order='F')
+    A = np.zeros((n, n), dtype=np.float64, order="F")
+    B = np.zeros((n, m1), dtype=np.float64, order="F")
+    C = np.zeros((p2, n), dtype=np.float64, order="F")
+    D = np.zeros((p2, m1), dtype=np.float64, order="F")
     dwork = np.zeros(max(1, p1 * max(n1, m1, n2, p2)), dtype=np.float64)
 
     uplo = 0
     over = 3  # Invalid value
 
     n_out, A_out, B_out, C_out, D_out, info = slicutlet.ab05md(
-        uplo, over, n1, m1, p1, n2, p2,
-        A1, B1, C1, D1, A2, B2, C2, D2,
-        A, B, C, D, dwork
+        uplo, over, n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, A, B, C, D, dwork
     )
 
     assert info == -2

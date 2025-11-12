@@ -65,14 +65,24 @@ class TestAB04MD:
         dwork = np.zeros(max(1, n), dtype=np.float64)
 
         # Convert discrete to continuous
-        A_c, B_c, C_c, D_c, info = ab04md(0, n, m, p, alpha, beta,
-                                              A_orig.copy(), B_orig.copy(),
-                                              C_orig.copy(), D_orig.copy(), iwork, dwork)
+        A_c, B_c, C_c, D_c, info = ab04md(
+            0,
+            n,
+            m,
+            p,
+            alpha,
+            beta,
+            A_orig.copy(),
+            B_orig.copy(),
+            C_orig.copy(),
+            D_orig.copy(),
+            iwork,
+            dwork,
+        )
         assert info == 0
 
         # Convert back to discrete
-        A_d, B_d, C_d, D_d, info = ab04md(1, n, m, p, alpha, beta,
-                                              A_c, B_c, C_c, D_c, iwork, dwork)
+        A_d, B_d, C_d, D_d, info = ab04md(1, n, m, p, alpha, beta, A_c, B_c, C_c, D_c, iwork, dwork)
         assert info == 0
 
         # Should recover original system (within numerical tolerance)
@@ -186,16 +196,10 @@ class TestAB04MD:
     def test_mimo_system(self):
         """Test with multi-input multi-output system."""
         n, m, p = 3, 2, 2
-        A = np.asfortranarray([[0.5, 0.1, 0.0],
-                      [0.0, 0.7, 0.2],
-                      [0.0, 0.0, 0.6]])
-        B = np.asfortranarray([[1.0, 0.5],
-                      [0.8, 0.3],
-                      [0.2, 0.9]])
-        C = np.asfortranarray([[1.0, 0.0, 0.5],
-                      [0.0, 1.0, 0.3]])
-        D = np.asfortranarray([[0.1, 0.0],
-                      [0.0, 0.2]])
+        A = np.asfortranarray([[0.5, 0.1, 0.0], [0.0, 0.7, 0.2], [0.0, 0.0, 0.6]])
+        B = np.asfortranarray([[1.0, 0.5], [0.8, 0.3], [0.2, 0.9]])
+        C = np.asfortranarray([[1.0, 0.0, 0.5], [0.0, 1.0, 0.3]])
+        D = np.asfortranarray([[0.1, 0.0], [0.0, 0.2]])
 
         iwork = np.zeros(4 * max(m, p), dtype=np.int32)
         dwork = np.zeros(max(1, n), dtype=np.float64)

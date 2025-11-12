@@ -12,16 +12,14 @@ class TestAB01NDFullyControllable:
         """Test a simple 2x2 fully controllable system"""
         # Simple companion form system - fully controllable
         n, m = 2, 1
-        A = np.array([[0.0, 1.0],
-                      [-2.0, -3.0]], order='F')
-        B = np.array([[0.0],
-                      [1.0]], order='F')
+        A = np.array([[0.0, 1.0], [-2.0, -3.0]], order="F")
+        B = np.array([[0.0], [1.0]], order="F")
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 2  # 'I' - compute Z
         tol = 0.0  # Use default tolerance
@@ -40,24 +38,19 @@ class TestAB01NDFullyControllable:
 
         # Verify that Z'*B has correct structure (first block nonzero)
         # B_out is already Z'*B from the algorithm
-        assert np.linalg.norm(B_out[:nblk_out[0], :]) > 1e-10
-
+        assert np.linalg.norm(B_out[: nblk_out[0], :]) > 1e-10
 
     def test_multi_input_controllable(self):
         """Test a multi-input fully controllable system"""
         n, m = 3, 2
-        A = np.array([[1.0, 2.0, 0.0],
-                      [0.0, 1.0, 1.0],
-                      [0.0, 0.0, 2.0]], order='F')
-        B = np.array([[1.0, 0.0],
-                      [0.0, 1.0],
-                      [1.0, 1.0]], order='F')
+        A = np.array([[1.0, 2.0, 0.0], [0.0, 1.0, 1.0], [0.0, 0.0, 2.0]], order="F")
+        B = np.array([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]], order="F")
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 2  # 'I'
         tol = 0.0
@@ -81,18 +74,14 @@ class TestAB01NDPartiallyControllable:
         """Test a system with both controllable and uncontrollable modes"""
         n, m = 3, 1
         # System with one uncontrollable mode
-        A = np.array([[1.0, 0.0, 0.0],
-                      [0.0, 2.0, 1.0],
-                      [0.0, 0.0, 2.0]], order='F')
-        B = np.array([[0.0],
-                      [1.0],
-                      [0.0]], order='F')
+        A = np.array([[1.0, 0.0, 0.0], [0.0, 2.0, 1.0], [0.0, 0.0, 2.0]], order="F")
+        B = np.array([[0.0], [1.0], [0.0]], order="F")
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 2  # 'I'
         tol = 0.0
@@ -109,23 +98,18 @@ class TestAB01NDPartiallyControllable:
         ZtZ = Z_out.T @ Z_out
         assert_allclose(ZtZ, np.eye(n), atol=1e-10)
 
-
     def test_single_controllable_state(self):
         """Test system with only one controllable state"""
         n, m = 3, 1
         # Most states uncontrollable
-        A = np.array([[1.0, 0.0, 0.0],
-                      [0.0, 2.0, 0.0],
-                      [0.0, 0.0, 3.0]], order='F')
-        B = np.array([[1.0],
-                      [0.0],
-                      [0.0]], order='F')
+        A = np.array([[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]], order="F")
+        B = np.array([[1.0], [0.0], [0.0]], order="F")
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 2  # 'I'
         tol = 0.0
@@ -148,16 +132,14 @@ class TestAB01NDJobzOptions:
     def test_jobz_n_no_accumulation(self):
         """Test JOBZ='N' - no transformation accumulation"""
         n, m = 2, 1
-        A = np.array([[0.0, 1.0],
-                      [-2.0, -3.0]], order='F')
-        B = np.array([[0.0],
-                      [1.0]], order='F')
+        A = np.array([[0.0, 1.0], [-2.0, -3.0]], order="F")
+        B = np.array([[0.0], [1.0]], order="F")
 
-        Z = np.zeros((1, 1), order='F')  # Can be minimal size when JOBZ='N'
+        Z = np.zeros((1, 1), order="F")  # Can be minimal size when JOBZ='N'
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 0  # 'N' - don't accumulate
         tol = 0.0
@@ -169,20 +151,17 @@ class TestAB01NDJobzOptions:
         assert info == 0
         assert ncont == n  # Still fully controllable
 
-
     def test_jobz_f_factored_form(self):
         """Test JOBZ='F' - store transformations in factored form"""
         n, m = 2, 1
-        A = np.array([[0.0, 1.0],
-                      [-2.0, -3.0]], order='F')
-        B = np.array([[0.0],
-                      [1.0]], order='F')
+        A = np.array([[0.0, 1.0], [-2.0, -3.0]], order="F")
+        B = np.array([[0.0], [1.0]], order="F")
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 1  # 'F' - factored form
         tol = 0.0
@@ -202,13 +181,13 @@ class TestAB01NDEdgeCases:
     def test_empty_system(self):
         """Test with n=0 (empty system)"""
         n, m = 0, 1
-        A = np.zeros((1, 1), order='F')
-        B = np.zeros((1, 1), order='F')
-        Z = np.zeros((1, 1), order='F')
+        A = np.zeros((1, 1), order="F")
+        B = np.zeros((1, 1), order="F")
+        Z = np.zeros((1, 1), order="F")
         tau = np.zeros(1)
         nblk = np.zeros(1, dtype=np.int32)
         iwork = np.zeros(max(1, m), dtype=np.int32)
-        dwork = np.zeros(max(1, 3*m))
+        dwork = np.zeros(max(1, 3 * m))
 
         jobz = 2
         tol = 0.0
@@ -221,20 +200,17 @@ class TestAB01NDEdgeCases:
         assert ncont == 0
         assert indcon == 0
 
-
     def test_zero_input_matrix(self):
         """Test with B=0 (no inputs can control the system)"""
         n, m = 3, 1
-        A = np.array([[1.0, 2.0, 0.0],
-                      [0.0, 1.0, 1.0],
-                      [0.0, 0.0, 2.0]], order='F')
-        B = np.zeros((n, m), order='F')
+        A = np.array([[1.0, 2.0, 0.0], [0.0, 1.0, 1.0], [0.0, 0.0, 2.0]], order="F")
+        B = np.zeros((n, m), order="F")
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 2
         tol = 0.0
@@ -251,18 +227,17 @@ class TestAB01NDEdgeCases:
         ZtZ = Z_out.T @ Z_out
         assert_allclose(ZtZ, np.eye(n), atol=1e-10)
 
-
     def test_single_state_single_input(self):
         """Test minimal meaningful system (1x1)"""
         n, m = 1, 1
-        A = np.array([[2.0]], order='F')
-        B = np.array([[1.0]], order='F')
+        A = np.array([[2.0]], order="F")
+        B = np.array([[1.0]], order="F")
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 2
         tol = 0.0
@@ -275,20 +250,17 @@ class TestAB01NDEdgeCases:
         assert ncont == 1  # Fully controllable
         assert indcon == 1
 
-
     def test_custom_tolerance(self):
         """Test with custom tolerance setting"""
         n, m = 2, 1
-        A = np.array([[0.0, 1.0],
-                      [-2.0, -3.0]], order='F')
-        B = np.array([[0.0],
-                      [1.0]], order='F')
+        A = np.array([[0.0, 1.0], [-2.0, -3.0]], order="F")
+        B = np.array([[0.0], [1.0]], order="F")
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 2
         tol = 1e-10  # Custom tolerance
@@ -307,21 +279,17 @@ class TestAB01NDTransformationProperties:
     def test_transformation_preserves_eigenvalues(self):
         """Test that eigenvalues of A are preserved"""
         n, m = 3, 1
-        A = np.array([[1.0, 2.0, 0.0],
-                      [0.0, 3.0, 1.0],
-                      [0.0, 0.0, 2.0]], order='F')
-        B = np.array([[1.0],
-                      [1.0],
-                      [0.0]], order='F')
+        A = np.array([[1.0, 2.0, 0.0], [0.0, 3.0, 1.0], [0.0, 0.0, 2.0]], order="F")
+        B = np.array([[1.0], [1.0], [0.0]], order="F")
 
         # Store original eigenvalues
         eig_orig = np.sort(np.linalg.eigvals(A))
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 2
         tol = 0.0
@@ -336,24 +304,25 @@ class TestAB01NDTransformationProperties:
         eig_transformed = np.sort(np.linalg.eigvals(A_out[:n, :n]))
         assert_allclose(eig_orig, eig_transformed, rtol=1e-10)
 
-
     def test_block_structure_properties(self):
         """Test that the block structure is correctly formed"""
         n, m = 4, 1
-        A = np.array([[0.0, 1.0, 0.0, 0.0],
-                      [0.0, 0.0, 1.0, 0.0],
-                      [0.0, 0.0, 0.0, 1.0],
-                      [-1.0, -2.0, -3.0, -4.0]], order='F')
-        B = np.array([[0.0],
-                      [0.0],
-                      [0.0],
-                      [1.0]], order='F')
+        A = np.array(
+            [
+                [0.0, 1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0, 0.0],
+                [0.0, 0.0, 0.0, 1.0],
+                [-1.0, -2.0, -3.0, -4.0],
+            ],
+            order="F",
+        )
+        B = np.array([[0.0], [0.0], [0.0], [1.0]], order="F")
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 2
         tol = 0.0
@@ -372,20 +341,22 @@ class TestAB01NDTransformationProperties:
     def test_block_structure_properties_MIMO(self):
         """Test that the block structure is correctly formed"""
         n, m = 4, 2
-        A = np.array([[0.0, 0.0, 0.0, 0.0],
-                      [0.0, 0.0, 1.0, 0.0],
-                      [0.0, 0.0, 0.0, 1.0],
-                      [-1.0, -2.0, -3.0, -4.0]], order='F')
-        B = np.array([[0.0, 1.0],
-                      [0.0, 0.0],
-                      [0.0, 0.0],
-                      [1.0, 0.0]], order='F')
+        A = np.array(
+            [
+                [0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0, 0.0],
+                [0.0, 0.0, 0.0, 1.0],
+                [-1.0, -2.0, -3.0, -4.0],
+            ],
+            order="F",
+        )
+        B = np.array([[0.0, 1.0], [0.0, 0.0], [0.0, 0.0], [1.0, 0.0]], order="F")
 
-        Z = np.zeros((n, n), order='F')
+        Z = np.zeros((n, n), order="F")
         tau = np.zeros(n)
         nblk = np.zeros(n, dtype=np.int32)
         iwork = np.zeros(m, dtype=np.int32)
-        dwork = np.zeros(max(1, n, 3*m))
+        dwork = np.zeros(max(1, n, 3 * m))
 
         jobz = 2
         tol = 0.0

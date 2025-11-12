@@ -1,6 +1,7 @@
 """
 Tests for MA02XX family of functions
 """
+
 import numpy as np
 from numpy.testing import assert_allclose
 from slicutlet import (
@@ -46,11 +47,9 @@ class TestMA02AD:
         """Test transpose of full matrix"""
         m, n = 3, 4
         job = 2  # Full matrix (neither 0=upper nor 1=lower)
-        a = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [5.0, 6.0, 7.0, 8.0],
-            [9.0, 10.0, 11.0, 12.0]
-        ], order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0], [9.0, 10.0, 11.0, 12.0]], order="F"
+        )
 
         b = ma02ad(job, m, n, a)
 
@@ -62,12 +61,15 @@ class TestMA02AD:
         """Test transpose of upper triangle only"""
         m, n = 4, 4
         job = 0  # Upper triangle
-        a = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [5.0, 6.0, 7.0, 8.0],
-            [9.0, 10.0, 11.0, 12.0],
-            [13.0, 14.0, 15.0, 16.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 3.0, 4.0],
+                [5.0, 6.0, 7.0, 8.0],
+                [9.0, 10.0, 11.0, 12.0],
+                [13.0, 14.0, 15.0, 16.0],
+            ],
+            order="F",
+        )
 
         b = ma02ad(job, m, n, a)
 
@@ -81,12 +83,15 @@ class TestMA02AD:
         """Test transpose of lower triangle only"""
         m, n = 4, 4
         job = 1  # Lower triangle
-        a = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [5.0, 6.0, 7.0, 8.0],
-            [9.0, 10.0, 11.0, 12.0],
-            [13.0, 14.0, 15.0, 16.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 3.0, 4.0],
+                [5.0, 6.0, 7.0, 8.0],
+                [9.0, 10.0, 11.0, 12.0],
+                [13.0, 14.0, 15.0, 16.0],
+            ],
+            order="F",
+        )
 
         b = ma02ad(job, m, n, a)
 
@@ -100,7 +105,7 @@ class TestMA02AD:
         """Test with tall rectangular matrix (m > n)"""
         m, n = 5, 3
         job = 2
-        a = np.arange(1.0, m * n + 1.0).reshape(m, n, order='F')
+        a = np.arange(1.0, m * n + 1.0).reshape(m, n, order="F")
 
         b = ma02ad(job, m, n, a)
 
@@ -111,7 +116,7 @@ class TestMA02AD:
         """Test with wide rectangular matrix (m < n)"""
         m, n = 3, 5
         job = 2
-        a = np.arange(1.0, m * n + 1.0).reshape(m, n, order='F')
+        a = np.arange(1.0, m * n + 1.0).reshape(m, n, order="F")
 
         b = ma02ad(job, m, n, a)
 
@@ -122,7 +127,7 @@ class TestMA02AD:
         """Test with single row matrix"""
         m, n = 1, 5
         job = 2
-        a = np.array([[1.0, 2.0, 3.0, 4.0, 5.0]], order='F')
+        a = np.array([[1.0, 2.0, 3.0, 4.0, 5.0]], order="F")
 
         b = ma02ad(job, m, n, a)
 
@@ -133,7 +138,7 @@ class TestMA02AD:
         """Test with single column matrix"""
         m, n = 5, 1
         job = 2
-        a = np.array([[1.0], [2.0], [3.0], [4.0], [5.0]], order='F')
+        a = np.array([[1.0], [2.0], [3.0], [4.0], [5.0]], order="F")
 
         b = ma02ad(job, m, n, a)
 
@@ -144,7 +149,7 @@ class TestMA02AD:
         """Test with empty matrix"""
         m, n = 0, 0
         job = 2
-        a = np.array([], dtype=np.float64).reshape(0, 0, order='F')
+        a = np.array([], dtype=np.float64).reshape(0, 0, order="F")
 
         b = ma02ad(job, m, n, a)
 
@@ -154,11 +159,7 @@ class TestMA02AD:
         """Test that values are preserved exactly"""
         m, n = 3, 3
         job = 2
-        a = np.array([
-            [1.5, -2.7, 3.14],
-            [-0.5, 0.0, 1e-10],
-            [1e10, -1e-10, 2.718]
-        ], order='F')
+        a = np.array([[1.5, -2.7, 3.14], [-0.5, 0.0, 1e-10], [1e10, -1e-10, 2.718]], order="F")
 
         b = ma02ad(job, m, n, a)
 
@@ -176,11 +177,15 @@ class TestMA02AZ:
         """Test plain transpose of full complex matrix"""
         m, n = 3, 4
         trans, job = 1, 2  # Plain transpose, full matrix
-        a = np.array([
-            [1+1j, 2+2j, 3+3j, 4+4j],
-            [5+5j, 6+6j, 7+7j, 8+8j],
-            [9+9j, 10+10j, 11+11j, 12+12j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 2 + 2j, 3 + 3j, 4 + 4j],
+                [5 + 5j, 6 + 6j, 7 + 7j, 8 + 8j],
+                [9 + 9j, 10 + 10j, 11 + 11j, 12 + 12j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         b = ma02az(trans, job, m, n, a)
 
@@ -192,11 +197,15 @@ class TestMA02AZ:
         """Test conjugate transpose of full complex matrix"""
         m, n = 3, 4
         trans, job = 0, 2  # Conjugate transpose, full matrix
-        a = np.array([
-            [1+1j, 2+2j, 3+3j, 4+4j],
-            [5+5j, 6+6j, 7+7j, 8+8j],
-            [9+9j, 10+10j, 11+11j, 12+12j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 2 + 2j, 3 + 3j, 4 + 4j],
+                [5 + 5j, 6 + 6j, 7 + 7j, 8 + 8j],
+                [9 + 9j, 10 + 10j, 11 + 11j, 12 + 12j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         b = ma02az(trans, job, m, n, a)
 
@@ -208,12 +217,16 @@ class TestMA02AZ:
         """Test plain transpose of upper triangle"""
         m, n = 4, 4
         trans, job = 1, 0  # Plain transpose, upper triangle
-        a = np.array([
-            [1+0j, 2+1j, 3+2j, 4+3j],
-            [5+4j, 6+0j, 7+1j, 8+2j],
-            [9+3j, 10+4j, 11+0j, 12+1j],
-            [13+2j, 14+3j, 15+4j, 16+0j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 0j, 2 + 1j, 3 + 2j, 4 + 3j],
+                [5 + 4j, 6 + 0j, 7 + 1j, 8 + 2j],
+                [9 + 3j, 10 + 4j, 11 + 0j, 12 + 1j],
+                [13 + 2j, 14 + 3j, 15 + 4j, 16 + 0j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         b = ma02az(trans, job, m, n, a)
 
@@ -227,12 +240,16 @@ class TestMA02AZ:
         """Test conjugate transpose of upper triangle"""
         m, n = 4, 4
         trans, job = 0, 0  # Conjugate transpose, upper triangle
-        a = np.array([
-            [1+0j, 2+1j, 3+2j, 4+3j],
-            [5+4j, 6+0j, 7+1j, 8+2j],
-            [9+3j, 10+4j, 11+0j, 12+1j],
-            [13+2j, 14+3j, 15+4j, 16+0j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 0j, 2 + 1j, 3 + 2j, 4 + 3j],
+                [5 + 4j, 6 + 0j, 7 + 1j, 8 + 2j],
+                [9 + 3j, 10 + 4j, 11 + 0j, 12 + 1j],
+                [13 + 2j, 14 + 3j, 15 + 4j, 16 + 0j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         b = ma02az(trans, job, m, n, a)
 
@@ -246,12 +263,16 @@ class TestMA02AZ:
         """Test conjugate transpose of lower triangle"""
         m, n = 4, 4
         trans, job = 0, 1  # Conjugate transpose, lower triangle
-        a = np.array([
-            [1+0j, 2+1j, 3+2j, 4+3j],
-            [5+4j, 6+0j, 7+1j, 8+2j],
-            [9+3j, 10+4j, 11+0j, 12+1j],
-            [13+2j, 14+3j, 15+4j, 16+0j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 0j, 2 + 1j, 3 + 2j, 4 + 3j],
+                [5 + 4j, 6 + 0j, 7 + 1j, 8 + 2j],
+                [9 + 3j, 10 + 4j, 11 + 0j, 12 + 1j],
+                [13 + 2j, 14 + 3j, 15 + 4j, 16 + 0j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         b = ma02az(trans, job, m, n, a)
 
@@ -265,11 +286,9 @@ class TestMA02AZ:
         """Test with complex matrix that has only real parts"""
         m, n = 3, 3
         trans, job = 0, 2
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], dtype=np.complex128, order="F"
+        )
 
         b = ma02az(trans, job, m, n, a)
 
@@ -280,11 +299,7 @@ class TestMA02AZ:
         """Test with purely imaginary matrix"""
         m, n = 3, 3
         trans, job = 0, 2
-        a = np.array([
-            [1j, 2j, 3j],
-            [4j, 5j, 6j],
-            [7j, 8j, 9j]
-        ], dtype=np.complex128, order='F')
+        a = np.array([[1j, 2j, 3j], [4j, 5j, 6j], [7j, 8j, 9j]], dtype=np.complex128, order="F")
 
         b = ma02az(trans, job, m, n, a)
 
@@ -315,12 +330,9 @@ class TestMA02BD:
     def test_reverse_rows_only(self):
         """Test reversing rows only"""
         side = 0
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0],
-            [10.0, 11.0, 12.0]
-        ], order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0], [10.0, 11.0, 12.0]], order="F"
+        )
         expected = a[::-1, :].copy()
 
         result = ma02bd(side, a)
@@ -330,12 +342,9 @@ class TestMA02BD:
     def test_reverse_columns_only(self):
         """Test reversing columns only"""
         side = 1
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0],
-            [10.0, 11.0, 12.0]
-        ], order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0], [10.0, 11.0, 12.0]], order="F"
+        )
         expected = a[:, ::-1].copy()
 
         result = ma02bd(side, a)
@@ -345,12 +354,9 @@ class TestMA02BD:
     def test_reverse_both(self):
         """Test reversing both rows and columns"""
         side = 2
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0],
-            [10.0, 11.0, 12.0]
-        ], order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0], [10.0, 11.0, 12.0]], order="F"
+        )
         expected = a[::-1, ::-1].copy()
 
         result = ma02bd(side, a)
@@ -360,11 +366,7 @@ class TestMA02BD:
     def test_square_matrix_reverse_rows(self):
         """Test with square matrix, reverse rows"""
         side = 0
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], order='F')
+        a = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], order="F")
         expected = a[::-1, :].copy()
 
         result = ma02bd(side, a)
@@ -374,7 +376,7 @@ class TestMA02BD:
     def test_single_row_reverse_columns(self):
         """Test with single row, reverse columns"""
         side = 1
-        a = np.array([[1.0, 2.0, 3.0, 4.0, 5.0]], order='F')
+        a = np.array([[1.0, 2.0, 3.0, 4.0, 5.0]], order="F")
         expected = a[:, ::-1].copy()
 
         result = ma02bd(side, a)
@@ -384,7 +386,7 @@ class TestMA02BD:
     def test_single_column_reverse_rows(self):
         """Test with single column, reverse rows"""
         side = 0
-        a = np.array([[1.0], [2.0], [3.0], [4.0]], order='F')
+        a = np.array([[1.0], [2.0], [3.0], [4.0]], order="F")
         expected = a[::-1, :].copy()
 
         result = ma02bd(side, a)
@@ -394,11 +396,10 @@ class TestMA02BD:
     def test_odd_dimensions(self):
         """Test with odd number of rows/columns"""
         side = 2
-        a = np.array([
-            [1.0, 2.0, 3.0, 4.0, 5.0],
-            [6.0, 7.0, 8.0, 9.0, 10.0],
-            [11.0, 12.0, 13.0, 14.0, 15.0]
-        ], order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0, 4.0, 5.0], [6.0, 7.0, 8.0, 9.0, 10.0], [11.0, 12.0, 13.0, 14.0, 15.0]],
+            order="F",
+        )
         expected = a[::-1, ::-1].copy()
 
         result = ma02bd(side, a)
@@ -408,12 +409,15 @@ class TestMA02BD:
     def test_even_dimensions(self):
         """Test with even number of rows/columns"""
         side = 2
-        a = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [5.0, 6.0, 7.0, 8.0],
-            [9.0, 10.0, 11.0, 12.0],
-            [13.0, 14.0, 15.0, 16.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 3.0, 4.0],
+                [5.0, 6.0, 7.0, 8.0],
+                [9.0, 10.0, 11.0, 12.0],
+                [13.0, 14.0, 15.0, 16.0],
+            ],
+            order="F",
+        )
         expected = a[::-1, ::-1].copy()
 
         result = ma02bd(side, a)
@@ -422,11 +426,7 @@ class TestMA02BD:
 
     def test_double_reverse_identity(self):
         """Test that reversing twice returns original"""
-        a_orig = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], order='F')
+        a_orig = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], order="F")
 
         # Reverse both directions twice
         a1 = ma02bd(2, a_orig.copy())
@@ -445,12 +445,16 @@ class TestMA02BZ:
     def test_reverse_rows_only(self):
         """Test reversing rows only"""
         side = 0
-        a = np.array([
-            [1+1j, 2+2j, 3+3j],
-            [4+4j, 5+5j, 6+6j],
-            [7+7j, 8+8j, 9+9j],
-            [10+10j, 11+11j, 12+12j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 2 + 2j, 3 + 3j],
+                [4 + 4j, 5 + 5j, 6 + 6j],
+                [7 + 7j, 8 + 8j, 9 + 9j],
+                [10 + 10j, 11 + 11j, 12 + 12j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
         expected = a[::-1, :].copy()
 
         result = ma02bz(side, a)
@@ -460,12 +464,16 @@ class TestMA02BZ:
     def test_reverse_columns_only(self):
         """Test reversing columns only"""
         side = 1
-        a = np.array([
-            [1+1j, 2+2j, 3+3j],
-            [4+4j, 5+5j, 6+6j],
-            [7+7j, 8+8j, 9+9j],
-            [10+10j, 11+11j, 12+12j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 2 + 2j, 3 + 3j],
+                [4 + 4j, 5 + 5j, 6 + 6j],
+                [7 + 7j, 8 + 8j, 9 + 9j],
+                [10 + 10j, 11 + 11j, 12 + 12j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
         expected = a[:, ::-1].copy()
 
         result = ma02bz(side, a)
@@ -475,12 +483,16 @@ class TestMA02BZ:
     def test_reverse_both(self):
         """Test reversing both rows and columns"""
         side = 2
-        a = np.array([
-            [1+1j, 2+2j, 3+3j],
-            [4+4j, 5+5j, 6+6j],
-            [7+7j, 8+8j, 9+9j],
-            [10+10j, 11+11j, 12+12j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 2 + 2j, 3 + 3j],
+                [4 + 4j, 5 + 5j, 6 + 6j],
+                [7 + 7j, 8 + 8j, 9 + 9j],
+                [10 + 10j, 11 + 11j, 12 + 12j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
         expected = a[::-1, ::-1].copy()
 
         result = ma02bz(side, a)
@@ -490,11 +502,9 @@ class TestMA02BZ:
     def test_purely_real_values(self):
         """Test with complex array having only real parts"""
         side = 2
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], dtype=np.complex128, order="F"
+        )
         expected = a[::-1, ::-1].copy()
 
         result = ma02bz(side, a)
@@ -504,11 +514,7 @@ class TestMA02BZ:
     def test_purely_imaginary_values(self):
         """Test with purely imaginary values"""
         side = 2
-        a = np.array([
-            [1j, 2j, 3j],
-            [4j, 5j, 6j],
-            [7j, 8j, 9j]
-        ], dtype=np.complex128, order='F')
+        a = np.array([[1j, 2j, 3j], [4j, 5j, 6j], [7j, 8j, 9j]], dtype=np.complex128, order="F")
         expected = a[::-1, ::-1].copy()
 
         result = ma02bz(side, a)
@@ -518,11 +524,11 @@ class TestMA02BZ:
     def test_mixed_complex_values(self):
         """Test with mixed real and imaginary components"""
         side = 0
-        a = np.array([
-            [1-2j, 3+0j, -4+5j],
-            [0+1j, -2-3j, 6+0j],
-            [7+8j, 0-9j, 10+11j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [[1 - 2j, 3 + 0j, -4 + 5j], [0 + 1j, -2 - 3j, 6 + 0j], [7 + 8j, 0 - 9j, 10 + 11j]],
+            dtype=np.complex128,
+            order="F",
+        )
         expected = a[::-1, :].copy()
 
         result = ma02bz(side, a)
@@ -533,9 +539,8 @@ class TestMA02BZ:
         """Test with square complex matrix"""
         side = 2
         n = 5
-        a = (np.arange(n*n, dtype=np.float64) +
-             1j * np.arange(n*n, 0, -1, dtype=np.float64))
-        a = a.reshape(n, n, order='F').astype(np.complex128)
+        a = np.arange(n * n, dtype=np.float64) + 1j * np.arange(n * n, 0, -1, dtype=np.float64)
+        a = a.reshape(n, n, order="F").astype(np.complex128)
         expected = a[::-1, ::-1].copy()
 
         result = ma02bz(side, a)
@@ -544,11 +549,11 @@ class TestMA02BZ:
 
     def test_double_reverse_identity(self):
         """Test that reversing twice returns original"""
-        a_orig = np.array([
-            [1+1j, 2+2j, 3+3j],
-            [4+4j, 5+5j, 6+6j],
-            [7+7j, 8+8j, 9+9j]
-        ], dtype=np.complex128, order='F')
+        a_orig = np.array(
+            [[1 + 1j, 2 + 2j, 3 + 3j], [4 + 4j, 5 + 5j, 6 + 6j], [7 + 7j, 8 + 8j, 9 + 9j]],
+            dtype=np.complex128,
+            order="F",
+        )
 
         # Reverse both directions twice
         a1 = ma02bz(2, a_orig.copy())
@@ -568,13 +573,16 @@ class TestMA02CD:
         """Test pertranspose of tridiagonal matrix"""
         n = 5
         kl, ku = 1, 1
-        a = np.array([
-            [1.0, 2.0, 0.0, 0.0, 0.0],
-            [3.0, 4.0, 5.0, 0.0, 0.0],
-            [0.0, 6.0, 7.0, 8.0, 0.0],
-            [0.0, 0.0, 9.0, 10.0, 11.0],
-            [0.0, 0.0, 0.0, 12.0, 13.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 0.0, 0.0, 0.0],
+                [3.0, 4.0, 5.0, 0.0, 0.0],
+                [0.0, 6.0, 7.0, 8.0, 0.0],
+                [0.0, 0.0, 9.0, 10.0, 11.0],
+                [0.0, 0.0, 0.0, 12.0, 13.0],
+            ],
+            order="F",
+        )
 
         result = ma02cd(n, kl, ku, a)
 
@@ -589,7 +597,7 @@ class TestMA02CD:
         """Test pertranspose of diagonal matrix (kl=ku=0)"""
         n = 4
         kl, ku = 0, 0
-        a = np.diag([1.0, 2.0, 3.0, 4.0]).astype('F')
+        a = np.diag([1.0, 2.0, 3.0, 4.0]).astype("F")
 
         result = ma02cd(n, kl, ku, a)
 
@@ -600,25 +608,25 @@ class TestMA02CD:
     def test_full_bandwidth(self):
         """Test with full bandwidth (kl=ku=n-1, effectively full matrix)"""
         n = 4
-        kl, ku = n-1, n-1
-        a = np.arange(1.0, n*n + 1.0).reshape(n, n, order='F')
+        kl, ku = n - 1, n - 1
+        a = np.arange(1.0, n * n + 1.0).reshape(n, n, order="F")
 
         result = ma02cd(n, kl, ku, a)
 
         # Should reverse along anti-diagonal
         assert result.shape == a.shape
         # Check a few anti-diagonal swaps
-        assert_allclose(result[0, 0], a[n-1, n-1], rtol=1e-14)
-        assert_allclose(result[n-1, n-1], a[0, 0], rtol=1e-14)
+        assert_allclose(result[0, 0], a[n - 1, n - 1], rtol=1e-14)
+        assert_allclose(result[n - 1, n - 1], a[0, 0], rtol=1e-14)
 
     def test_pentadiagonal_matrix(self):
         """Test pentadiagonal matrix (kl=ku=2)"""
         n = 6
         kl, ku = 2, 2
-        a = np.zeros((n, n), order='F')
+        a = np.zeros((n, n), order="F")
         # Fill pentadiagonal structure
         for i in range(n):
-            for j in range(max(0, i-2), min(n, i+3)):
+            for j in range(max(0, i - 2), min(n, i + 3)):
                 a[i, j] = float(i * n + j + 1)
 
         result = ma02cd(n, kl, ku, a)
@@ -630,7 +638,7 @@ class TestMA02CD:
         """Test with 1x1 matrix"""
         n = 1
         kl, ku = 0, 0
-        a = np.array([[5.0]], order='F')
+        a = np.array([[5.0]], order="F")
 
         result = ma02cd(n, kl, ku, a)
 
@@ -641,10 +649,7 @@ class TestMA02CD:
         """Test with 2x2 matrix"""
         n = 2
         kl, ku = 1, 1
-        a = np.array([
-            [1.0, 2.0],
-            [3.0, 4.0]
-        ], order='F')
+        a = np.array([[1.0, 2.0], [3.0, 4.0]], order="F")
 
         result = ma02cd(n, kl, ku, a)
 
@@ -676,13 +681,17 @@ class TestMA02CZ:
         """Test pertranspose of complex tridiagonal matrix"""
         n = 5
         kl, ku = 1, 1
-        a = np.array([
-            [1+1j, 2+2j, 0, 0, 0],
-            [3+3j, 4+4j, 5+5j, 0, 0],
-            [0, 6+6j, 7+7j, 8+8j, 0],
-            [0, 0, 9+9j, 10+10j, 11+11j],
-            [0, 0, 0, 12+12j, 13+13j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 2 + 2j, 0, 0, 0],
+                [3 + 3j, 4 + 4j, 5 + 5j, 0, 0],
+                [0, 6 + 6j, 7 + 7j, 8 + 8j, 0],
+                [0, 0, 9 + 9j, 10 + 10j, 11 + 11j],
+                [0, 0, 0, 12 + 12j, 13 + 13j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02cz(n, kl, ku, a)
 
@@ -695,20 +704,20 @@ class TestMA02CZ:
         """Test pertranspose of complex diagonal matrix"""
         n = 4
         kl, ku = 0, 0
-        a = np.diag([1+1j, 2+2j, 3+3j, 4+4j]).astype(np.complex128, order='F')
+        a = np.diag([1 + 1j, 2 + 2j, 3 + 3j, 4 + 4j]).astype(np.complex128, order="F")
 
         result = ma02cz(n, kl, ku, a)
 
         # Diagonal elements should be reversed
-        expected_diag = np.array([4+4j, 3+3j, 2+2j, 1+1j])
+        expected_diag = np.array([4 + 4j, 3 + 3j, 2 + 2j, 1 + 1j])
         assert_allclose(np.diag(result), expected_diag, rtol=1e-14)
 
     def test_purely_real_complex_array(self):
         """Test with complex array having only real parts"""
         n = 4
         kl, ku = 1, 1
-        a = np.arange(1.0, n*n + 1.0).reshape(n, n)
-        a = a.astype(np.complex128, order='F')
+        a = np.arange(1.0, n * n + 1.0).reshape(n, n)
+        a = a.astype(np.complex128, order="F")
 
         result = ma02cz(n, kl, ku, a)
 
@@ -719,7 +728,7 @@ class TestMA02CZ:
         """Test with purely imaginary values"""
         n = 3
         kl, ku = 1, 1
-        a = 1j * np.arange(1.0, n*n + 1.0).reshape(n, n)
+        a = 1j * np.arange(1.0, n * n + 1.0).reshape(n, n)
         a = np.asfortranarray(a.astype(np.complex128))
 
         result = ma02cz(n, kl, ku, a)
@@ -733,7 +742,7 @@ class TestMA02CZ:
         kl, ku = 2, 2
         real_part = np.random.randn(n, n)
         imag_part = np.random.randn(n, n)
-        a_orig = (real_part + 1j * imag_part).astype(np.complex128, order='F')
+        a_orig = (real_part + 1j * imag_part).astype(np.complex128, order="F")
 
         a1 = ma02cz(n, kl, ku, a_orig.copy())
         a2 = ma02cz(n, kl, ku, a1)
@@ -754,12 +763,15 @@ class TestMA02DD:
         """Test packing upper triangle into packed storage"""
         n = 4
         job, uplo = 0, 0  # Pack upper
-        a = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [2.0, 5.0, 6.0, 7.0],
-            [3.0, 6.0, 8.0, 9.0],
-            [4.0, 7.0, 9.0, 10.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 3.0, 4.0],
+                [2.0, 5.0, 6.0, 7.0],
+                [3.0, 6.0, 8.0, 9.0],
+                [4.0, 7.0, 9.0, 10.0],
+            ],
+            order="F",
+        )
 
         ap = ma02dd(job, uplo, n, a)
 
@@ -774,12 +786,15 @@ class TestMA02DD:
         """Test packing lower triangle into packed storage"""
         n = 4
         job, uplo = 0, 1  # Pack lower
-        a = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [2.0, 5.0, 6.0, 7.0],
-            [3.0, 6.0, 8.0, 9.0],
-            [4.0, 7.0, 9.0, 10.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 3.0, 4.0],
+                [2.0, 5.0, 6.0, 7.0],
+                [3.0, 6.0, 8.0, 9.0],
+                [4.0, 7.0, 9.0, 10.0],
+            ],
+            order="F",
+        )
 
         ap = ma02dd(job, uplo, n, a)
 
@@ -840,8 +855,7 @@ class TestMA02DD:
         for i in range(n):
             for j in range(i, n):
                 err_msg = f"Mismatch at ({i},{j})"
-                assert_allclose(a_recovered[i, j], a_orig[i, j],
-                              rtol=1e-13, err_msg=err_msg)
+                assert_allclose(a_recovered[i, j], a_orig[i, j], rtol=1e-13, err_msg=err_msg)
 
     def test_pack_unpack_roundtrip_lower(self):
         """Test that pack followed by unpack recovers lower triangle"""
@@ -859,14 +873,13 @@ class TestMA02DD:
         for i in range(n):
             for j in range(i + 1):
                 err_msg = f"Mismatch at ({i},{j})"
-                assert_allclose(a_recovered[i, j], a_orig[i, j],
-                              rtol=1e-13, err_msg=err_msg)
+                assert_allclose(a_recovered[i, j], a_orig[i, j], rtol=1e-13, err_msg=err_msg)
 
     def test_small_matrix(self):
         """Test with 1x1 matrix"""
         n = 1
         job, uplo = 0, 0
-        a = np.array([[5.0]], order='F')
+        a = np.array([[5.0]], order="F")
 
         ap = ma02dd(job, uplo, n, a)
 
@@ -877,11 +890,10 @@ class TestMA02DD:
         """Test that packed array has correct size for various n"""
         for n in [1, 2, 3, 5, 10]:
             job, uplo = 0, 0
-            a = np.eye(n, order='F')
+            a = np.eye(n, order="F")
             ap = ma02dd(job, uplo, n, a)
             expected_size = n * (n + 1) // 2
-            assert ap.shape == (expected_size,), \
-                f"Wrong packed size for n={n}"
+            assert ap.shape == (expected_size,), f"Wrong packed size for n={n}"
 
 
 class TestMA02ED:
@@ -895,53 +907,61 @@ class TestMA02ED:
     def test_copy_lower_to_upper(self):
         """Test copying lower triangle to upper triangle"""
         uplo, n = 1, 4  # uplo=1 constructs upper from lower
-        a = np.array([
-            [1.0, 999.0, 999.0, 999.0],
-            [2.0, 5.0, 999.0, 999.0],
-            [3.0, 6.0, 8.0, 999.0],
-            [4.0, 7.0, 9.0, 10.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 999.0, 999.0, 999.0],
+                [2.0, 5.0, 999.0, 999.0],
+                [3.0, 6.0, 8.0, 999.0],
+                [4.0, 7.0, 9.0, 10.0],
+            ],
+            order="F",
+        )
 
         result = ma02ed(uplo, n, a)
 
         # Upper triangle should now match lower triangle
-        expected = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [2.0, 5.0, 6.0, 7.0],
-            [3.0, 6.0, 8.0, 9.0],
-            [4.0, 7.0, 9.0, 10.0]
-        ], order='F')
+        expected = np.array(
+            [
+                [1.0, 2.0, 3.0, 4.0],
+                [2.0, 5.0, 6.0, 7.0],
+                [3.0, 6.0, 8.0, 9.0],
+                [4.0, 7.0, 9.0, 10.0],
+            ],
+            order="F",
+        )
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_copy_upper_to_lower(self):
         """Test copying upper triangle to lower triangle"""
         uplo, n = 0, 4  # uplo=0 constructs lower from upper
-        a = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [999.0, 5.0, 6.0, 7.0],
-            [999.0, 999.0, 8.0, 9.0],
-            [999.0, 999.0, 999.0, 10.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 3.0, 4.0],
+                [999.0, 5.0, 6.0, 7.0],
+                [999.0, 999.0, 8.0, 9.0],
+                [999.0, 999.0, 999.0, 10.0],
+            ],
+            order="F",
+        )
 
         result = ma02ed(uplo, n, a)
 
         # Lower triangle should now match upper triangle
-        expected = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [2.0, 5.0, 6.0, 7.0],
-            [3.0, 6.0, 8.0, 9.0],
-            [4.0, 7.0, 9.0, 10.0]
-        ], order='F')
+        expected = np.array(
+            [
+                [1.0, 2.0, 3.0, 4.0],
+                [2.0, 5.0, 6.0, 7.0],
+                [3.0, 6.0, 8.0, 9.0],
+                [4.0, 7.0, 9.0, 10.0],
+            ],
+            order="F",
+        )
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_symmetric_matrix_unchanged(self):
         """Test that already symmetric matrix remains unchanged"""
         uplo, n = 0, 3
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [2.0, 4.0, 5.0],
-            [3.0, 5.0, 6.0]
-        ], order='F')
+        a = np.array([[1.0, 2.0, 3.0], [2.0, 4.0, 5.0], [3.0, 5.0, 6.0]], order="F")
         a_orig = a.copy()
 
         result = ma02ed(uplo, n, a)
@@ -951,23 +971,17 @@ class TestMA02ED:
     def test_small_matrix(self):
         """Test with 2x2 matrix"""
         uplo, n = 1, 2  # uplo=1 constructs upper from lower
-        a = np.array([
-            [1.0, 999.0],
-            [2.0, 3.0]
-        ], order='F')
+        a = np.array([[1.0, 999.0], [2.0, 3.0]], order="F")
 
         result = ma02ed(uplo, n, a)
 
-        expected = np.array([
-            [1.0, 2.0],
-            [2.0, 3.0]
-        ], order='F')
+        expected = np.array([[1.0, 2.0], [2.0, 3.0]], order="F")
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_single_element(self):
         """Test with 1x1 matrix (no copying needed)"""
         uplo, n = 0, 1
-        a = np.array([[5.0]], order='F')
+        a = np.array([[5.0]], order="F")
 
         result = ma02ed(uplo, n, a)
 
@@ -977,7 +991,7 @@ class TestMA02ED:
         """Test that diagonal is always preserved"""
         uplo, n = 0, 5
         diag_values = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
-        a = np.diag(diag_values).astype('F')
+        a = np.diag(diag_values).astype("F")
         # Add some lower triangle values
         for i in range(1, n):
             a[i, 0] = 10.0 * i
@@ -989,11 +1003,7 @@ class TestMA02ED:
     def test_specific_values(self):
         """Test with specific known values"""
         uplo, n = 0, 3  # uplo=0 constructs lower from upper
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [0.0, 4.0, 5.0],
-            [0.0, 0.0, 6.0]
-        ], order='F')
+        a = np.array([[1.0, 2.0, 3.0], [0.0, 4.0, 5.0], [0.0, 0.0, 6.0]], order="F")
 
         result = ma02ed(uplo, n, a)
 
@@ -1016,7 +1026,7 @@ class TestMA02ED:
         sym_from_lower = ma02ed(0, n, a_lower.copy())
 
         # Now create matrix with same values in upper triangle
-        a_upper = sym_from_lower.T.copy(order='F')
+        a_upper = sym_from_lower.T.copy(order="F")
         for i in range(1, n):
             for j in range(i):
                 a_upper[i, j] = 0.0
@@ -1039,54 +1049,69 @@ class TestMA02ES:
     def test_copy_lower_to_upper_skew(self):
         """Test creating skew-symmetric from lower triangle"""
         uplo, n = 1, 4  # uplo=1 constructs upper from lower
-        a = np.array([
-            [999.0, 999.0, 999.0, 999.0],
-            [2.0, 999.0, 999.0, 999.0],
-            [3.0, 6.0, 999.0, 999.0],
-            [4.0, 7.0, 9.0, 999.0]
-        ], order='F')
+        a = np.array(
+            [
+                [999.0, 999.0, 999.0, 999.0],
+                [2.0, 999.0, 999.0, 999.0],
+                [3.0, 6.0, 999.0, 999.0],
+                [4.0, 7.0, 9.0, 999.0],
+            ],
+            order="F",
+        )
 
         result = ma02es(uplo, n, a)
 
         # Upper should be negative of lower, diagonal should be zero
-        expected = np.array([
-            [0.0, -2.0, -3.0, -4.0],
-            [2.0, 0.0, -6.0, -7.0],
-            [3.0, 6.0, 0.0, -9.0],
-            [4.0, 7.0, 9.0, 0.0]
-        ], order='F')
+        expected = np.array(
+            [
+                [0.0, -2.0, -3.0, -4.0],
+                [2.0, 0.0, -6.0, -7.0],
+                [3.0, 6.0, 0.0, -9.0],
+                [4.0, 7.0, 9.0, 0.0],
+            ],
+            order="F",
+        )
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_copy_upper_to_lower_skew(self):
         """Test creating skew-symmetric from upper triangle"""
         uplo, n = 0, 4  # uplo=0 constructs lower from upper
-        a = np.array([
-            [999.0, 2.0, 3.0, 4.0],
-            [999.0, 999.0, 6.0, 7.0],
-            [999.0, 999.0, 999.0, 9.0],
-            [999.0, 999.0, 999.0, 999.0]
-        ], order='F')
+        a = np.array(
+            [
+                [999.0, 2.0, 3.0, 4.0],
+                [999.0, 999.0, 6.0, 7.0],
+                [999.0, 999.0, 999.0, 9.0],
+                [999.0, 999.0, 999.0, 999.0],
+            ],
+            order="F",
+        )
 
         result = ma02es(uplo, n, a)
 
         # Lower should be negative of upper, diagonal should be zero
-        expected = np.array([
-            [0.0, 2.0, 3.0, 4.0],
-            [-2.0, 0.0, 6.0, 7.0],
-            [-3.0, -6.0, 0.0, 9.0],
-            [-4.0, -7.0, -9.0, 0.0]
-        ], order='F')
+        expected = np.array(
+            [
+                [0.0, 2.0, 3.0, 4.0],
+                [-2.0, 0.0, 6.0, 7.0],
+                [-3.0, -6.0, 0.0, 9.0],
+                [-4.0, -7.0, -9.0, 0.0],
+            ],
+            order="F",
+        )
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_diagonal_always_zero(self):
         """Test that diagonal is always set to zero"""
         uplo, n = 0, 4
-        a = np.array([
-            [100.0, 999.0, 999.0, 999.0],
-            [2.0, 200.0, 999.0, 999.0],
-            [3.0, 6.0, 300.0, 999.0],
-            [4.0, 7.0, 9.0, 400.0]
-        ], order='F')
+        a = np.array(
+            [
+                [100.0, 999.0, 999.0, 999.0],
+                [2.0, 200.0, 999.0, 999.0],
+                [3.0, 6.0, 300.0, 999.0],
+                [4.0, 7.0, 9.0, 400.0],
+            ],
+            order="F",
+        )
 
         result = ma02es(uplo, n, a)
 
@@ -1113,23 +1138,17 @@ class TestMA02ES:
     def test_small_matrix(self):
         """Test with 2x2 matrix"""
         uplo, n = 1, 2  # uplo=1 constructs upper from lower
-        a = np.array([
-            [999.0, 999.0],
-            [3.0, 999.0]
-        ], order='F')
+        a = np.array([[999.0, 999.0], [3.0, 999.0]], order="F")
 
         result = ma02es(uplo, n, a)
 
-        expected = np.array([
-            [0.0, -3.0],
-            [3.0, 0.0]
-        ], order='F')
+        expected = np.array([[0.0, -3.0], [3.0, 0.0]], order="F")
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_single_element(self):
         """Test with 1x1 matrix (just zeros diagonal)"""
         uplo, n = 0, 1
-        a = np.array([[42.0]], order='F')
+        a = np.array([[42.0]], order="F")
 
         result = ma02es(uplo, n, a)
 
@@ -1146,10 +1165,10 @@ class TestMA02ES:
         a_lower = np.asfortranarray(a_lower)
 
         # uplo=1 means lower triangle is given, construct upper
-        skew_from_lower = ma02es(1, n, a_lower.copy(order='F'))
+        skew_from_lower = ma02es(1, n, a_lower.copy(order="F"))
 
         # Create with upper triangle having same skew-symmetric pattern
-        a_upper = np.zeros((n, n), order='F')
+        a_upper = np.zeros((n, n), order="F")
         for i in range(n):
             for j in range(i + 1, n):
                 a_upper[i, j] = -skew_from_lower[j, i]
@@ -1175,11 +1194,15 @@ class TestMA02EZ:
     def test_hermitian_from_lower(self):
         """Test Hermitian matrix construction from lower triangle"""
         uplo, trans, skew, n = 0, 0, 0, 3
-        a = np.array([
-            [2+0j, 999+999j, 999+999j],
-            [3+4j, 5+0j, 999+999j],
-            [6+7j, 8+9j, 10+0j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [2 + 0j, 999 + 999j, 999 + 999j],
+                [3 + 4j, 5 + 0j, 999 + 999j],
+                [6 + 7j, 8 + 9j, 10 + 0j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02ez(uplo, trans, skew, n, a)
 
@@ -1193,11 +1216,15 @@ class TestMA02EZ:
     def test_hermitian_from_upper(self):
         """Test Hermitian matrix construction from upper triangle"""
         uplo, trans, skew, n = 1, 0, 0, 3
-        a = np.array([
-            [2+0j, 3-4j, 6-7j],
-            [999+999j, 5+0j, 8-9j],
-            [999+999j, 999+999j, 10+0j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [2 + 0j, 3 - 4j, 6 - 7j],
+                [999 + 999j, 5 + 0j, 8 - 9j],
+                [999 + 999j, 999 + 999j, 10 + 0j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02ez(uplo, trans, skew, n, a)
 
@@ -1211,11 +1238,15 @@ class TestMA02EZ:
     def test_skew_hermitian_real_diagonal(self):
         """Test Hermitian with real diagonal (skew=1)"""
         uplo, trans, skew, n = 1, 0, 1, 3  # uplo=1: lower triangle given
-        a = np.array([
-            [2+3j, 999+999j, 999+999j],
-            [4+5j, 6+7j, 999+999j],
-            [8+9j, 10+11j, 12+13j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [2 + 3j, 999 + 999j, 999 + 999j],
+                [4 + 5j, 6 + 7j, 999 + 999j],
+                [8 + 9j, 10 + 11j, 12 + 13j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02ez(uplo, trans, skew, n, a)
 
@@ -1228,11 +1259,15 @@ class TestMA02EZ:
     def test_skew_hermitian_imaginary_diagonal(self):
         """Test skew-Hermitian with imaginary diagonal (skew=3)"""
         uplo, trans, skew, n = 1, 0, 3, 3  # uplo=1: lower triangle given
-        a = np.array([
-            [2+3j, 999+999j, 999+999j],
-            [4+5j, 6+7j, 999+999j],
-            [8+9j, 10+11j, 12+13j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [2 + 3j, 999 + 999j, 999 + 999j],
+                [4 + 5j, 6 + 7j, 999 + 999j],
+                [8 + 9j, 10 + 11j, 12 + 13j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02ez(uplo, trans, skew, n, a)
 
@@ -1248,17 +1283,21 @@ class TestMA02EZ:
 
         # Check off-diagonal skew-Hermitian: a_ij = -conj(a_ji)
         for i in range(n):
-            for j in range(i+1, n):
+            for j in range(i + 1, n):
                 assert_allclose(result[i, j], -np.conj(result[j, i]), rtol=1e-13)
 
     def test_plain_transpose_from_lower(self):
         """Test plain transpose without conjugation (trans=1, skew=0)"""
         uplo, trans, skew, n = 1, 1, 0, 3  # uplo=1: lower triangle given
-        a = np.array([
-            [1+1j, 999+999j, 999+999j],
-            [2+2j, 3+3j, 999+999j],
-            [4+4j, 5+5j, 6+6j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 999 + 999j, 999 + 999j],
+                [2 + 2j, 3 + 3j, 999 + 999j],
+                [4 + 4j, 5 + 5j, 6 + 6j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02ez(uplo, trans, skew, n, a)
 
@@ -1271,11 +1310,15 @@ class TestMA02EZ:
     def test_plain_skew_transpose(self):
         """Test plain skew transpose (trans=1, skew=2)"""
         uplo, trans, skew, n = 1, 1, 2, 3  # uplo=1: lower triangle given
-        a = np.array([
-            [1+1j, 999+999j, 999+999j],
-            [2+2j, 3+3j, 999+999j],
-            [4+4j, 5+5j, 6+6j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 999 + 999j, 999 + 999j],
+                [2 + 2j, 3 + 3j, 999 + 999j],
+                [4 + 4j, 5 + 5j, 6 + 6j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02ez(uplo, trans, skew, n, a)
 
@@ -1291,11 +1334,9 @@ class TestMA02EZ:
     def test_purely_real_hermitian(self):
         """Test Hermitian construction with purely real input"""
         uplo, trans, skew, n = 0, 0, 0, 3
-        a = np.array([
-            [1.0, 0.0, 0.0],
-            [2.0, 3.0, 0.0],
-            [4.0, 5.0, 6.0]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [[1.0, 0.0, 0.0], [2.0, 3.0, 0.0], [4.0, 5.0, 6.0]], dtype=np.complex128, order="F"
+        )
 
         result = ma02ez(uplo, trans, skew, n, a)
 
@@ -1407,11 +1448,7 @@ class TestMA02GD:
     def test_basic_column_swap(self):
         """Test basic column interchange"""
         n = 3
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], order='F')
+        a = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], order="F")
         k1, k2 = 1, 1  # Only process first pivot
         ipiv = np.array([2, 1, 3], dtype=np.int32)  # Swap cols 1 and 2
         incx = 1
@@ -1419,21 +1456,13 @@ class TestMA02GD:
         result = ma02gd(n, a, k1, k2, ipiv, incx)
 
         # Column 1 and 2 should be swapped
-        expected = np.array([
-            [2.0, 1.0, 3.0],
-            [5.0, 4.0, 6.0],
-            [8.0, 7.0, 9.0]
-        ], order='F')
+        expected = np.array([[2.0, 1.0, 3.0], [5.0, 4.0, 6.0], [8.0, 7.0, 9.0]], order="F")
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_no_swaps_needed(self):
         """Test when ipiv indicates no swaps"""
         n = 3
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], order='F')
+        a = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], order="F")
         k1, k2 = 1, 3
         ipiv = np.array([1, 2, 3], dtype=np.int32)  # No swaps
         incx = 1
@@ -1446,12 +1475,15 @@ class TestMA02GD:
     def test_multiple_swaps(self):
         """Test multiple column swaps"""
         n = 4
-        a = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [5.0, 6.0, 7.0, 8.0],
-            [9.0, 10.0, 11.0, 12.0],
-            [13.0, 14.0, 15.0, 16.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 3.0, 4.0],
+                [5.0, 6.0, 7.0, 8.0],
+                [9.0, 10.0, 11.0, 12.0],
+                [13.0, 14.0, 15.0, 16.0],
+            ],
+            order="F",
+        )
         k1, k2 = 1, 4
         ipiv = np.array([3, 4, 1, 2], dtype=np.int32)  # Multiple swaps
         incx = 1
@@ -1464,11 +1496,9 @@ class TestMA02GD:
     def test_partial_range(self):
         """Test applying swaps to partial column range"""
         n = 3
-        a = np.array([
-            [1.0, 2.0, 3.0, 4.0],
-            [5.0, 6.0, 7.0, 8.0],
-            [9.0, 10.0, 11.0, 12.0]
-        ], order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0], [9.0, 10.0, 11.0, 12.0]], order="F"
+        )
         k1, k2 = 2, 2  # Only process ipiv[1]=3, swap columns 2-3
         ipiv = np.array([1, 3, 2, 4], dtype=np.int32)
         incx = 1
@@ -1476,17 +1506,15 @@ class TestMA02GD:
         result = ma02gd(n, a, k1, k2, ipiv, incx)
 
         # Columns 2 and 3 should be swapped, others unchanged
-        expected = np.array([
-            [1.0, 3.0, 2.0, 4.0],
-            [5.0, 7.0, 6.0, 8.0],
-            [9.0, 11.0, 10.0, 12.0]
-        ], order='F')
+        expected = np.array(
+            [[1.0, 3.0, 2.0, 4.0], [5.0, 7.0, 6.0, 8.0], [9.0, 11.0, 10.0, 12.0]], order="F"
+        )
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_single_column(self):
         """Test with single column matrix"""
         n = 5
-        a = np.array([[1.0], [2.0], [3.0], [4.0], [5.0]], order='F')
+        a = np.array([[1.0], [2.0], [3.0], [4.0], [5.0]], order="F")
         k1, k2 = 1, 1
         ipiv = np.array([1], dtype=np.int32)
         incx = 1
@@ -1499,13 +1527,16 @@ class TestMA02GD:
     def test_rectangular_matrix(self):
         """Test with rectangular matrix (more rows than columns)"""
         n = 5
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0],
-            [10.0, 11.0, 12.0],
-            [13.0, 14.0, 15.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 3.0],
+                [4.0, 5.0, 6.0],
+                [7.0, 8.0, 9.0],
+                [10.0, 11.0, 12.0],
+                [13.0, 14.0, 15.0],
+            ],
+            order="F",
+        )
         k1, k2 = 1, 1  # Only process ipiv[0]=2, swap columns 1-2
         ipiv = np.array([2, 1, 3], dtype=np.int32)
         incx = 1
@@ -1513,23 +1544,22 @@ class TestMA02GD:
         result = ma02gd(n, a, k1, k2, ipiv, incx)
 
         # First two columns should be swapped
-        expected = np.array([
-            [2.0, 1.0, 3.0],
-            [5.0, 4.0, 6.0],
-            [8.0, 7.0, 9.0],
-            [11.0, 10.0, 12.0],
-            [14.0, 13.0, 15.0]
-        ], order='F')
+        expected = np.array(
+            [
+                [2.0, 1.0, 3.0],
+                [5.0, 4.0, 6.0],
+                [8.0, 7.0, 9.0],
+                [11.0, 10.0, 12.0],
+                [14.0, 13.0, 15.0],
+            ],
+            order="F",
+        )
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_zero_incx(self):
         """Test with incx=0 (should return unchanged)"""
         n = 3
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], order='F')
+        a = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], order="F")
         k1, k2 = 1, 3
         ipiv = np.array([3, 2, 1], dtype=np.int32)
         incx = 0
@@ -1550,11 +1580,11 @@ class TestMA02GZ:
     def test_basic_column_swap(self):
         """Test basic column interchange with complex values"""
         n = 3
-        a = np.array([
-            [1+1j, 2+2j, 3+3j],
-            [4+4j, 5+5j, 6+6j],
-            [7+7j, 8+8j, 9+9j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [[1 + 1j, 2 + 2j, 3 + 3j], [4 + 4j, 5 + 5j, 6 + 6j], [7 + 7j, 8 + 8j, 9 + 9j]],
+            dtype=np.complex128,
+            order="F",
+        )
         k1, k2 = 1, 1  # Only process ipiv[0]=2, swap cols 1 and 2
         ipiv = np.array([2, 1, 3], dtype=np.int32)
         incx = 1
@@ -1562,21 +1592,21 @@ class TestMA02GZ:
         result = ma02gz(n, a, k1, k2, ipiv, incx)
 
         # Column 1 and 2 should be swapped
-        expected = np.array([
-            [2+2j, 1+1j, 3+3j],
-            [5+5j, 4+4j, 6+6j],
-            [8+8j, 7+7j, 9+9j]
-        ], dtype=np.complex128, order='F')
+        expected = np.array(
+            [[2 + 2j, 1 + 1j, 3 + 3j], [5 + 5j, 4 + 4j, 6 + 6j], [8 + 8j, 7 + 7j, 9 + 9j]],
+            dtype=np.complex128,
+            order="F",
+        )
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_no_swaps_needed(self):
         """Test when ipiv indicates no swaps"""
         n = 3
-        a = np.array([
-            [1+1j, 2+2j, 3+3j],
-            [4+4j, 5+5j, 6+6j],
-            [7+7j, 8+8j, 9+9j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [[1 + 1j, 2 + 2j, 3 + 3j], [4 + 4j, 5 + 5j, 6 + 6j], [7 + 7j, 8 + 8j, 9 + 9j]],
+            dtype=np.complex128,
+            order="F",
+        )
         k1, k2 = 1, 3
         ipiv = np.array([1, 2, 3], dtype=np.int32)
         incx = 1
@@ -1589,28 +1619,24 @@ class TestMA02GZ:
     def test_purely_real_complex_array(self):
         """Test with complex array having only real parts"""
         n = 3
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], dtype=np.complex128, order="F"
+        )
         k1, k2 = 1, 1  # Only process ipiv[0]=2, swap cols 1 and 2
         ipiv = np.array([2, 1, 3], dtype=np.int32)
         incx = 1
 
         result = ma02gz(n, a, k1, k2, ipiv, incx)
 
-        expected = np.array([
-            [2.0, 1.0, 3.0],
-            [5.0, 4.0, 6.0],
-            [8.0, 7.0, 9.0]
-        ], dtype=np.complex128, order='F')
+        expected = np.array(
+            [[2.0, 1.0, 3.0], [5.0, 4.0, 6.0], [8.0, 7.0, 9.0]], dtype=np.complex128, order="F"
+        )
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_purely_imaginary_array(self):
         """Test with purely imaginary values"""
         n = 3
-        a = 1j * np.arange(1.0, 10.0).reshape(3, 3, order='F')
+        a = 1j * np.arange(1.0, 10.0).reshape(3, 3, order="F")
         a = a.astype(np.complex128)
         k1, k2 = 1, 3
         ipiv = np.array([3, 2, 1], dtype=np.int32)
@@ -1625,11 +1651,15 @@ class TestMA02GZ:
     def test_partial_range(self):
         """Test applying swaps to partial column range"""
         n = 3
-        a = np.array([
-            [1+1j, 2+2j, 3+3j, 4+4j],
-            [5+5j, 6+6j, 7+7j, 8+8j],
-            [9+9j, 10+10j, 11+11j, 12+12j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 2 + 2j, 3 + 3j, 4 + 4j],
+                [5 + 5j, 6 + 6j, 7 + 7j, 8 + 8j],
+                [9 + 9j, 10 + 10j, 11 + 11j, 12 + 12j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
         k1, k2 = 2, 2  # Only process ipiv[1]=3, swap columns 2-3
         ipiv = np.array([1, 3, 2, 4], dtype=np.int32)
         incx = 1
@@ -1637,21 +1667,25 @@ class TestMA02GZ:
         result = ma02gz(n, a, k1, k2, ipiv, incx)
 
         # Columns 2 and 3 should be swapped
-        expected = np.array([
-            [1+1j, 3+3j, 2+2j, 4+4j],
-            [5+5j, 7+7j, 6+6j, 8+8j],
-            [9+9j, 11+11j, 10+10j, 12+12j]
-        ], dtype=np.complex128, order='F')
+        expected = np.array(
+            [
+                [1 + 1j, 3 + 3j, 2 + 2j, 4 + 4j],
+                [5 + 5j, 7 + 7j, 6 + 6j, 8 + 8j],
+                [9 + 9j, 11 + 11j, 10 + 10j, 12 + 12j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
         assert_allclose(result, expected, rtol=1e-14)
 
     def test_zero_incx(self):
         """Test with incx=0 (should return unchanged)"""
         n = 3
-        a = np.array([
-            [1+1j, 2+2j, 3+3j],
-            [4+4j, 5+5j, 6+6j],
-            [7+7j, 8+8j, 9+9j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [[1 + 1j, 2 + 2j, 3 + 3j], [4 + 4j, 5 + 5j, 6 + 6j], [7 + 7j, 8 + 8j, 9 + 9j]],
+            dtype=np.complex128,
+            order="F",
+        )
         k1, k2 = 1, 3
         ipiv = np.array([3, 2, 1], dtype=np.int32)
         incx = 0
@@ -1676,12 +1710,15 @@ class TestMA02HD:
         m, n = 4, 4
         diag = 1.0
         # Must be identity matrix (or scaled identity) - off-diagonals must be zero!
-        a = np.array([
-            [1.0, 0.0, 0.0, 0.0],
-            [0.0, 1.0, 0.0, 0.0],
-            [0.0, 0.0, 1.0, 0.0],
-            [0.0, 0.0, 0.0, 1.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 0.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0, 0.0],
+                [0.0, 0.0, 0.0, 1.0],
+            ],
+            order="F",
+        )
 
         result = ma02hd(job, m, n, diag, a)
 
@@ -1693,12 +1730,15 @@ class TestMA02HD:
         m, n = 4, 4
         diag = 1.0
         # Has non-zero off-diagonal element in upper triangle
-        a = np.array([
-            [1.0, 2.0, 0.0, 0.0],  # a[0,1]=2.0 makes it not DIAG*I
-            [0.0, 1.0, 0.0, 0.0],
-            [0.0, 0.0, 1.0, 0.0],
-            [0.0, 0.0, 0.0, 1.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 0.0, 0.0],  # a[0,1]=2.0 makes it not DIAG*I
+                [0.0, 1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0, 0.0],
+                [0.0, 0.0, 0.0, 1.0],
+            ],
+            order="F",
+        )
 
         result = ma02hd(job, m, n, diag, a)
 
@@ -1711,12 +1751,15 @@ class TestMA02HD:
         diag = 2.0
         # With JOB=1, only checks lower triangle, so upper triangle can have anything
         # But diagonals must be DIAG and lower triangle must be zero
-        a = np.array([
-            [2.0, 99.0, 99.0, 99.0],  # Upper triangle ignored for JOB=1
-            [0.0, 2.0, 99.0, 99.0],   # Lower triangle must be zero
-            [0.0, 0.0, 2.0, 99.0],
-            [0.0, 0.0, 0.0, 2.0]
-        ], order='F')
+        a = np.array(
+            [
+                [2.0, 99.0, 99.0, 99.0],  # Upper triangle ignored for JOB=1
+                [0.0, 2.0, 99.0, 99.0],  # Lower triangle must be zero
+                [0.0, 0.0, 2.0, 99.0],
+                [0.0, 0.0, 0.0, 2.0],
+            ],
+            order="F",
+        )
 
         result = ma02hd(job, m, n, diag, a)
 
@@ -1728,12 +1771,15 @@ class TestMA02HD:
         m, n = 4, 4
         diag = 1.0
         # Has non-zero element in lower triangle
-        a = np.array([
-            [1.0, 0.0, 0.0, 0.0],
-            [3.0, 1.0, 0.0, 0.0],  # a[1,0]=3.0 makes it not DIAG*I
-            [0.0, 0.0, 1.0, 0.0],
-            [0.0, 0.0, 0.0, 1.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 0.0, 0.0, 0.0],
+                [3.0, 1.0, 0.0, 0.0],  # a[1,0]=3.0 makes it not DIAG*I
+                [0.0, 0.0, 1.0, 0.0],
+                [0.0, 0.0, 0.0, 1.0],
+            ],
+            order="F",
+        )
 
         result = ma02hd(job, m, n, diag, a)
 
@@ -1744,11 +1790,7 @@ class TestMA02HD:
         job = 2
         m, n = 3, 3
         diag = 5.0
-        a = np.array([
-            [5.0, 0.0, 0.0],
-            [0.0, 5.0, 0.0],
-            [0.0, 0.0, 5.0]
-        ], order='F')
+        a = np.array([[5.0, 0.0, 0.0], [0.0, 5.0, 0.0], [0.0, 0.0, 5.0]], order="F")
 
         result = ma02hd(job, m, n, diag, a)
 
@@ -1759,11 +1801,14 @@ class TestMA02HD:
         job = 0
         m, n = 3, 3
         diag = 1.0
-        a = np.array([
-            [2.0, 3.0, 4.0],  # Diagonal is 2.0, not 1.0
-            [0.0, 2.0, 5.0],
-            [0.0, 0.0, 2.0]
-        ], order='F')
+        a = np.array(
+            [
+                [2.0, 3.0, 4.0],  # Diagonal is 2.0, not 1.0
+                [0.0, 2.0, 5.0],
+                [0.0, 0.0, 2.0],
+            ],
+            order="F",
+        )
 
         result = ma02hd(job, m, n, diag, a)
 
@@ -1774,12 +1819,9 @@ class TestMA02HD:
         job = 0
         m, n = 4, 3
         diag = 1.0
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [0.0, 1.0, 4.0],
-            [0.0, 0.0, 1.0],
-            [0.0, 0.0, 0.0]
-        ], order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0], [0.0, 1.0, 4.0], [0.0, 0.0, 1.0], [0.0, 0.0, 0.0]], order="F"
+        )
 
         result = ma02hd(job, m, n, diag, a)
 
@@ -1790,7 +1832,7 @@ class TestMA02HD:
         job = 0
         m, n = 0, 0
         diag = 1.0
-        a = np.array([], dtype=np.float64).reshape(0, 0, order='F')
+        a = np.array([], dtype=np.float64).reshape(0, 0, order="F")
 
         result = ma02hd(job, m, n, diag, a)
 
@@ -1810,14 +1852,18 @@ class TestMA02HZ:
         """Test valid scaled identity complex matrix (upper triangle check)"""
         job = 0
         m, n = 4, 4
-        diag = 1+0j
+        diag = 1 + 0j
         # Must be scaled identity - off-diagonals must be zero!
-        a = np.array([
-            [1+0j, 0+0j, 0+0j, 0+0j],
-            [0+0j, 1+0j, 0+0j, 0+0j],
-            [0+0j, 0+0j, 1+0j, 0+0j],
-            [0+0j, 0+0j, 0+0j, 1+0j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+                [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+                [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
+                [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02hz(job, m, n, diag, a)
 
@@ -1827,14 +1873,18 @@ class TestMA02HZ:
         """Test non-scaled-identity complex matrix (has off-diagonal in upper triangle)"""
         job = 0
         m, n = 4, 4
-        diag = 1+0j
+        diag = 1 + 0j
         # Has non-zero off-diagonal in upper triangle
-        a = np.array([
-            [1+0j, 2+1j, 0+0j, 0+0j],  # a[0,1]!=0 makes it not DIAG*I
-            [0+0j, 1+0j, 0+0j, 0+0j],
-            [0+0j, 0+0j, 1+0j, 0+0j],
-            [0+0j, 0+0j, 0+0j, 1+0j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 0j, 2 + 1j, 0 + 0j, 0 + 0j],  # a[0,1]!=0 makes it not DIAG*I
+                [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+                [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
+                [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02hz(job, m, n, diag, a)
 
@@ -1844,14 +1894,18 @@ class TestMA02HZ:
         """Test valid scaled identity complex matrix (lower triangle check)"""
         job = 1
         m, n = 4, 4
-        diag = 2+1j
+        diag = 2 + 1j
         # With JOB=1, only checks lower triangle and diagonal
-        a = np.array([
-            [2+1j, 99+99j, 99+99j, 99+99j],  # Upper triangle ignored
-            [0+0j, 2+1j, 99+99j, 99+99j],     # Lower must be zero
-            [0+0j, 0+0j, 2+1j, 99+99j],
-            [0+0j, 0+0j, 0+0j, 2+1j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [2 + 1j, 99 + 99j, 99 + 99j, 99 + 99j],  # Upper triangle ignored
+                [0 + 0j, 2 + 1j, 99 + 99j, 99 + 99j],  # Lower must be zero
+                [0 + 0j, 0 + 0j, 2 + 1j, 99 + 99j],
+                [0 + 0j, 0 + 0j, 0 + 0j, 2 + 1j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02hz(job, m, n, diag, a)
 
@@ -1861,12 +1915,12 @@ class TestMA02HZ:
         """Test valid scaled identity complex matrix (full check)"""
         job = 2
         m, n = 3, 3
-        diag = 1+1j
-        a = np.array([
-            [1+1j, 0+0j, 0+0j],
-            [0+0j, 1+1j, 0+0j],
-            [0+0j, 0+0j, 1+1j]
-        ], dtype=np.complex128, order='F')
+        diag = 1 + 1j
+        a = np.array(
+            [[1 + 1j, 0 + 0j, 0 + 0j], [0 + 0j, 1 + 1j, 0 + 0j], [0 + 0j, 0 + 0j, 1 + 1j]],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02hz(job, m, n, diag, a)
 
@@ -1876,13 +1930,11 @@ class TestMA02HZ:
         """Test with purely real values in complex array"""
         job = 0
         m, n = 3, 3
-        diag = 1.0+0j
+        diag = 1.0 + 0j
         # Must be scaled identity - no off-diagonals!
-        a = np.array([
-            [1.0, 0.0, 0.0],
-            [0.0, 1.0, 0.0],
-            [0.0, 0.0, 1.0]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]], dtype=np.complex128, order="F"
+        )
 
         result = ma02hz(job, m, n, diag, a)
 
@@ -1892,12 +1944,16 @@ class TestMA02HZ:
         """Test complex matrix with wrong diagonal value"""
         job = 0
         m, n = 3, 3
-        diag = 1+1j
-        a = np.array([
-            [2+2j, 3+3j, 4+4j],  # Wrong diagonal
-            [0+0j, 2+2j, 5+5j],
-            [0+0j, 0+0j, 2+2j]
-        ], dtype=np.complex128, order='F')
+        diag = 1 + 1j
+        a = np.array(
+            [
+                [2 + 2j, 3 + 3j, 4 + 4j],  # Wrong diagonal
+                [0 + 0j, 2 + 2j, 5 + 5j],
+                [0 + 0j, 0 + 0j, 2 + 2j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02hz(job, m, n, diag, a)
 
@@ -1915,14 +1971,10 @@ class TestMA02ID:
     def test_max_norm_hermitian(self):
         """Test max norm of Hermitian-structured matrix"""
         typ, norm, n = 1, 3, 3
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], order='F')
-        qg = np.zeros((n, n+1), order='F')
+        a = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], order="F")
+        qg = np.zeros((n, n + 1), order="F")
         qg[:, :n] = np.eye(n)
-        dwork = np.zeros(n, order='F')
+        dwork = np.zeros(n, order="F")
 
         result = ma02id(typ, norm, n, a, qg, dwork)
 
@@ -1933,13 +1985,9 @@ class TestMA02ID:
     def test_max_norm_skew_hermitian(self):
         """Test max norm of skew-Hermitian matrix"""
         typ, norm, n = 0, 3, 3
-        a = np.array([
-            [0.0, 2.0, 3.0],
-            [-2.0, 0.0, 4.0],
-            [-3.0, -4.0, 0.0]
-        ], order='F')
-        qg = np.zeros((n, n+1), order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array([[0.0, 2.0, 3.0], [-2.0, 0.0, 4.0], [-3.0, -4.0, 0.0]], order="F")
+        qg = np.zeros((n, n + 1), order="F")
+        dwork = np.zeros(n, order="F")
 
         result = ma02id(typ, norm, n, a, qg, dwork)
 
@@ -1950,12 +1998,12 @@ class TestMA02ID:
     def test_frobenius_norm_hermitian(self):
         """Test Frobenius norm of Hermitian matrix"""
         typ, norm, n = 1, 1, 3
-        a = np.eye(n, order='F')
-        qg = np.zeros((n, n+1), order='F')
+        a = np.eye(n, order="F")
+        qg = np.zeros((n, n + 1), order="F")
         qg[0, 0] = 1.0
         qg[1, 1] = 1.0
         qg[2, 2] = 1.0
-        dwork = np.zeros(n, order='F')
+        dwork = np.zeros(n, order="F")
 
         result = ma02id(typ, norm, n, a, qg, dwork)
 
@@ -1965,13 +2013,9 @@ class TestMA02ID:
     def test_one_norm(self):
         """Test 1-norm (max column sum)"""
         typ, norm, n = 1, 0, 3
-        a = np.array([
-            [1.0, 0.0, 0.0],
-            [0.0, 2.0, 0.0],
-            [0.0, 0.0, 3.0]
-        ], order='F')
-        qg = np.zeros((n, n+1), order='F')
-        dwork = np.zeros(2*n, order='F')  # Need 2*n for norm=0 or norm=2
+        a = np.array([[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]], order="F")
+        qg = np.zeros((n, n + 1), order="F")
+        dwork = np.zeros(2 * n, order="F")  # Need 2*n for norm=0 or norm=2
 
         result = ma02id(typ, norm, n, a, qg, dwork)
 
@@ -1982,13 +2026,9 @@ class TestMA02ID:
     def test_infinity_norm(self):
         """Test infinity norm (max row sum)"""
         typ, norm, n = 1, 2, 3
-        a = np.array([
-            [1.0, 0.0, 0.0],
-            [0.0, 2.0, 0.0],
-            [0.0, 0.0, 3.0]
-        ], order='F')
-        qg = np.zeros((n, n+1), order='F')
-        dwork = np.zeros(2*n, order='F')  # Need 2*n for norm=0 or norm=2
+        a = np.array([[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]], order="F")
+        qg = np.zeros((n, n + 1), order="F")
+        dwork = np.zeros(2 * n, order="F")  # Need 2*n for norm=0 or norm=2
 
         result = ma02id(typ, norm, n, a, qg, dwork)
 
@@ -1998,9 +2038,9 @@ class TestMA02ID:
     def test_empty_matrix(self):
         """Test with n=0"""
         typ, norm, n = 1, 3, 0
-        a = np.array([], dtype=np.float64).reshape(0, 0, order='F')
-        qg = np.array([], dtype=np.float64).reshape(0, 1, order='F')
-        dwork = np.array([], dtype=np.float64, order='F')
+        a = np.array([], dtype=np.float64).reshape(0, 0, order="F")
+        qg = np.array([], dtype=np.float64).reshape(0, 1, order="F")
+        dwork = np.array([], dtype=np.float64, order="F")
 
         result = ma02id(typ, norm, n, a, qg, dwork)
 
@@ -2010,12 +2050,9 @@ class TestMA02ID:
     def test_small_matrix(self):
         """Test with 2x2 matrix"""
         typ, norm, n = 1, 3, 2
-        a = np.array([
-            [1.0, 2.0],
-            [3.0, 4.0]
-        ], order='F')
-        qg = np.zeros((n, n+1), order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array([[1.0, 2.0], [3.0, 4.0]], order="F")
+        qg = np.zeros((n, n + 1), order="F")
+        dwork = np.zeros(n, order="F")
 
         result = ma02id(typ, norm, n, a, qg, dwork)
 
@@ -2034,14 +2071,14 @@ class TestMA02IZ:
     def test_max_norm_hamiltonian(self):
         """Test max norm of Hamiltonian-structured matrix"""
         typ, norm, n = 1, 3, 3
-        a = np.array([
-            [1+1j, 2+2j, 3+3j],
-            [4+4j, 5+5j, 6+6j],
-            [7+7j, 8+8j, 9+9j]
-        ], dtype=np.complex128, order='F')
-        qg = np.zeros((n, n+1), dtype=np.complex128, order='F')
+        a = np.array(
+            [[1 + 1j, 2 + 2j, 3 + 3j], [4 + 4j, 5 + 5j, 6 + 6j], [7 + 7j, 8 + 8j, 9 + 9j]],
+            dtype=np.complex128,
+            order="F",
+        )
+        qg = np.zeros((n, n + 1), dtype=np.complex128, order="F")
         qg[:, :n] = np.eye(n, dtype=np.complex128)
-        dwork = np.zeros(n, order='F')
+        dwork = np.zeros(n, order="F")
 
         result = ma02iz(typ, norm, n, a, qg, dwork)
 
@@ -2051,13 +2088,13 @@ class TestMA02IZ:
     def test_max_norm_skew_hamiltonian(self):
         """Test max norm of skew-Hamiltonian matrix"""
         typ, norm, n = 0, 3, 3
-        a = np.array([
-            [0+0j, 2+2j, 3+3j],
-            [-2-2j, 0+0j, 4+4j],
-            [-3-3j, -4-4j, 0+0j]
-        ], dtype=np.complex128, order='F')
-        qg = np.zeros((n, n+1), dtype=np.complex128, order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array(
+            [[0 + 0j, 2 + 2j, 3 + 3j], [-2 - 2j, 0 + 0j, 4 + 4j], [-3 - 3j, -4 - 4j, 0 + 0j]],
+            dtype=np.complex128,
+            order="F",
+        )
+        qg = np.zeros((n, n + 1), dtype=np.complex128, order="F")
+        dwork = np.zeros(n, order="F")
 
         result = ma02iz(typ, norm, n, a, qg, dwork)
 
@@ -2067,9 +2104,9 @@ class TestMA02IZ:
     def test_frobenius_norm_hamiltonian(self):
         """Test Frobenius norm of Hamiltonian matrix"""
         typ, norm, n = 1, 1, 3
-        a = np.eye(n, dtype=np.complex128, order='F')
-        qg = np.zeros((n, n+1), dtype=np.complex128, order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.eye(n, dtype=np.complex128, order="F")
+        qg = np.zeros((n, n + 1), dtype=np.complex128, order="F")
+        dwork = np.zeros(n, order="F")
 
         result = ma02iz(typ, norm, n, a, qg, dwork)
 
@@ -2079,9 +2116,9 @@ class TestMA02IZ:
     def test_one_norm(self):
         """Test 1-norm (max column sum)"""
         typ, norm, n = 1, 0, 3
-        a = np.diag([1+1j, 2+2j, 3+3j]).astype(np.complex128, order='F')
-        qg = np.zeros((n, n+1), dtype=np.complex128, order='F')
-        dwork = np.zeros(2*n, order='F')  # Need 2*n for norm=0 or norm=2
+        a = np.diag([1 + 1j, 2 + 2j, 3 + 3j]).astype(np.complex128, order="F")
+        qg = np.zeros((n, n + 1), dtype=np.complex128, order="F")
+        dwork = np.zeros(2 * n, order="F")  # Need 2*n for norm=0 or norm=2
 
         result = ma02iz(typ, norm, n, a, qg, dwork)
 
@@ -2091,13 +2128,11 @@ class TestMA02IZ:
     def test_purely_real_complex_matrix(self):
         """Test with complex matrix having only real parts"""
         typ, norm, n = 1, 3, 3
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], dtype=np.complex128, order='F')
-        qg = np.zeros((n, n+1), dtype=np.complex128, order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], dtype=np.complex128, order="F"
+        )
+        qg = np.zeros((n, n + 1), dtype=np.complex128, order="F")
+        dwork = np.zeros(n, order="F")
 
         result = ma02iz(typ, norm, n, a, qg, dwork)
 
@@ -2107,9 +2142,9 @@ class TestMA02IZ:
     def test_empty_matrix(self):
         """Test with n=0"""
         typ, norm, n = 1, 3, 0
-        a = np.array([], dtype=np.complex128).reshape(0, 0, order='F')
-        qg = np.array([], dtype=np.complex128).reshape(0, 1, order='F')
-        dwork = np.array([], dtype=np.float64, order='F')
+        a = np.array([], dtype=np.complex128).reshape(0, 0, order="F")
+        qg = np.array([], dtype=np.complex128).reshape(0, 1, order="F")
+        dwork = np.array([], dtype=np.float64, order="F")
 
         result = ma02iz(typ, norm, n, a, qg, dwork)
 
@@ -2119,12 +2154,9 @@ class TestMA02IZ:
     def test_small_matrix(self):
         """Test with 2x2 complex matrix"""
         typ, norm, n = 1, 3, 2
-        a = np.array([
-            [1+1j, 2+2j],
-            [3+3j, 4+4j]
-        ], dtype=np.complex128, order='F')
-        qg = np.zeros((n, n+1), dtype=np.complex128, order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array([[1 + 1j, 2 + 2j], [3 + 3j, 4 + 4j]], dtype=np.complex128, order="F")
+        qg = np.zeros((n, n + 1), dtype=np.complex128, order="F")
+        dwork = np.zeros(n, order="F")
 
         result = ma02iz(typ, norm, n, a, qg, dwork)
 
@@ -2144,12 +2176,12 @@ class TestMA02JD:
     def test_orthogonal_matrices(self):
         """Test with two orthogonal matrices"""
         ltran1, ltran2, n = 0, 0, 3
-        q1 = np.eye(n, order='F')
-        q2 = np.zeros((n, n), order='F')
+        q1 = np.eye(n, order="F")
+        q2 = np.zeros((n, n), order="F")
         q2[0, 2] = 1.0
         q2[1, 1] = 1.0
         q2[2, 0] = 1.0
-        res = np.zeros((n, n), order='F')
+        res = np.zeros((n, n), order="F")
 
         result = ma02jd(ltran1, ltran2, n, q1, q2, res)
 
@@ -2160,9 +2192,9 @@ class TestMA02JD:
     def test_identity_matrices(self):
         """Test with both matrices being identity"""
         ltran1, ltran2, n = 0, 0, 3
-        q1 = np.eye(n, order='F')
-        q2 = np.zeros((n, n), order='F')
-        res = np.zeros((n, n), order='F')
+        q1 = np.eye(n, order="F")
+        q2 = np.zeros((n, n), order="F")
+        res = np.zeros((n, n), order="F")
 
         result = ma02jd(ltran1, ltran2, n, q1, q2, res)
 
@@ -2174,9 +2206,9 @@ class TestMA02JD:
     def test_with_transpose_flags(self):
         """Test with different transpose combinations"""
         ltran1, ltran2, n = 1, 0, 3
-        q1 = np.eye(n, order='F')
-        q2 = np.eye(n, order='F')
-        res = np.zeros((n, n), order='F')
+        q1 = np.eye(n, order="F")
+        q2 = np.eye(n, order="F")
+        res = np.zeros((n, n), order="F")
 
         result = ma02jd(ltran1, ltran2, n, q1, q2, res)
 
@@ -2186,17 +2218,9 @@ class TestMA02JD:
     def test_non_orthogonal_matrices(self):
         """Test with non-orthogonal matrices"""
         ltran1, ltran2, n = 0, 0, 3
-        q1 = np.array([
-            [1.0, 2.0, 3.0],
-            [4.0, 5.0, 6.0],
-            [7.0, 8.0, 9.0]
-        ], order='F')
-        q2 = np.array([
-            [2.0, 3.0, 4.0],
-            [5.0, 6.0, 7.0],
-            [8.0, 9.0, 10.0]
-        ], order='F')
-        res = np.zeros((n, n), order='F')
+        q1 = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], order="F")
+        q2 = np.array([[2.0, 3.0, 4.0], [5.0, 6.0, 7.0], [8.0, 9.0, 10.0]], order="F")
+        res = np.zeros((n, n), order="F")
 
         result = ma02jd(ltran1, ltran2, n, q1, q2, res)
 
@@ -2206,9 +2230,9 @@ class TestMA02JD:
     def test_small_matrix(self):
         """Test with 2x2 matrices"""
         ltran1, ltran2, n = 0, 0, 2
-        q1 = np.eye(n, order='F')
-        q2 = np.array([[0.0, 1.0], [1.0, 0.0]], order='F')
-        res = np.zeros((n, n), order='F')
+        q1 = np.eye(n, order="F")
+        q2 = np.array([[0.0, 1.0], [1.0, 0.0]], order="F")
+        res = np.zeros((n, n), order="F")
 
         result = ma02jd(ltran1, ltran2, n, q1, q2, res)
 
@@ -2218,9 +2242,9 @@ class TestMA02JD:
     def test_both_transpose_true(self):
         """Test with both transpose flags true"""
         ltran1, ltran2, n = 1, 1, 3
-        q1 = np.eye(n, order='F')
-        q2 = np.eye(n, order='F')
-        res = np.zeros((n, n), order='F')
+        q1 = np.eye(n, order="F")
+        q2 = np.eye(n, order="F")
+        res = np.zeros((n, n), order="F")
 
         result = ma02jd(ltran1, ltran2, n, q1, q2, res)
 
@@ -2236,12 +2260,12 @@ class TestMA02JZ:
     def test_unitary_matrices(self):
         """Test with two unitary matrices"""
         ltran1, ltran2, n = 0, 0, 3
-        q1 = np.eye(n, dtype=np.complex128, order='F')
-        q2 = np.zeros((n, n), dtype=np.complex128, order='F')
+        q1 = np.eye(n, dtype=np.complex128, order="F")
+        q2 = np.zeros((n, n), dtype=np.complex128, order="F")
         q2[0, 2] = 1.0
         q2[1, 1] = 1.0
         q2[2, 0] = 1.0
-        res = np.zeros((n, n), dtype=np.complex128, order='F')
+        res = np.zeros((n, n), dtype=np.complex128, order="F")
 
         result = ma02jz(ltran1, ltran2, n, q1, q2, res)
 
@@ -2251,9 +2275,9 @@ class TestMA02JZ:
     def test_identity_matrices(self):
         """Test with both matrices being identity"""
         ltran1, ltran2, n = 0, 0, 3
-        q1 = np.eye(n, dtype=np.complex128, order='F')
-        q2 = np.zeros((n, n), dtype=np.complex128, order='F')
-        res = np.zeros((n, n), dtype=np.complex128, order='F')
+        q1 = np.eye(n, dtype=np.complex128, order="F")
+        q2 = np.zeros((n, n), dtype=np.complex128, order="F")
+        res = np.zeros((n, n), dtype=np.complex128, order="F")
 
         result = ma02jz(ltran1, ltran2, n, q1, q2, res)
 
@@ -2264,12 +2288,11 @@ class TestMA02JZ:
         """Test with complex values in unitary matrices"""
         ltran1, ltran2, n = 0, 0, 2
         # Simple unitary matrix
-        q1 = (1.0 / np.sqrt(2)) * np.array([
-            [1+0j, 1+0j],
-            [0+1j, 0-1j]
-        ], dtype=np.complex128, order='F')
-        q2 = np.eye(n, dtype=np.complex128, order='F')
-        res = np.zeros((n, n), dtype=np.complex128, order='F')
+        q1 = (1.0 / np.sqrt(2)) * np.array(
+            [[1 + 0j, 1 + 0j], [0 + 1j, 0 - 1j]], dtype=np.complex128, order="F"
+        )
+        q2 = np.eye(n, dtype=np.complex128, order="F")
+        res = np.zeros((n, n), dtype=np.complex128, order="F")
 
         result = ma02jz(ltran1, ltran2, n, q1, q2, res)
 
@@ -2278,9 +2301,9 @@ class TestMA02JZ:
     def test_with_transpose_flags(self):
         """Test with different transpose combinations"""
         ltran1, ltran2, n = 1, 0, 3
-        q1 = np.eye(n, dtype=np.complex128, order='F')
-        q2 = np.eye(n, dtype=np.complex128, order='F')
-        res = np.zeros((n, n), dtype=np.complex128, order='F')
+        q1 = np.eye(n, dtype=np.complex128, order="F")
+        q2 = np.eye(n, dtype=np.complex128, order="F")
+        res = np.zeros((n, n), dtype=np.complex128, order="F")
 
         result = ma02jz(ltran1, ltran2, n, q1, q2, res)
 
@@ -2289,17 +2312,17 @@ class TestMA02JZ:
     def test_non_unitary_matrices(self):
         """Test with non-unitary complex matrices"""
         ltran1, ltran2, n = 0, 0, 3
-        q1 = np.array([
-            [1+1j, 2+2j, 3+3j],
-            [4+4j, 5+5j, 6+6j],
-            [7+7j, 8+8j, 9+9j]
-        ], dtype=np.complex128, order='F')
-        q2 = np.array([
-            [2+1j, 3+2j, 4+3j],
-            [5+4j, 6+5j, 7+6j],
-            [8+7j, 9+8j, 10+9j]
-        ], dtype=np.complex128, order='F')
-        res = np.zeros((n, n), dtype=np.complex128, order='F')
+        q1 = np.array(
+            [[1 + 1j, 2 + 2j, 3 + 3j], [4 + 4j, 5 + 5j, 6 + 6j], [7 + 7j, 8 + 8j, 9 + 9j]],
+            dtype=np.complex128,
+            order="F",
+        )
+        q2 = np.array(
+            [[2 + 1j, 3 + 2j, 4 + 3j], [5 + 4j, 6 + 5j, 7 + 6j], [8 + 7j, 9 + 8j, 10 + 9j]],
+            dtype=np.complex128,
+            order="F",
+        )
+        res = np.zeros((n, n), dtype=np.complex128, order="F")
 
         result = ma02jz(ltran1, ltran2, n, q1, q2, res)
 
@@ -2309,9 +2332,9 @@ class TestMA02JZ:
     def test_purely_real_complex_matrices(self):
         """Test with complex matrices having only real parts"""
         ltran1, ltran2, n = 0, 0, 2
-        q1 = np.eye(n, dtype=np.complex128, order='F')
-        q2 = np.eye(n, dtype=np.complex128, order='F')
-        res = np.zeros((n, n), dtype=np.complex128, order='F')
+        q1 = np.eye(n, dtype=np.complex128, order="F")
+        q2 = np.eye(n, dtype=np.complex128, order="F")
+        res = np.zeros((n, n), dtype=np.complex128, order="F")
 
         result = ma02jz(ltran1, ltran2, n, q1, q2, res)
 
@@ -2328,13 +2351,16 @@ class TestMA02MD:
     def test_max_norm_upper(self):
         """Test max norm with upper triangle"""
         norm, uplo, n = 3, 0, 4
-        a = np.array([
-            [0.0, 2.0, 3.0, 4.0],
-            [0.0, 0.0, 5.0, 6.0],
-            [0.0, 0.0, 0.0, 7.0],
-            [0.0, 0.0, 0.0, 0.0]
-        ], order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array(
+            [
+                [0.0, 2.0, 3.0, 4.0],
+                [0.0, 0.0, 5.0, 6.0],
+                [0.0, 0.0, 0.0, 7.0],
+                [0.0, 0.0, 0.0, 0.0],
+            ],
+            order="F",
+        )
+        dwork = np.zeros(n, order="F")
 
         result = ma02md(norm, uplo, n, a, dwork)
 
@@ -2344,13 +2370,16 @@ class TestMA02MD:
     def test_max_norm_lower(self):
         """Test max norm with lower triangle"""
         norm, uplo, n = 3, 1, 4
-        a = np.array([
-            [0.0, 0.0, 0.0, 0.0],
-            [2.0, 0.0, 0.0, 0.0],
-            [3.0, 5.0, 0.0, 0.0],
-            [4.0, 6.0, 7.0, 0.0]
-        ], order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array(
+            [
+                [0.0, 0.0, 0.0, 0.0],
+                [2.0, 0.0, 0.0, 0.0],
+                [3.0, 5.0, 0.0, 0.0],
+                [4.0, 6.0, 7.0, 0.0],
+            ],
+            order="F",
+        )
+        dwork = np.zeros(n, order="F")
 
         result = ma02md(norm, uplo, n, a, dwork)
 
@@ -2360,12 +2389,8 @@ class TestMA02MD:
     def test_one_norm_upper(self):
         """Test 1-norm with upper triangle"""
         norm, uplo, n = 0, 0, 3
-        a = np.array([
-            [0.0, 1.0, 2.0],
-            [0.0, 0.0, 3.0],
-            [0.0, 0.0, 0.0]
-        ], order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array([[0.0, 1.0, 2.0], [0.0, 0.0, 3.0], [0.0, 0.0, 0.0]], order="F")
+        dwork = np.zeros(n, order="F")
 
         result = ma02md(norm, uplo, n, a, dwork)
 
@@ -2376,12 +2401,8 @@ class TestMA02MD:
     def test_frobenius_norm_upper(self):
         """Test Frobenius norm with upper triangle"""
         norm, uplo, n = 1, 0, 3
-        a = np.array([
-            [0.0, 1.0, 2.0],
-            [0.0, 0.0, 3.0],
-            [0.0, 0.0, 0.0]
-        ], order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array([[0.0, 1.0, 2.0], [0.0, 0.0, 3.0], [0.0, 0.0, 0.0]], order="F")
+        dwork = np.zeros(n, order="F")
 
         result = ma02md(norm, uplo, n, a, dwork)
 
@@ -2392,12 +2413,8 @@ class TestMA02MD:
     def test_frobenius_norm_lower(self):
         """Test Frobenius norm with lower triangle"""
         norm, uplo, n = 1, 1, 3
-        a = np.array([
-            [0.0, 0.0, 0.0],
-            [1.0, 0.0, 0.0],
-            [2.0, 3.0, 0.0]
-        ], order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 3.0, 0.0]], order="F")
+        dwork = np.zeros(n, order="F")
 
         result = ma02md(norm, uplo, n, a, dwork)
 
@@ -2408,11 +2425,8 @@ class TestMA02MD:
     def test_small_matrix(self):
         """Test with 2x2 skew-symmetric matrix"""
         norm, uplo, n = 3, 0, 2
-        a = np.array([
-            [0.0, 5.0],
-            [0.0, 0.0]
-        ], order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array([[0.0, 5.0], [0.0, 0.0]], order="F")
+        dwork = np.zeros(n, order="F")
 
         result = ma02md(norm, uplo, n, a, dwork)
 
@@ -2421,8 +2435,8 @@ class TestMA02MD:
     def test_degenerate_matrix(self):
         """Test with n < 2 (returns 0)"""
         norm, uplo, n = 3, 0, 1
-        a = np.array([[0.0]], order='F')
-        dwork = np.zeros(max(n, 1), order='F')
+        a = np.array([[0.0]], order="F")
+        dwork = np.zeros(max(n, 1), order="F")
 
         result = ma02md(norm, uplo, n, a, dwork)
 
@@ -2440,13 +2454,17 @@ class TestMA02MZ:
     def test_max_norm_upper(self):
         """Test max norm with upper triangle"""
         norm, uplo, n = 3, 0, 4
-        a = np.array([
-            [0+1j, 2+2j, 3+3j, 4+4j],
-            [0+0j, 0+2j, 5+5j, 6+6j],
-            [0+0j, 0+0j, 0+3j, 7+7j],
-            [0+0j, 0+0j, 0+0j, 0+4j]
-        ], dtype=np.complex128, order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array(
+            [
+                [0 + 1j, 2 + 2j, 3 + 3j, 4 + 4j],
+                [0 + 0j, 0 + 2j, 5 + 5j, 6 + 6j],
+                [0 + 0j, 0 + 0j, 0 + 3j, 7 + 7j],
+                [0 + 0j, 0 + 0j, 0 + 0j, 0 + 4j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
+        dwork = np.zeros(n, order="F")
 
         result = ma02mz(norm, uplo, n, a, dwork)
 
@@ -2456,13 +2474,17 @@ class TestMA02MZ:
     def test_max_norm_lower(self):
         """Test max norm with lower triangle"""
         norm, uplo, n = 3, 1, 4
-        a = np.array([
-            [0+1j, 0+0j, 0+0j, 0+0j],
-            [2+2j, 0+2j, 0+0j, 0+0j],
-            [3+3j, 5+5j, 0+3j, 0+0j],
-            [4+4j, 6+6j, 7+7j, 0+4j]
-        ], dtype=np.complex128, order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array(
+            [
+                [0 + 1j, 0 + 0j, 0 + 0j, 0 + 0j],
+                [2 + 2j, 0 + 2j, 0 + 0j, 0 + 0j],
+                [3 + 3j, 5 + 5j, 0 + 3j, 0 + 0j],
+                [4 + 4j, 6 + 6j, 7 + 7j, 0 + 4j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
+        dwork = np.zeros(n, order="F")
 
         result = ma02mz(norm, uplo, n, a, dwork)
 
@@ -2472,12 +2494,12 @@ class TestMA02MZ:
     def test_one_norm_upper(self):
         """Test 1-norm with upper triangle"""
         norm, uplo, n = 0, 0, 3
-        a = np.array([
-            [0+1j, 1+1j, 2+2j],
-            [0+0j, 0+2j, 3+3j],
-            [0+0j, 0+0j, 0+3j]
-        ], dtype=np.complex128, order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array(
+            [[0 + 1j, 1 + 1j, 2 + 2j], [0 + 0j, 0 + 2j, 3 + 3j], [0 + 0j, 0 + 0j, 0 + 3j]],
+            dtype=np.complex128,
+            order="F",
+        )
+        dwork = np.zeros(n, order="F")
 
         result = ma02mz(norm, uplo, n, a, dwork)
 
@@ -2487,12 +2509,12 @@ class TestMA02MZ:
     def test_frobenius_norm_upper(self):
         """Test Frobenius norm with upper triangle"""
         norm, uplo, n = 1, 0, 3
-        a = np.array([
-            [0+1j, 1+0j, 2+0j],
-            [0+0j, 0+2j, 3+0j],
-            [0+0j, 0+0j, 0+3j]
-        ], dtype=np.complex128, order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array(
+            [[0 + 1j, 1 + 0j, 2 + 0j], [0 + 0j, 0 + 2j, 3 + 0j], [0 + 0j, 0 + 0j, 0 + 3j]],
+            dtype=np.complex128,
+            order="F",
+        )
+        dwork = np.zeros(n, order="F")
 
         result = ma02mz(norm, uplo, n, a, dwork)
 
@@ -2502,12 +2524,12 @@ class TestMA02MZ:
     def test_frobenius_norm_lower(self):
         """Test Frobenius norm with lower triangle"""
         norm, uplo, n = 1, 1, 3
-        a = np.array([
-            [0+1j, 0+0j, 0+0j],
-            [1+0j, 0+2j, 0+0j],
-            [2+0j, 3+0j, 0+3j]
-        ], dtype=np.complex128, order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array(
+            [[0 + 1j, 0 + 0j, 0 + 0j], [1 + 0j, 0 + 2j, 0 + 0j], [2 + 0j, 3 + 0j, 0 + 3j]],
+            dtype=np.complex128,
+            order="F",
+        )
+        dwork = np.zeros(n, order="F")
 
         result = ma02mz(norm, uplo, n, a, dwork)
 
@@ -2517,12 +2539,12 @@ class TestMA02MZ:
     def test_purely_real_off_diagonal(self):
         """Test with purely real off-diagonal elements"""
         norm, uplo, n = 3, 0, 3
-        a = np.array([
-            [0+1j, 1+0j, 2+0j],
-            [0+0j, 0+2j, 3+0j],
-            [0+0j, 0+0j, 0+3j]
-        ], dtype=np.complex128, order='F')
-        dwork = np.zeros(n, order='F')
+        a = np.array(
+            [[0 + 1j, 1 + 0j, 2 + 0j], [0 + 0j, 0 + 2j, 3 + 0j], [0 + 0j, 0 + 0j, 0 + 3j]],
+            dtype=np.complex128,
+            order="F",
+        )
+        dwork = np.zeros(n, order="F")
 
         result = ma02mz(norm, uplo, n, a, dwork)
 
@@ -2532,8 +2554,8 @@ class TestMA02MZ:
     def test_empty_matrix(self):
         """Test with n=0"""
         norm, uplo, n = 3, 0, 0
-        a = np.array([], dtype=np.complex128).reshape(0, 0, order='F')
-        dwork = np.array([], dtype=np.float64, order='F')
+        a = np.array([], dtype=np.complex128).reshape(0, 0, order="F")
+        dwork = np.array([], dtype=np.float64, order="F")
 
         result = ma02mz(norm, uplo, n, a, dwork)
 
@@ -2555,12 +2577,16 @@ class TestMA02NZ:
         """Test swapping in upper Hermitian matrix"""
         uplo, trans, skew, n = 0, 1, 0, 4
         k, l_idx = 1, 3  # Swap rows/columns 1 and 3 (0-indexed)
-        a = np.array([
-            [1+0j, 2+1j, 3+2j, 4+3j],
-            [2-1j, 5+0j, 6+4j, 7+5j],
-            [3-2j, 6-4j, 8+0j, 9+6j],
-            [4-3j, 7-5j, 9-6j, 10+0j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 0j, 2 + 1j, 3 + 2j, 4 + 3j],
+                [2 - 1j, 5 + 0j, 6 + 4j, 7 + 5j],
+                [3 - 2j, 6 - 4j, 8 + 0j, 9 + 6j],
+                [4 - 3j, 7 - 5j, 9 - 6j, 10 + 0j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         result = ma02nz(uplo, trans, skew, n, k, l_idx, a)
 
@@ -2573,13 +2599,17 @@ class TestMA02NZ:
         """Test swapping in lower Hermitian matrix"""
         uplo, trans, skew, n = 1, 1, 0, 4
         k, l_idx = 0, 2  # Swap rows/columns 0 and 2
-        a = np.array([
-            [1+0j, 0+0j, 0+0j, 0+0j],
-            [2-1j, 5+0j, 0+0j, 0+0j],
-            [3-2j, 6-4j, 8+0j, 0+0j],
-            [4-3j, 7-5j, 9-6j, 10+0j]
-        ], dtype=np.complex128, order='F')
-        a_orig = a.copy(order='F')
+        a = np.array(
+            [
+                [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+                [2 - 1j, 5 + 0j, 0 + 0j, 0 + 0j],
+                [3 - 2j, 6 - 4j, 8 + 0j, 0 + 0j],
+                [4 - 3j, 7 - 5j, 9 - 6j, 10 + 0j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
+        a_orig = a.copy(order="F")
 
         ma02nz(uplo, trans, skew, n, k, l_idx, a)
 
@@ -2590,28 +2620,32 @@ class TestMA02NZ:
     def test_skew_hermitian_upper_swap(self):
         """Test swapping in upper skew-Hermitian matrix"""
         uplo, trans, skew, n = 0, 1, 1, 4
-        k, l = 1, 2
-        a = np.array([
-            [0+1j, 2+1j, 3+2j, 4+3j],
-            [0+0j, 0+2j, 5+4j, 6+5j],
-            [0+0j, 0+0j, 0+3j, 7+6j],
-            [0+0j, 0+0j, 0+0j, 0+4j]
-        ], dtype=np.complex128, order='F')
-        a_orig = a.copy(order='F')
+        i, j = 1, 2
+        a = np.array(
+            [
+                [0 + 1j, 2 + 1j, 3 + 2j, 4 + 3j],
+                [0 + 0j, 0 + 2j, 5 + 4j, 6 + 5j],
+                [0 + 0j, 0 + 0j, 0 + 3j, 7 + 6j],
+                [0 + 0j, 0 + 0j, 0 + 0j, 0 + 4j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
+        a_orig = a.copy(order="F")
 
-        ma02nz(uplo, trans, skew, n, k, l, a)
+        ma02nz(uplo, trans, skew, n, i, j, a)
 
         # Diagonal elements should be swapped
-        assert_allclose(a[k, k], a_orig[l, l], rtol=1e-14)
+        assert_allclose(a[i, i], a_orig[j, j], rtol=1e-14)
 
     def test_no_swap_same_indices(self):
-        """Test with k == l (no swap)"""
+        """Test with i == j (no swap)"""
         uplo, trans, skew, n = 0, 1, 0, 4
-        k, l = 2, 2  # Same index
-        a = np.eye(n, dtype=np.complex128, order='F')
-        a_orig = a.copy(order='F')
+        i, j = 2, 2  # Same index
+        a = np.eye(n, dtype=np.complex128, order="F")
+        a_orig = a.copy(order="F")
 
-        ma02nz(uplo, trans, skew, n, k, l, a)
+        ma02nz(uplo, trans, skew, n, i, j, a)
 
         # Matrix should be unchanged when k == l
         assert_allclose(a, a_orig, rtol=1e-14)
@@ -2619,14 +2653,14 @@ class TestMA02NZ:
     def test_hermitian_no_conjugate_transpose(self):
         """Test Hermitian with plain transpose (trans=0)"""
         uplo, trans, skew, n = 0, 0, 0, 3
-        k, l = 0, 2
-        a = np.array([
-            [1+0j, 2+1j, 3+2j],
-            [2+1j, 4+0j, 5+3j],
-            [3+2j, 5+3j, 6+0j]
-        ], dtype=np.complex128, order='F')
+        i, j = 0, 2
+        a = np.array(
+            [[1 + 0j, 2 + 1j, 3 + 2j], [2 + 1j, 4 + 0j, 5 + 3j], [3 + 2j, 5 + 3j, 6 + 0j]],
+            dtype=np.complex128,
+            order="F",
+        )
 
-        result = ma02nz(uplo, trans, skew, n, k, l, a)
+        result = ma02nz(uplo, trans, skew, n, i, j, a)
 
         # Should perform swap with plain transpose
         # Function returns modified array
@@ -2635,14 +2669,14 @@ class TestMA02NZ:
     def test_skew_hermitian_no_conjugate(self):
         """Test skew-Hermitian with plain transpose"""
         uplo, trans, skew, n = 1, 0, 1, 3
-        k, l = 0, 1
-        a = np.array([
-            [0+1j, 0+0j, 0+0j],
-            [2+1j, 0+2j, 0+0j],
-            [3+2j, 4+3j, 0+3j]
-        ], dtype=np.complex128, order='F')
+        i, j = 0, 1
+        a = np.array(
+            [[0 + 1j, 0 + 0j, 0 + 0j], [2 + 1j, 0 + 2j, 0 + 0j], [3 + 2j, 4 + 3j, 0 + 3j]],
+            dtype=np.complex128,
+            order="F",
+        )
 
-        result = ma02nz(uplo, trans, skew, n, k, l, a)
+        result = ma02nz(uplo, trans, skew, n, i, j, a)
 
         # Should perform swap
         # Function returns modified array
@@ -2651,15 +2685,15 @@ class TestMA02NZ:
     def test_adjacent_swap(self):
         """Test swapping adjacent rows/columns"""
         uplo, trans, skew, n = 0, 1, 0, 4
-        k, l = 1, 2  # Adjacent indices
-        a = np.eye(n, dtype=np.complex128, order='F')
-        a_orig = a.copy(order='F')
+        i, j = 1, 2  # Adjacent indices
+        a = np.eye(n, dtype=np.complex128, order="F")
+        a_orig = a.copy(order="F")
 
-        ma02nz(uplo, trans, skew, n, k, l, a)
+        ma02nz(uplo, trans, skew, n, i, j, a)
 
         # Diagonal elements should be swapped
-        assert_allclose(a[k, k], a_orig[l, l], rtol=1e-14)
-        assert_allclose(a[l, l], a_orig[k, k], rtol=1e-14)
+        assert_allclose(a[i, i], a_orig[j, j], rtol=1e-14)
+        assert_allclose(a[j, j], a_orig[i, i], rtol=1e-14)
 
 
 class TestMA02OD:
@@ -2673,8 +2707,8 @@ class TestMA02OD:
     def test_no_zero_columns(self):
         """Test with no zero columns"""
         skew, m = 0, 3
-        a = np.eye(m, order='F')
-        de = np.eye(m, m+1, order='F')
+        a = np.eye(m, order="F")
+        de = np.eye(m, m + 1, order="F")
 
         result = ma02od(skew, m, a, de)
 
@@ -2684,12 +2718,8 @@ class TestMA02OD:
     def test_one_zero_column_in_a(self):
         """Test with one zero column in A block"""
         skew, m = 0, 3
-        a = np.array([
-            [1.0, 0.0, 3.0],
-            [4.0, 0.0, 6.0],
-            [7.0, 0.0, 9.0]
-        ], order='F')
-        de = np.zeros((m, m+1), order='F')
+        a = np.array([[1.0, 0.0, 3.0], [4.0, 0.0, 6.0], [7.0, 0.0, 9.0]], order="F")
+        de = np.zeros((m, m + 1), order="F")
 
         result = ma02od(skew, m, a, de)
 
@@ -2699,8 +2729,8 @@ class TestMA02OD:
     def test_hamiltonian_with_diagonal_de(self):
         """Test Hamiltonian structure with diagonal DE"""
         skew, m = 0, 3
-        a = np.zeros((m, m), order='F')
-        de = np.zeros((m, m+1), order='F')
+        a = np.zeros((m, m), order="F")
+        de = np.zeros((m, m + 1), order="F")
         # Set some diagonal values
         de[0, 0] = 1.0
         de[1, 1] = 1.0
@@ -2713,8 +2743,8 @@ class TestMA02OD:
     def test_skew_hamiltonian(self):
         """Test skew-Hamiltonian structure"""
         skew, m = 1, 3
-        a = np.zeros((m, m), order='F')
-        de = np.zeros((m, m+1), order='F')
+        a = np.zeros((m, m), order="F")
+        de = np.zeros((m, m + 1), order="F")
 
         result = ma02od(skew, m, a, de)
 
@@ -2724,8 +2754,8 @@ class TestMA02OD:
     def test_empty_matrix(self):
         """Test with m=0"""
         skew, m = 0, 0
-        a = np.array([], dtype=np.float64).reshape(0, 0, order='F')
-        de = np.array([], dtype=np.float64).reshape(0, 1, order='F')
+        a = np.array([], dtype=np.float64).reshape(0, 0, order="F")
+        de = np.array([], dtype=np.float64).reshape(0, 1, order="F")
 
         result = ma02od(skew, m, a, de)
 
@@ -2735,14 +2765,8 @@ class TestMA02OD:
     def test_small_matrix(self):
         """Test with 2x2 blocks"""
         skew, m = 0, 2
-        a = np.array([
-            [1.0, 0.0],
-            [0.0, 0.0]
-        ], order='F')
-        de = np.array([
-            [0.0, 0.0, 0.0],
-            [0.0, 1.0, 0.0]
-        ], order='F')
+        a = np.array([[1.0, 0.0], [0.0, 0.0]], order="F")
+        de = np.array([[0.0, 0.0, 0.0], [0.0, 1.0, 0.0]], order="F")
 
         result = ma02od(skew, m, a, de)
 
@@ -2752,8 +2776,8 @@ class TestMA02OD:
     def test_mixed_zero_columns(self):
         """Test with zero columns in both blocks"""
         skew, m = 0, 3
-        a = np.zeros((m, m), order='F')
-        de = np.zeros((m, m+1), order='F')
+        a = np.zeros((m, m), order="F")
+        de = np.zeros((m, m + 1), order="F")
 
         result = ma02od(skew, m, a, de)
 
@@ -2770,8 +2794,8 @@ class TestMA02OZ:
     def test_no_zero_columns(self):
         """Test with no zero columns"""
         skew, m = 0, 3
-        a = np.eye(m, dtype=np.complex128, order='F')
-        de = np.eye(m, m+1, dtype=np.complex128, order='F')
+        a = np.eye(m, dtype=np.complex128, order="F")
+        de = np.eye(m, m + 1, dtype=np.complex128, order="F")
 
         result = ma02oz(skew, m, a, de)
 
@@ -2781,12 +2805,12 @@ class TestMA02OZ:
     def test_one_zero_column(self):
         """Test with one zero column"""
         skew, m = 0, 3
-        a = np.array([
-            [1+1j, 0+0j, 3+3j],
-            [4+4j, 0+0j, 6+6j],
-            [7+7j, 0+0j, 9+9j]
-        ], dtype=np.complex128, order='F')
-        de = np.zeros((m, m+1), dtype=np.complex128, order='F')
+        a = np.array(
+            [[1 + 1j, 0 + 0j, 3 + 3j], [4 + 4j, 0 + 0j, 6 + 6j], [7 + 7j, 0 + 0j, 9 + 9j]],
+            dtype=np.complex128,
+            order="F",
+        )
+        de = np.zeros((m, m + 1), dtype=np.complex128, order="F")
 
         result = ma02oz(skew, m, a, de)
 
@@ -2796,11 +2820,11 @@ class TestMA02OZ:
     def test_skew_hamiltonian_imaginary_diagonal(self):
         """Test skew-Hamiltonian with purely imaginary diagonal"""
         skew, m = 1, 3
-        a = np.zeros((m, m), dtype=np.complex128, order='F')
-        de = np.zeros((m, m+1), dtype=np.complex128, order='F')
+        a = np.zeros((m, m), dtype=np.complex128, order="F")
+        de = np.zeros((m, m + 1), dtype=np.complex128, order="F")
         # Skew-Hamiltonian: diagonal should be purely imaginary
-        de[0, 0] = 0+1j
-        de[1, 1] = 0+2j
+        de[0, 0] = 0 + 1j
+        de[1, 1] = 0 + 2j
 
         result = ma02oz(skew, m, a, de)
 
@@ -2810,11 +2834,11 @@ class TestMA02OZ:
     def test_hamiltonian_real_diagonal(self):
         """Test Hamiltonian with purely real diagonal"""
         skew, m = 0, 3
-        a = np.zeros((m, m), dtype=np.complex128, order='F')
-        de = np.zeros((m, m+1), dtype=np.complex128, order='F')
+        a = np.zeros((m, m), dtype=np.complex128, order="F")
+        de = np.zeros((m, m + 1), dtype=np.complex128, order="F")
         # Hamiltonian: diagonal should be purely real
-        de[0, 0] = 1+0j
-        de[1, 1] = 2+0j
+        de[0, 0] = 1 + 0j
+        de[1, 1] = 2 + 0j
 
         result = ma02oz(skew, m, a, de)
 
@@ -2823,11 +2847,8 @@ class TestMA02OZ:
     def test_purely_real_complex_matrix(self):
         """Test with complex matrix having only real parts"""
         skew, m = 0, 2
-        a = np.array([
-            [1.0, 0.0],
-            [0.0, 0.0]
-        ], dtype=np.complex128, order='F')
-        de = np.zeros((m, m+1), dtype=np.complex128, order='F')
+        a = np.array([[1.0, 0.0], [0.0, 0.0]], dtype=np.complex128, order="F")
+        de = np.zeros((m, m + 1), dtype=np.complex128, order="F")
 
         result = ma02oz(skew, m, a, de)
 
@@ -2836,8 +2857,8 @@ class TestMA02OZ:
     def test_all_zero_columns(self):
         """Test with all zero columns"""
         skew, m = 1, 3
-        a = np.zeros((m, m), dtype=np.complex128, order='F')
-        de = np.zeros((m, m+1), dtype=np.complex128, order='F')
+        a = np.zeros((m, m), dtype=np.complex128, order="F")
+        de = np.zeros((m, m + 1), dtype=np.complex128, order="F")
 
         result = ma02oz(skew, m, a, de)
 
@@ -2847,8 +2868,8 @@ class TestMA02OZ:
     def test_empty_matrix(self):
         """Test with m=0"""
         skew, m = 0, 0
-        a = np.array([], dtype=np.complex128).reshape(0, 0, order='F')
-        de = np.array([], dtype=np.complex128).reshape(0, 1, order='F')
+        a = np.array([], dtype=np.complex128).reshape(0, 0, order="F")
+        de = np.array([], dtype=np.complex128).reshape(0, 1, order="F")
 
         result = ma02oz(skew, m, a, de)
 
@@ -2865,7 +2886,7 @@ class TestMA02PD:
     def test_no_zero_rows_or_columns(self):
         """Test matrix with no zero rows or columns"""
         m, n = 3, 4
-        a = np.ones((m, n), order='F')
+        a = np.ones((m, n), order="F")
 
         nzr, nzc = ma02pd(m, n, a)
 
@@ -2875,11 +2896,9 @@ class TestMA02PD:
     def test_one_zero_column(self):
         """Test matrix with one zero column"""
         m, n = 3, 4
-        a = np.array([
-            [1.0, 0.0, 3.0, 4.0],
-            [5.0, 0.0, 7.0, 8.0],
-            [9.0, 0.0, 11.0, 12.0]
-        ], order='F')
+        a = np.array(
+            [[1.0, 0.0, 3.0, 4.0], [5.0, 0.0, 7.0, 8.0], [9.0, 0.0, 11.0, 12.0]], order="F"
+        )
 
         nzr, nzc = ma02pd(m, n, a)
 
@@ -2889,12 +2908,9 @@ class TestMA02PD:
     def test_one_zero_row(self):
         """Test matrix with one zero row"""
         m, n = 4, 3
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [0.0, 0.0, 0.0],
-            [7.0, 8.0, 9.0],
-            [10.0, 11.0, 12.0]
-        ], order='F')
+        a = np.array(
+            [[1.0, 2.0, 3.0], [0.0, 0.0, 0.0], [7.0, 8.0, 9.0], [10.0, 11.0, 12.0]], order="F"
+        )
 
         nzr, nzc = ma02pd(m, n, a)
 
@@ -2904,12 +2920,15 @@ class TestMA02PD:
     def test_multiple_zero_rows_and_columns(self):
         """Test matrix with multiple zero rows and columns"""
         m, n = 4, 4
-        a = np.array([
-            [1.0, 0.0, 3.0, 0.0],
-            [0.0, 0.0, 0.0, 0.0],
-            [7.0, 0.0, 9.0, 0.0],
-            [0.0, 0.0, 0.0, 0.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 0.0, 3.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0],
+                [7.0, 0.0, 9.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0],
+            ],
+            order="F",
+        )
 
         nzr, nzc = ma02pd(m, n, a)
 
@@ -2919,7 +2938,7 @@ class TestMA02PD:
     def test_all_zero_matrix(self):
         """Test all-zero matrix"""
         m, n = 3, 3
-        a = np.zeros((m, n), order='F')
+        a = np.zeros((m, n), order="F")
 
         nzr, nzc = ma02pd(m, n, a)
 
@@ -2929,7 +2948,7 @@ class TestMA02PD:
     def test_identity_matrix(self):
         """Test identity matrix"""
         m, n = 3, 3
-        a = np.eye(m, n, order='F')
+        a = np.eye(m, n, order="F")
 
         nzr, nzc = ma02pd(m, n, a)
 
@@ -2939,13 +2958,16 @@ class TestMA02PD:
     def test_rectangular_tall_matrix(self):
         """Test rectangular matrix (more rows than columns)"""
         m, n = 5, 3
-        a = np.array([
-            [1.0, 2.0, 3.0],
-            [0.0, 0.0, 0.0],
-            [7.0, 8.0, 9.0],
-            [0.0, 0.0, 0.0],
-            [13.0, 14.0, 15.0]
-        ], order='F')
+        a = np.array(
+            [
+                [1.0, 2.0, 3.0],
+                [0.0, 0.0, 0.0],
+                [7.0, 8.0, 9.0],
+                [0.0, 0.0, 0.0],
+                [13.0, 14.0, 15.0],
+            ],
+            order="F",
+        )
 
         nzr, nzc = ma02pd(m, n, a)
 
@@ -2955,11 +2977,10 @@ class TestMA02PD:
     def test_rectangular_wide_matrix(self):
         """Test rectangular matrix (more columns than rows)"""
         m, n = 3, 5
-        a = np.array([
-            [1.0, 0.0, 3.0, 0.0, 5.0],
-            [6.0, 0.0, 8.0, 0.0, 10.0],
-            [11.0, 0.0, 13.0, 0.0, 15.0]
-        ], order='F')
+        a = np.array(
+            [[1.0, 0.0, 3.0, 0.0, 5.0], [6.0, 0.0, 8.0, 0.0, 10.0], [11.0, 0.0, 13.0, 0.0, 15.0]],
+            order="F",
+        )
 
         nzr, nzc = ma02pd(m, n, a)
 
@@ -2969,7 +2990,7 @@ class TestMA02PD:
     def test_empty_matrix(self):
         """Test with m=0 or n=0"""
         m, n = 0, 0
-        a = np.array([], dtype=np.float64).reshape(0, 0, order='F')
+        a = np.array([], dtype=np.float64).reshape(0, 0, order="F")
 
         nzr, nzc = ma02pd(m, n, a)
 
@@ -2986,7 +3007,7 @@ class TestMA02PZ:
     def test_no_zero_rows_or_columns(self):
         """Test matrix with no zero rows or columns"""
         m, n = 3, 4
-        a = np.ones((m, n), dtype=np.complex128, order='F')
+        a = np.ones((m, n), dtype=np.complex128, order="F")
 
         nzr, nzc = ma02pz(m, n, a)
 
@@ -2996,11 +3017,15 @@ class TestMA02PZ:
     def test_one_zero_column(self):
         """Test complex matrix with one zero column"""
         m, n = 3, 4
-        a = np.array([
-            [1+1j, 0+0j, 3+3j, 4+4j],
-            [5+5j, 0+0j, 7+7j, 8+8j],
-            [9+9j, 0+0j, 11+11j, 12+12j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 0 + 0j, 3 + 3j, 4 + 4j],
+                [5 + 5j, 0 + 0j, 7 + 7j, 8 + 8j],
+                [9 + 9j, 0 + 0j, 11 + 11j, 12 + 12j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         nzr, nzc = ma02pz(m, n, a)
 
@@ -3010,12 +3035,16 @@ class TestMA02PZ:
     def test_one_zero_row(self):
         """Test complex matrix with one zero row"""
         m, n = 4, 3
-        a = np.array([
-            [1+1j, 2+2j, 3+3j],
-            [0+0j, 0+0j, 0+0j],
-            [7+7j, 8+8j, 9+9j],
-            [10+10j, 11+11j, 12+12j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 2 + 2j, 3 + 3j],
+                [0 + 0j, 0 + 0j, 0 + 0j],
+                [7 + 7j, 8 + 8j, 9 + 9j],
+                [10 + 10j, 11 + 11j, 12 + 12j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         nzr, nzc = ma02pz(m, n, a)
 
@@ -3025,12 +3054,16 @@ class TestMA02PZ:
     def test_multiple_zero_rows_and_columns(self):
         """Test complex matrix with multiple zeros"""
         m, n = 4, 4
-        a = np.array([
-            [1+1j, 0+0j, 3+3j, 0+0j],
-            [0+0j, 0+0j, 0+0j, 0+0j],
-            [7+7j, 0+0j, 9+9j, 0+0j],
-            [0+0j, 0+0j, 0+0j, 0+0j]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [
+                [1 + 1j, 0 + 0j, 3 + 3j, 0 + 0j],
+                [0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+                [7 + 7j, 0 + 0j, 9 + 9j, 0 + 0j],
+                [0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            ],
+            dtype=np.complex128,
+            order="F",
+        )
 
         nzr, nzc = ma02pz(m, n, a)
 
@@ -3040,11 +3073,9 @@ class TestMA02PZ:
     def test_purely_real_complex_matrix(self):
         """Test with complex matrix having only real parts"""
         m, n = 3, 3
-        a = np.array([
-            [1.0, 0.0, 3.0],
-            [4.0, 0.0, 6.0],
-            [7.0, 0.0, 9.0]
-        ], dtype=np.complex128, order='F')
+        a = np.array(
+            [[1.0, 0.0, 3.0], [4.0, 0.0, 6.0], [7.0, 0.0, 9.0]], dtype=np.complex128, order="F"
+        )
 
         nzr, nzc = ma02pz(m, n, a)
 
@@ -3054,7 +3085,7 @@ class TestMA02PZ:
     def test_all_zero_matrix(self):
         """Test all-zero complex matrix"""
         m, n = 3, 3
-        a = np.zeros((m, n), dtype=np.complex128, order='F')
+        a = np.zeros((m, n), dtype=np.complex128, order="F")
 
         nzr, nzc = ma02pz(m, n, a)
 
@@ -3064,11 +3095,7 @@ class TestMA02PZ:
     def test_purely_imaginary_values(self):
         """Test with purely imaginary values"""
         m, n = 3, 3
-        a = np.array([
-            [1j, 0j, 3j],
-            [4j, 0j, 6j],
-            [7j, 0j, 9j]
-        ], dtype=np.complex128, order='F')
+        a = np.array([[1j, 0j, 3j], [4j, 0j, 6j], [7j, 0j, 9j]], dtype=np.complex128, order="F")
 
         nzr, nzc = ma02pz(m, n, a)
 
@@ -3086,8 +3113,8 @@ class TestMA02RD:
     def test_sort_increasing(self):
         """Test sorting in increasing order"""
         id_val, n = 0, 5
-        d = np.array([5.0, 2.0, 8.0, 1.0, 3.0], order='F')
-        e = np.array([50.0, 20.0, 80.0, 10.0, 30.0], order='F')
+        d = np.array([5.0, 2.0, 8.0, 1.0, 3.0], order="F")
+        e = np.array([50.0, 20.0, 80.0, 10.0, 30.0], order="F")
 
         d_out, e_out, info = ma02rd(id_val, n, d, e)
 
@@ -3100,8 +3127,8 @@ class TestMA02RD:
     def test_sort_decreasing(self):
         """Test sorting in decreasing order"""
         id_val, n = 1, 5
-        d = np.array([5.0, 2.0, 8.0, 1.0, 3.0], order='F')
-        e = np.array([50.0, 20.0, 80.0, 10.0, 30.0], order='F')
+        d = np.array([5.0, 2.0, 8.0, 1.0, 3.0], order="F")
+        e = np.array([50.0, 20.0, 80.0, 10.0, 30.0], order="F")
 
         d_out, e_out, info = ma02rd(id_val, n, d, e)
 
@@ -3114,8 +3141,8 @@ class TestMA02RD:
     def test_already_sorted_increasing(self):
         """Test with already sorted array (increasing)"""
         id_val, n = 0, 5
-        d = np.array([1.0, 2.0, 3.0, 4.0, 5.0], order='F')
-        e = np.array([10.0, 20.0, 30.0, 40.0, 50.0], order='F')
+        d = np.array([1.0, 2.0, 3.0, 4.0, 5.0], order="F")
+        e = np.array([10.0, 20.0, 30.0, 40.0, 50.0], order="F")
 
         d_out, e_out, info = ma02rd(id_val, n, d, e)
 
@@ -3127,8 +3154,8 @@ class TestMA02RD:
     def test_duplicate_values(self):
         """Test with duplicate values in D"""
         id_val, n = 0, 6
-        d = np.array([3.0, 1.0, 3.0, 2.0, 1.0, 2.0], order='F')
-        e = np.array([30.0, 10.0, 31.0, 20.0, 11.0, 21.0], order='F')
+        d = np.array([3.0, 1.0, 3.0, 2.0, 1.0, 2.0], order="F")
+        e = np.array([30.0, 10.0, 31.0, 20.0, 11.0, 21.0], order="F")
 
         d_out, e_out, info = ma02rd(id_val, n, d, e)
 
@@ -3140,8 +3167,8 @@ class TestMA02RD:
     def test_single_element(self):
         """Test with single element"""
         id_val, n = 0, 1
-        d = np.array([5.0], order='F')
-        e = np.array([50.0], order='F')
+        d = np.array([5.0], order="F")
+        e = np.array([50.0], order="F")
 
         d_out, e_out, info = ma02rd(id_val, n, d, e)
 
@@ -3153,8 +3180,8 @@ class TestMA02RD:
     def test_two_elements(self):
         """Test with two elements"""
         id_val, n = 0, 2
-        d = np.array([5.0, 2.0], order='F')
-        e = np.array([50.0, 20.0], order='F')
+        d = np.array([5.0, 2.0], order="F")
+        e = np.array([50.0, 20.0], order="F")
 
         d_out, e_out, info = ma02rd(id_val, n, d, e)
 
@@ -3165,15 +3192,15 @@ class TestMA02RD:
     def test_large_array(self):
         """Test with larger array"""
         id_val, n = 0, 30
-        d = np.random.permutation(n).astype(np.float64, order='F')
-        e = d.copy(order='F') * 10.0
+        d = np.random.permutation(n).astype(np.float64, order="F")
+        e = d.copy(order="F") * 10.0
 
         d_out, e_out, info = ma02rd(id_val, n, d, e)
 
         assert info == 0
         # Check that D is sorted
-        for i in range(n-1):
-            assert d_out[i] <= d_out[i+1]
+        for i in range(n - 1):
+            assert d_out[i] <= d_out[i + 1]
         # Check that E follows same permutation
         for i in range(n):
             assert_allclose(e_out[i], d_out[i] * 10.0, rtol=1e-13)
@@ -3181,8 +3208,8 @@ class TestMA02RD:
     def test_negative_values(self):
         """Test with negative values"""
         id_val, n = 0, 5
-        d = np.array([-2.0, 5.0, -8.0, 1.0, -3.0], order='F')
-        e = np.array([20.0, 50.0, 80.0, 10.0, 30.0], order='F')
+        d = np.array([-2.0, 5.0, -8.0, 1.0, -3.0], order="F")
+        e = np.array([20.0, 50.0, 80.0, 10.0, 30.0], order="F")
 
         d_out, e_out, info = ma02rd(id_val, n, d, e)
 
@@ -3200,11 +3227,7 @@ class TestMA02SD:
     def test_positive_values(self):
         """Test with positive values"""
         m, n = 3, 3
-        a = np.array([
-            [5.0, 2.0, 8.0],
-            [1.0, 3.0, 6.0],
-            [9.0, 4.0, 7.0]
-        ], order='F')
+        a = np.array([[5.0, 2.0, 8.0], [1.0, 3.0, 6.0], [9.0, 4.0, 7.0]], order="F")
 
         result = ma02sd(m, n, a)
 
@@ -3214,11 +3237,7 @@ class TestMA02SD:
     def test_with_zeros(self):
         """Test with some zero values"""
         m, n = 3, 3
-        a = np.array([
-            [5.0, 0.0, 8.0],
-            [0.0, 3.0, 6.0],
-            [9.0, 4.0, 0.0]
-        ], order='F')
+        a = np.array([[5.0, 0.0, 8.0], [0.0, 3.0, 6.0], [9.0, 4.0, 0.0]], order="F")
 
         result = ma02sd(m, n, a)
 
@@ -3228,11 +3247,7 @@ class TestMA02SD:
     def test_negative_values(self):
         """Test with negative values"""
         m, n = 3, 3
-        a = np.array([
-            [-5.0, -2.0, -8.0],
-            [1.0, -0.5, 6.0],
-            [-9.0, 4.0, -7.0]
-        ], order='F')
+        a = np.array([[-5.0, -2.0, -8.0], [1.0, -0.5, 6.0], [-9.0, 4.0, -7.0]], order="F")
 
         result = ma02sd(m, n, a)
 
@@ -3242,10 +3257,7 @@ class TestMA02SD:
     def test_small_values(self):
         """Test with very small values"""
         m, n = 2, 2
-        a = np.array([
-            [1e-10, 1e-8],
-            [1e-12, 1e-9]
-        ], order='F')
+        a = np.array([[1e-10, 1e-8], [1e-12, 1e-9]], order="F")
 
         result = ma02sd(m, n, a)
 
@@ -3255,7 +3267,7 @@ class TestMA02SD:
     def test_single_element(self):
         """Test with 1x1 matrix"""
         m, n = 1, 1
-        a = np.array([[7.0]], order='F')
+        a = np.array([[7.0]], order="F")
 
         result = ma02sd(m, n, a)
 
@@ -3264,10 +3276,7 @@ class TestMA02SD:
     def test_rectangular_matrix(self):
         """Test with rectangular matrix"""
         m, n = 2, 4
-        a = np.array([
-            [5.0, 2.0, 8.0, 0.1],
-            [1.0, 3.0, 6.0, 4.0]
-        ], order='F')
+        a = np.array([[5.0, 2.0, 8.0, 0.1], [1.0, 3.0, 6.0, 4.0]], order="F")
 
         result = ma02sd(m, n, a)
 
@@ -3277,7 +3286,7 @@ class TestMA02SD:
     def test_all_same_values(self):
         """Test with all same non-zero values"""
         m, n = 3, 3
-        a = np.ones((m, n), order='F') * 5.0
+        a = np.ones((m, n), order="F") * 5.0
 
         result = ma02sd(m, n, a)
 
@@ -3286,7 +3295,7 @@ class TestMA02SD:
     def test_empty_matrix(self):
         """Test with m=0 or n=0"""
         m, n = 0, 0
-        a = np.array([], dtype=np.float64).reshape(0, 0, order='F')
+        a = np.array([], dtype=np.float64).reshape(0, 0, order="F")
 
         result = ma02sd(m, n, a)
 

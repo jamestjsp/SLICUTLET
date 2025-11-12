@@ -61,7 +61,7 @@ class TestMB03OYBasic:
         rcond = 1e-10
         svlmax = 0.0
 
-        rank, sval, jpvt, tau, info, A_out = call_mb03oy(m, n, rcond, svlmax, A.copy(order='F'))
+        rank, sval, jpvt, tau, info, A_out = call_mb03oy(m, n, rcond, svlmax, A.copy(order="F"))
 
         assert info == 0
         assert rank == n  # Full column rank
@@ -83,7 +83,7 @@ class TestMB03OYRankDeficient:
         rcond = 1e-12
         svlmax = 0.0
 
-        rank, sval, jpvt, tau, info, A_out = call_mb03oy(m, n, rcond, svlmax, A.copy(order='F'))
+        rank, sval, jpvt, tau, info, A_out = call_mb03oy(m, n, rcond, svlmax, A.copy(order="F"))
 
         assert info == 0
         # For a numerically exact rank-1 outer product, expect rank 1
@@ -129,7 +129,7 @@ class TestMB03OYRankDeficient:
         rcond = 1e-10
         svlmax = 0.0
 
-        rank, sval, jpvt, tau, info, A_out = call_mb03oy(n, n, rcond, svlmax, A.copy(order='F'))
+        rank, sval, jpvt, tau, info, A_out = call_mb03oy(n, n, rcond, svlmax, A.copy(order="F"))
 
         assert info == 0
         # Should detect rank 3
@@ -150,7 +150,7 @@ class TestMB03OYOrthogonality:
         m, n = 6, 4
         np.random.seed(99)
         A = np.random.randn(m, n).astype(float, order="F")
-        A.copy(order='F')
+        A.copy(order="F")
 
         rcond = 1e-12
         svlmax = 0.0
@@ -187,7 +187,7 @@ class TestMB03OYOrthogonality:
         rcond = 1e-10
         svlmax = 0.0
 
-        rank, sval, jpvt, tau, info, A_fact = call_mb03oy(m, n, rcond, svlmax, A.copy(order='F'))
+        rank, sval, jpvt, tau, info, A_fact = call_mb03oy(m, n, rcond, svlmax, A.copy(order="F"))
 
         assert info == 0
         # Should be rank 2
@@ -203,19 +203,23 @@ class TestMB03OYPivoting:
         """Test that pivoting selects largest-norm columns first"""
         m, n = 4, 4
         # Construct matrix where column norms are clearly ordered
-        A = np.array([
-            [0.1, 1.0, 0.01, 5.0],
-            [0.1, 1.0, 0.01, 5.0],
-            [0.1, 1.0, 0.01, 5.0],
-            [0.1, 1.0, 0.01, 5.0]
-        ], dtype=float, order="F")
+        A = np.array(
+            [
+                [0.1, 1.0, 0.01, 5.0],
+                [0.1, 1.0, 0.01, 5.0],
+                [0.1, 1.0, 0.01, 5.0],
+                [0.1, 1.0, 0.01, 5.0],
+            ],
+            dtype=float,
+            order="F",
+        )
         # Column norms: ~0.2, ~2.0, ~0.02, ~10.0
         # Expected pivot order: col 3 (index 3), col 1 (index 1), col 0 (index 0), col 2 (index 2)
 
         rcond = 1e-12
         svlmax = 0.0
 
-        rank, sval, jpvt, tau, info, A_fact = call_mb03oy(m, n, rcond, svlmax, A.copy(order='F'))
+        rank, sval, jpvt, tau, info, A_fact = call_mb03oy(m, n, rcond, svlmax, A.copy(order="F"))
 
         assert info == 0
         # jpvt should reflect that col 3 was chosen first
@@ -232,7 +236,7 @@ class TestMB03OYPivoting:
         rcond = 1e-12
         svlmax = 0.0
 
-        rank, sval, jpvt, tau, info, A_fact = call_mb03oy(m, n, rcond, svlmax, A.copy(order='F'))
+        rank, sval, jpvt, tau, info, A_fact = call_mb03oy(m, n, rcond, svlmax, A.copy(order="F"))
 
         assert info == 0
         # jpvt[:n] should be a permutation of 0..n-1
@@ -253,7 +257,7 @@ class TestMB03OYEdgeCases:
         rcond = 1e-12
         svlmax = 0.0
 
-        rank, sval, jpvt, tau, info, A_fact = call_mb03oy(m, 1, rcond, svlmax, A.copy(order='F'))
+        rank, sval, jpvt, tau, info, A_fact = call_mb03oy(m, 1, rcond, svlmax, A.copy(order="F"))
 
         assert info == 0
         assert rank == 1
@@ -267,7 +271,7 @@ class TestMB03OYEdgeCases:
         rcond = 1e-12
         svlmax = 0.0
 
-        rank, sval, jpvt, tau, info, A_fact = call_mb03oy(1, n, rcond, svlmax, A.copy(order='F'))
+        rank, sval, jpvt, tau, info, A_fact = call_mb03oy(1, n, rcond, svlmax, A.copy(order="F"))
 
         assert info == 0
         assert rank == 1  # Single row, full rank
@@ -285,14 +289,14 @@ class TestMB03OYEdgeCases:
 
         # With loose rcond, should get rank 4
         rank_loose, sval_loose, jpvt_loose, tau_loose, info_loose, A_loose = call_mb03oy(
-            m, n, 1e-10, 0.0, A.copy(order='F')
+            m, n, 1e-10, 0.0, A.copy(order="F")
         )
         assert info_loose == 0
         assert rank_loose == 4
 
         # With tight rcond, should get rank 3 (rejecting 1e-8 singular value)
         rank_tight, sval_tight, jpvt_tight, tau_tight, info_tight, A_tight = call_mb03oy(
-            m, n, 1e-6, 0.0, A.copy(order='F')
+            m, n, 1e-6, 0.0, A.copy(order="F")
         )
         assert info_tight == 0
         assert rank_tight == 3

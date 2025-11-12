@@ -4,12 +4,12 @@
 
 set -e  # Exit on error
 
-MAIN_DIR="/Users/josephj/Workspace/slicot-rs"
+MAIN_DIR="/Users/josephj/Workspace/SLICUTLET"
 BASE_DIR="/Users/josephj/Workspace"
 
 if [ $# -eq 0 ]; then
     echo "Usage: $0 branch1 branch2 [branch3 ...]"
-    echo "Example: $0 wt1-mb04od wt2-mb04nd wt3-sb03or wt4-sb03oy"
+    echo "Example: $0 wt1-ma01ad wt2-ma01bd wt3-ma02bd"
     exit 1
 fi
 
@@ -25,7 +25,7 @@ for branch in "$@"; do
         continue
     fi
 
-    wt_dir="$BASE_DIR/slicot-rs-$wt_num"
+    wt_dir="$BASE_DIR/SLICUTLET-$wt_num"
 
     if [ -d "$wt_dir" ]; then
         echo "📦 Rebasing $branch in $wt_dir..."

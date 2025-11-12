@@ -3,9 +3,7 @@ Tests for MA01XX family of functions
 """
 import numpy as np
 from numpy.testing import assert_allclose
-from slicutlet import (
-    ma01ad, ma01bd, ma01bz, ma01cd, ma01dd, ma01dz
-)
+from slicutlet import ma01ad, ma01bd, ma01bz, ma01cd, ma01dd, ma01dz
 
 
 class TestMA01AD:

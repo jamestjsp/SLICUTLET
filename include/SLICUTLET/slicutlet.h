@@ -57,7 +57,7 @@ f64  ma02sd(const i32 m, const i32 n, const f64* a, const i32 lda);
 
 // Commented out routines below are already available in BLAS/LAPACK under different names. See their docstrings for details.
 // void mb01kd(const i32 uplo, const i32 trans, const i32 n, const i32 k, const f64 alpha, const f64* a, const i32 lda, f64* b, const i32 ldb, const f64 beta, f64* c, const i32 ldc, i32* info);
-void mb01ld(const i32 uplo, const i32 trans, const i32 m, const i32 n, const i32 k, const f64 alpha, const f64 beta, f64* r, const i32 ldr, const f64* a, const i32 lda, f64* x, const i32 ldx, f64* dwork, const i32 ldwork, i32* info);
+void mb01ld(const i32 uplo, const i32 trans, const i32 m, const i32 n, const f64 alpha, const f64 beta, f64* r, const i32 ldr, const f64* a, const i32 lda, f64* x, const i32 ldx, f64* dwork, const i32 ldwork, i32* info);
 // void mb01md(const i32 uplo, const i32 n, const f64 alpha, const f64* a, const i32 lda, const f64* x, const i32 incx, const f64 beta, f64* y, const i32 incy, i32* info);
 // void mb01nd();
 void mb01oc(const i32 uplo, const i32 trans, const i32 n, const f64 alpha, const f64 beta, f64* r, const i32 ldr, const f64* h, const i32 ldh, f64* x, const i32 ldx, i32* info);

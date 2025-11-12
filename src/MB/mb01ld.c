@@ -8,7 +8,6 @@ mb01ld(
     const i32 trans, // 0: no transpose, 1: transpose
     const i32 m,
     const i32 n,
-    const i32 k,
     const f64 alpha,
     const f64 beta,
     f64* r,
@@ -22,7 +21,6 @@ mb01ld(
     i32* info
 )
 {
-    (void)k; // Unused parameter
     i32 i, j, m2;
     f64 dbl1 = 1.0, dbl0 = 0.0;
     i32 int0 = 0;

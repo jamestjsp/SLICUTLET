@@ -243,6 +243,17 @@ echo "Ready to merge: $*"
 
 **Types:** `i32`→INTEGER, `f64`→DOUBLE PRECISION, `c128`→COMPLEX*16
 
+**Mode Parameters (CHARACTER*1 → i32):**
+- Fortran `CHARACTER*1` parameters (UPLO, TRANS, SIDE, etc.) → `const i32` in C
+- **Deliberate design choice** to avoid string handling in C
+- Use integer values: 0, 1, 2, etc. for different modes
+- Examples:
+  - `UPLO`: 0=Upper, 1=Lower
+  - `TRANS`: 0=NoTranspose, 1=Transpose, 2=ConjugateTranspose
+  - `SIDE`: 0=Left, 1=Right
+- Python tests pass integers (0, 1) not strings
+- **Do NOT convert to `const char*` - this is intentional**
+
 **Arrays:** 0-based C indexing with Fortran logic adjustments. Preserve lda/ldb/ldz for BLAS/LAPACK.
 
 **BLAS/LAPACK:** Auto-detected symbol mangling via `slc_blaslapack.h` macros.

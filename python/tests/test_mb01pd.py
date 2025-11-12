@@ -4,7 +4,6 @@ Tests for mb01pd - matrix scaling/unscaling
 
 import numpy as np
 from numpy.testing import assert_allclose
-
 from slicutlet import mb01pd
 
 

@@ -4,12 +4,37 @@ Tests for MB01XX family - matrix operations
 
 import numpy as np
 from numpy.testing import assert_allclose
-
 from slicutlet import (
-    mb01ld, mb01oc, mb01od, mb01oe, mb01oh, mb01oo, mb01os, mb01ot,
-    mb01rb, mb01rd, mb01rh, mb01rt, mb01ru, mb01rw, mb01rx, mb01ry,
-    mb01sd, mb01ss, mb01td, mb01ud, mb01uw, mb01ux, mb01uy, mb01uz,
-    mb01vd, mb01wd, mb01xd, mb01xy, mb01yd, mb01zd
+    mb01ld,
+    mb01oc,
+    mb01od,
+    mb01oe,
+    mb01oh,
+    mb01oo,
+    mb01os,
+    mb01ot,
+    mb01rb,
+    mb01rd,
+    mb01rh,
+    mb01rt,
+    mb01ru,
+    mb01rw,
+    mb01rx,
+    mb01ry,
+    mb01sd,
+    mb01ss,
+    mb01td,
+    mb01ud,
+    mb01uw,
+    mb01ux,
+    mb01uy,
+    mb01uz,
+    mb01vd,
+    mb01wd,
+    mb01xd,
+    mb01xy,
+    mb01yd,
+    mb01zd,
 )
 
 
@@ -19,40 +44,40 @@ class TestMB01LD:
     def test_upper_no_transpose(self):
         """Test upper triangular update without transpose"""
         rng = np.random.default_rng(1234567890)
-        m, n, k = 4, 4, 3
+        m, n = 4, 4
         alpha, beta = 2.5, 0.5
 
         R = rng.uniform(-5, 5, (m, m))
         R = np.triu(R, 1) - np.triu(R, 1).T  # Skew-symmetric
         R = np.asfortranarray(R)
 
-        A = np.asfortranarray(rng.uniform(-5, 5, (m, k)))
+        A = np.asfortranarray(rng.uniform(-5, 5, (m, n)))
         X = rng.uniform(-5, 5, (n, n))
         X = np.triu(X, 1) - np.triu(X, 1).T  # Skew-symmetric
         X = np.asfortranarray(X)
         dwork = np.asfortranarray(np.zeros(n))
 
-        R_out, X_out, info = mb01ld(0, 0, m, n, k, alpha, beta, R, A, X, dwork)
+        R_out, X_out, info = mb01ld(0, 0, m, n, alpha, beta, R, A, X, dwork)
 
         assert info == 0
 
     def test_lower_transpose(self):
         """Test lower triangular update with transpose"""
         rng = np.random.default_rng(2345678901)
-        m, n, k = 5, 5, 4
+        m, n = 5, 5
         alpha, beta = 1.0, 2.0
 
         R = rng.uniform(-3, 3, (m, m))
         R = np.tril(R, -1) - np.tril(R, -1).T  # Skew-symmetric
         R = np.asfortranarray(R)
 
-        A = np.asfortranarray(rng.uniform(-3, 3, (k, m)))
+        A = np.asfortranarray(rng.uniform(-3, 3, (n, m)))
         X = rng.uniform(-3, 3, (n, n))
         X = np.tril(X, -1) - np.tril(X, -1).T  # Skew-symmetric
         X = np.asfortranarray(X)
         dwork = np.asfortranarray(np.zeros(n))
 
-        R_out, X_out, info = mb01ld(1, 1, m, n, k, alpha, beta, R, A, X, dwork)
+        R_out, X_out, info = mb01ld(1, 1, m, n, alpha, beta, R, A, X, dwork)
 
         assert info == 0
 
@@ -116,6 +141,11 @@ class TestMB01OE:
 
         R_out, E_out = mb01oe(0, 0, n, alpha, beta, R, H, E)
 
+        assert R_out is not None
+        assert E_out is not None
+        assert R_out.shape == (n, n)
+        assert E_out.shape == (n, n)
+
 
 class TestMB01OH:
     """Tests for mb01oh - Hessenberg helper"""
@@ -131,6 +161,11 @@ class TestMB01OH:
         A = np.asfortranarray(rng.uniform(-4, 4, (n, n)))
 
         R_out, A_out = mb01oh(0, 0, n, alpha, beta, R, H, A)
+
+        assert R_out is not None
+        assert A_out is not None
+        assert R_out.shape == (n, n)
+        assert A_out.shape == (n, n)
 
 
 class TestMB01OO:

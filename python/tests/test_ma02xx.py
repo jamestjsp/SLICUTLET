@@ -2,12 +2,36 @@
 Tests for MA02XX family of functions
 """
 import numpy as np
-from numpy.testing import assert_allclose, assert_array_equal
+from numpy.testing import assert_allclose
 from slicutlet import (
-    ma02ad, ma02az, ma02bd, ma02bz, ma02cd, ma02cz, ma02dd, ma02ed,
-    ma02es, ma02ez, ma02fd, ma02gd, ma02gz, ma02hd, ma02hz, ma02id,
-    ma02iz, ma02jd, ma02jz, ma02md, ma02mz, ma02nz, ma02od, ma02oz,
-    ma02pd, ma02pz, ma02rd, ma02sd
+    ma02ad,
+    ma02az,
+    ma02bd,
+    ma02bz,
+    ma02cd,
+    ma02cz,
+    ma02dd,
+    ma02ed,
+    ma02es,
+    ma02ez,
+    ma02fd,
+    ma02gd,
+    ma02gz,
+    ma02hd,
+    ma02hz,
+    ma02id,
+    ma02iz,
+    ma02jd,
+    ma02jz,
+    ma02md,
+    ma02mz,
+    ma02nz,
+    ma02od,
+    ma02oz,
+    ma02pd,
+    ma02pz,
+    ma02rd,
+    ma02sd,
 )
 
 
@@ -2530,7 +2554,7 @@ class TestMA02NZ:
     def test_hermitian_upper_swap(self):
         """Test swapping in upper Hermitian matrix"""
         uplo, trans, skew, n = 0, 1, 0, 4
-        k, l = 1, 3  # Swap rows/columns 1 and 3 (0-indexed)
+        k, l_idx = 1, 3  # Swap rows/columns 1 and 3 (0-indexed)
         a = np.array([
             [1+0j, 2+1j, 3+2j, 4+3j],
             [2-1j, 5+0j, 6+4j, 7+5j],
@@ -2538,7 +2562,7 @@ class TestMA02NZ:
             [4-3j, 7-5j, 9-6j, 10+0j]
         ], dtype=np.complex128, order='F')
 
-        result = ma02nz(uplo, trans, skew, n, k, l, a)
+        result = ma02nz(uplo, trans, skew, n, k, l_idx, a)
 
         # Rows and columns k and l should be swapped
         # Check that diagonal elements were swapped
@@ -2548,7 +2572,7 @@ class TestMA02NZ:
     def test_hermitian_lower_swap(self):
         """Test swapping in lower Hermitian matrix"""
         uplo, trans, skew, n = 1, 1, 0, 4
-        k, l = 0, 2  # Swap rows/columns 0 and 2
+        k, l_idx = 0, 2  # Swap rows/columns 0 and 2
         a = np.array([
             [1+0j, 0+0j, 0+0j, 0+0j],
             [2-1j, 5+0j, 0+0j, 0+0j],
@@ -2557,11 +2581,11 @@ class TestMA02NZ:
         ], dtype=np.complex128, order='F')
         a_orig = a.copy(order='F')
 
-        result = ma02nz(uplo, trans, skew, n, k, l, a)
+        ma02nz(uplo, trans, skew, n, k, l_idx, a)
 
         # Verify diagonal elements were swapped
-        assert_allclose(a[k, k], a_orig[l, l], rtol=1e-14)
-        assert_allclose(a[l, l], a_orig[k, k], rtol=1e-14)
+        assert_allclose(a[k, k], a_orig[l_idx, l_idx], rtol=1e-14)
+        assert_allclose(a[l_idx, l_idx], a_orig[k, k], rtol=1e-14)
 
     def test_skew_hermitian_upper_swap(self):
         """Test swapping in upper skew-Hermitian matrix"""
@@ -2575,7 +2599,7 @@ class TestMA02NZ:
         ], dtype=np.complex128, order='F')
         a_orig = a.copy(order='F')
 
-        result = ma02nz(uplo, trans, skew, n, k, l, a)
+        ma02nz(uplo, trans, skew, n, k, l, a)
 
         # Diagonal elements should be swapped
         assert_allclose(a[k, k], a_orig[l, l], rtol=1e-14)
@@ -2587,7 +2611,7 @@ class TestMA02NZ:
         a = np.eye(n, dtype=np.complex128, order='F')
         a_orig = a.copy(order='F')
 
-        result = ma02nz(uplo, trans, skew, n, k, l, a)
+        ma02nz(uplo, trans, skew, n, k, l, a)
 
         # Matrix should be unchanged when k == l
         assert_allclose(a, a_orig, rtol=1e-14)
@@ -2631,7 +2655,7 @@ class TestMA02NZ:
         a = np.eye(n, dtype=np.complex128, order='F')
         a_orig = a.copy(order='F')
 
-        result = ma02nz(uplo, trans, skew, n, k, l, a)
+        ma02nz(uplo, trans, skew, n, k, l, a)
 
         # Diagonal elements should be swapped
         assert_allclose(a[k, k], a_orig[l, l], rtol=1e-14)

@@ -4,7 +4,6 @@ Tests for mb01qd - matrix multiplication by scalar CTO/CFROM
 
 import numpy as np
 from numpy.testing import assert_allclose
-
 from slicutlet import mb01qd
 
 

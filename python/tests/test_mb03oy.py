@@ -150,7 +150,7 @@ class TestMB03OYOrthogonality:
         m, n = 6, 4
         np.random.seed(99)
         A = np.random.randn(m, n).astype(float, order="F")
-        A_copy = A.copy(order='F')
+        A.copy(order='F')
 
         rcond = 1e-12
         svlmax = 0.0

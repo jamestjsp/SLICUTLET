@@ -593,12 +593,12 @@ static PyObject* py_mb01xy(PyObject* Py_UNUSED(self), PyObject* args) {
 }
 
 static PyObject* py_mb01ld(PyObject* Py_UNUSED(self), PyObject* args) {
-    int uplo, trans, m, n, k;
+    int uplo, trans, m, n;
     double alpha, beta;
     PyArrayObject *r_obj, *a_obj, *x_obj, *dwork_obj;
 
-    if (!PyArg_ParseTuple(args, "iiiiiddO!O!O!O!",
-                          &uplo, &trans, &m, &n, &k, &alpha, &beta,
+    if (!PyArg_ParseTuple(args, "iiiiddO!O!O!O!",
+                          &uplo, &trans, &m, &n, &alpha, &beta,
                           &PyArray_Type, (PyObject **)&r_obj,
                           &PyArray_Type, (PyObject **)&a_obj,
                           &PyArray_Type, (PyObject **)&x_obj,
@@ -622,7 +622,7 @@ static PyObject* py_mb01ld(PyObject* Py_UNUSED(self), PyObject* args) {
     i32 ldwork = (i32)(dwork_dims[0] > 0 ? dwork_dims[0] : 1);
 
     i32 info;
-    mb01ld(uplo, trans, m, n, k, alpha, beta, r, ldr, a, lda, x, ldx, dwork, ldwork, &info);
+    mb01ld(uplo, trans, m, n, alpha, beta, r, ldr, a, lda, x, ldx, dwork, ldwork, &info);
 
     return Py_BuildValue("OOi", r_obj, x_obj, info);
 }

@@ -3,9 +3,6 @@ Tests for mc01td - polynomial stability checking
 """
 
 import numpy as np
-import pytest
-from numpy.testing import assert_allclose
-
 from slicutlet import mc01td
 
 

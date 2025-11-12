@@ -22,21 +22,21 @@ mb01oh(
     f64 dbl1 = 1.0, dbl0 = 0.0;
     i32 int1 = 1, int0 = 0;
 
-    i32* info = 0;
+    i32 info = 0;
     if (uplo != 0 && uplo != 1) {
-        *info = -1;
+        info = -1;
     } else if (trans != 0 && trans != 1) {
-        *info = -2;
+        info = -2;
     } else if (n < 0) {
-        *info = -3;
+        info = -3;
     } else if (ldr < MAX(1, n)) {
-        *info = -7;
+        info = -7;
     } else if (ldh < MAX(1, n)) {
-        *info = -9;
+        info = -9;
     } else if (lda < MAX(1, n)) {
-        *info = -11;
+        info = -11;
     }
-    if (*info != 0) {
+    if (info != 0) {
         return;
     }
 
@@ -52,7 +52,7 @@ mb01oh(
         } else {
             // Special case beta = 0.
             if (alpha != 1.0) {
-                SLC_DLASCL((uplo ? "L" : "U"), &int0, &int0, &dbl1, &alpha, &n, &n, r, &ldr, info);
+                SLC_DLASCL((uplo ? "L" : "U"), &int0, &int0, &dbl1, &alpha, &n, &n, r, &ldr, &info);
             }
         }
         return;

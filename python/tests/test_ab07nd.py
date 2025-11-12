@@ -4,7 +4,6 @@ Tests for ab07nd - 2x2 partitioned matrix operations
 
 import numpy as np
 from numpy.testing import assert_allclose
-
 from slicutlet import ab07nd
 
 
@@ -42,7 +41,6 @@ class TestAB07NDBasic:
         A_orig = A.copy(order='F')
         B_orig = B.copy(order='F')
         C_orig = C.copy(order='F')
-        D_orig = D.copy(order='F')
 
         iwork = np.zeros(2 * max(2, m), dtype=np.int32)
         dwork = np.zeros(max(4 * m, n * m, 256), dtype=np.float64)

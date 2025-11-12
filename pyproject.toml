@@ -68,3 +68,14 @@ target-version = "py39"
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM"]
 ignore = ["E501"]  # line too long (handled by formatter)
+
+[dependency-groups]
+dev = [
+    "cython>=3.0",
+    "hypothesis>=6.0",
+    "meson>=1.9.1",
+    "meson-python>=0.15",
+    "pytest>=7.0",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.14.4",
+]

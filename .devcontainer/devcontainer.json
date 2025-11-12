@@ -1,0 +1,76 @@
+{
+  "name": "SLICUTLET Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  // Configure container settings
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": ["python/tests"],
+        "python.linting.enabled": true,
+        "python.formatting.provider": "none",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+        },
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/*.pyc": true,
+          "build/": true,
+          "build-install/": true
+        }
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "ms-vscode.cpptools",
+        "mesonbuild.mesonbuild",
+        "GitHub.copilot"
+      ]
+    }
+  },
+
+  // Container environment variables
+  "containerEnv": {
+    "PYTHONPATH": "${containerWorkspaceFolder}/build-install/usr/local/lib/python3.13/site-packages",
+    "DYLD_LIBRARY_PATH": "${containerWorkspaceFolder}/build-install/usr/local/lib",
+    "LD_LIBRARY_PATH": "${containerWorkspaceFolder}/build-install/usr/local/lib"
+  },
+
+  // Run commands after container creation
+  "onCreateCommand": "git submodule update --init --recursive || true",
+  "postCreateCommand": "bash .devcontainer/setup.sh || true",
+
+  // Mount the workspace
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
+
+  // Features to add
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    }
+  },
+
+  // Forward ports (if needed for web services)
+  "forwardPorts": [],
+
+  // Run as root to avoid permission issues with bind mounts
+  "remoteUser": "root",
+
+  // Post-attach commands
+  "postAttachCommand": "git submodule status || echo 'Run: git submodule update --init --recursive'"
+}

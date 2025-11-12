@@ -1,4 +1,4 @@
-py = import('python').find_installation()
+py = import('python').find_installation(pure: false)
 
 numpy_include_result = run_command(
     py,
@@ -10,7 +10,8 @@ incdir_numpy = numpy_include_result.stdout().strip()
 slicutletlib_module = py.extension_module(
     'slicutletlib',
     'slicutletmodule.c',
-    include_directories: [inc_pub, inc_root, inc_src, include_directories(incdir_numpy)],
+    include_directories: [inc_pub, inc_root, inc_src],
+    c_args: ['-I' + incdir_numpy],
     link_with: slicutlet_lib,
     dependencies: deps_common,
     install: true,

@@ -24,11 +24,16 @@ SLICUTLET: C11 translation of SLICOT (Systems and Control library) from Fortran7
 uv sync
 ```
 
-**Run tests:**
+**Build and run tests:**
 ```bash
-uv run pytest python/tests/                                                          # All tests
-uv run pytest -v python/tests/test_mb01xx.py                                         # Single file
-uv run pytest -v python/tests/test_ma01xx.py::TestMA01AD::test_positive_real_positive_imag  # Specific test
+# Build once (rebuilds when source changes)
+uv run meson setup build -Dpython=true && uv run meson compile -C build && uv run meson install -C build --destdir="$(pwd)/build-install"
+
+# Run tests
+PYTHONPATH=build-install/usr/local/lib/python3.13/site-packages DYLD_LIBRARY_PATH=build-install/usr/local/lib uv run pytest python/tests/
+
+# Specific tests
+PYTHONPATH=build-install/usr/local/lib/python3.13/site-packages DYLD_LIBRARY_PATH=build-install/usr/local/lib uv run pytest -v python/tests/test_mb01xx.py
 ```
 
 **Code quality:**

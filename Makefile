@@ -9,8 +9,7 @@
 #   make dev        - Build, install, and run tests
 
 # Configuration
-PYTHON := .venv/bin/python
-PYTEST := $(PYTHON) -m pytest
+PYTHON := uv run
 UV := uv
 
 # Build directories
@@ -19,9 +18,9 @@ INSTALL_DIR := $(PWD)/build-install
 INSTALL_LIB := $(INSTALL_DIR)/usr/local/lib
 INSTALL_PYLIB := $(INSTALL_DIR)/usr/local/lib/python3.13/site-packages
 
-# Environment for running tests
-export DYLD_LIBRARY_PATH := $(INSTALL_LIB):$(DYLD_LIBRARY_PATH)
-export PYTHONPATH := $(INSTALL_PYLIB):$(PYTHONPATH)
+# Environment for running tests (must be inline for uv run)
+ENV_VARS := DYLD_LIBRARY_PATH=$(INSTALL_LIB):$$DYLD_LIBRARY_PATH PYTHONPATH=$(INSTALL_PYLIB):$$PYTHONPATH
+PYTEST := $(ENV_VARS) uv run pytest
 
 # Test options
 PYTEST_OPTS := -v
@@ -31,10 +30,14 @@ TEST_DIR := python/tests
 help:
 	@echo "SLICUTLET Makefile"
 	@echo ""
+	@echo "Setup targets:"
+	@echo "  make setup         - Sync dependencies from pyproject.toml (uv sync)"
+	@echo ""
 	@echo "Build targets:"
 	@echo "  make build         - Compile C library and Python extension"
 	@echo "  make install       - Install to build-install/ directory"
 	@echo "  make rebuild       - Clean and rebuild from scratch"
+	@echo "  make configure     - Configure meson (auto-runs setup)"
 	@echo ""
 	@echo "Test targets:"
 	@echo "  make test          - Run all tests"
@@ -50,6 +53,12 @@ help:
 	@echo "  make quick-test    - Test without rebuilding"
 	@echo "  make format        - Format Python code with ruff"
 	@echo "  make lint          - Check Python code with ruff"
+	@echo "  make lint-fix      - Auto-fix ruff issues"
+	@echo ""
+	@echo "Package management:"
+	@echo "  uv add <package>   - Add new package to pyproject.toml"
+	@echo "  uv remove <package> - Remove package from pyproject.toml"
+	@echo "  uv sync            - Sync installed packages with pyproject.toml"
 	@echo ""
 	@echo "Cleanup targets:"
 	@echo "  make clean         - Remove build artifacts"
@@ -67,7 +76,7 @@ build:
 	$(UV) run meson compile -C $(BUILD_DIR)
 
 .PHONY: configure
-configure:
+configure: setup
 	$(UV) run meson setup $(BUILD_DIR) -Dpython=true
 
 .PHONY: install
@@ -112,7 +121,7 @@ test-one:
 		echo "Error: TEST variable not set. Usage: make test-one TEST=test_name"; \
 		exit 1; \
 	fi
-	$(PYTEST) $(PYTEST_OPTS) -k "$(TEST)"
+	$(PYTEST) $(PYTEST_OPTS) $(TEST_DIR)/ -k "$(TEST)"
 
 .PHONY: quick-test
 quick-test:
@@ -145,10 +154,10 @@ clean:
 	@echo "Cleaning build artifacts..."
 	rm -rf $(BUILD_DIR)
 	rm -rf $(INSTALL_DIR)
-	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
-	find . -type f -name "*.pyc" -delete
-	find . -type f -name "*.so" -delete
-	find . -type f -name "*.dylib" -delete
+	find . -path './.venv' -prune -o -type d -name '__pycache__' -print -exec rm -rf {} + 2>/dev/null || true
+	find . -path './.venv' -prune -o -type f -name '*.pyc' -print -delete 2>/dev/null || true
+	find python -type f -name '*.so' -delete 2>/dev/null || true
+	find python -type f -name '*.dylib' -delete 2>/dev/null || true
 
 .PHONY: clean-all
 clean-all: clean

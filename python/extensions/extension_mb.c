@@ -384,7 +384,7 @@ static PyObject* py_mb01ss(PyObject* Py_UNUSED(self), PyObject* args) {
 
     mb01ss(jobs, uplo, n, a, lda, d);
 
-    return Py_BuildValue("O", a_obj);
+    return Py_BuildValue("Oi", a_obj, 0);
 }
 
 static PyObject* py_mb01td(PyObject* Py_UNUSED(self), PyObject* args) {
